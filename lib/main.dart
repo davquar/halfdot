@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:umami/controllers/storage.dart';
 import 'package:umami/screens/login.dart';
 
 void main() {
@@ -22,15 +23,30 @@ class MyApp extends StatelessWidget {
 }
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key, required this.title});
-
   final String title;
+
+  const HomePage({super.key, required this.title});
 
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
+  @override
+  void initState() {
+    super.initState();
+    Storage.instance.hasAccessToken().then((has) {
+      if (!has) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const LoginPage(),
+          ),
+        );
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,11 +58,6 @@ class _HomePageState extends State<HomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: const <Widget>[],
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const LoginPage())),
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
       ),
     );
   }

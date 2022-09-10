@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:umami/controllers/login.dart';
+import 'package:umami/controllers/storage.dart';
 import 'package:umami/models/api/login.dart';
 
 class LoginPage extends StatefulWidget {
@@ -73,11 +74,7 @@ class _LoginPageState extends State<LoginPage> {
 
     loginController.doRequest().then(
       (value) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text("Login successful"),
-          ),
-        );
+        Storage.instance.setAccessToken(value.token).then((value) => Navigator.pop(context));
       },
     ).onError(
       (error, stackTrace) {
