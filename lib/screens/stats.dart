@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:umami/controllers/api_common.dart' as api_common;
+import 'package:umami/controllers/pageviews.dart';
 import 'package:umami/controllers/stats.dart';
 import 'package:umami/controllers/storage.dart';
+import 'package:umami/models/api/pageviews.dart';
 import 'package:umami/models/api/stats.dart';
 import 'package:umami/models/api/website.dart';
 
@@ -96,8 +99,97 @@ class _StatsPageState extends State<StatsPage> {
               }
             },
           ),
+          FutureBuilder<PageViewsResponse>(
+            future: PageViewsController(
+              Storage.instance.domain!,
+              Storage.instance.accessToken!,
+              widget.website.id,
+              _makePageViewsRequest(),
+            ).doRequest(),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return Row(
+                  children: [
+                    Expanded(
+                      child: Card(
+                        key: const Key("pageViews"),
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              Text(
+                                "Page views",
+                                style: Theme.of(context).textTheme.headline6,
+                              ),
+                              const Divider(
+                                color: Colors.transparent,
+                              ),
+                              ...snapshot.data!.pageViews.map(
+                                (e) => Text(
+                                  "${_prettyPrintDate(e.dateTime)} | ${e.number}",
+                                  textAlign: TextAlign.left,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: Card(
+                        key: const Key("sessions"),
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Sessions",
+                                style: Theme.of(context).textTheme.headline6,
+                              ),
+                              const Divider(
+                                color: Colors.transparent,
+                              ),
+                              ...snapshot.data!.sessions.map(
+                                (e) => Text(
+                                  "${_prettyPrintDate(e.dateTime)} | ${e.number}",
+                                  textAlign: TextAlign.left,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    )
+                  ],
+                );
+              } else if (snapshot.hasError) {
+                return Text("${snapshot.error}");
+              } else {
+                return const Card(
+                  child: CircularProgressIndicator(),
+                );
+              }
+            },
+          ),
         ],
       ),
     );
+  }
+
+  PageViewsRequest _makePageViewsRequest() {
+    return PageViewsRequest(
+      period: api_common.DateTimeRange(
+        DateTime.now().subtract(
+          const Duration(hours: 24),
+        ),
+        DateTime.now(),
+      ),
+    );
+  }
+
+  String _prettyPrintDate(DateTime date) {
+    return "${date.year}-${date.month}-${date.day} ${date.hour}:${date.minute}";
   }
 }
