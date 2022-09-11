@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:umami/controllers/storage.dart';
 import 'package:umami/controllers/websites.dart';
 import 'package:umami/models/api/website.dart';
+import 'package:umami/screens/stats.dart';
 
 class WebsitesPage extends StatefulWidget {
   const WebsitesPage({super.key});
@@ -30,6 +31,7 @@ class _WebsitesPageState extends State<WebsitesPage> {
                   (website) => ListTile(
                     title: Text(website.name),
                     subtitle: Text(website.domain),
+                    onTap: () => _goToStats(website),
                   ),
                 )
               ],
@@ -42,6 +44,17 @@ class _WebsitesPageState extends State<WebsitesPage> {
             );
           }
         },
+      ),
+    );
+  }
+
+  _goToStats(Website website) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => StatsPage(
+          website: website,
+        ),
       ),
     );
   }
