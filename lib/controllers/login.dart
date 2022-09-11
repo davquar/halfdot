@@ -26,17 +26,15 @@ class LoginController implements APIRequest {
         body: loginRequest.toJSON(),
       );
 
-      if (response.statusCode != 200) {
+      if (!isResponseOK(response)) {
         throw Exception("Failed to authenticate: ${response.statusCode}");
       }
 
-      var loginResponse = LoginResponse.fromJSON(
+      return LoginResponse.fromJSON(
         jsonDecode(
           utf8.decode(response.bodyBytes),
         ) as Map<String, dynamic>,
       );
-
-      return loginResponse;
     } catch (e) {
       return Future.error(e.toString());
     }
