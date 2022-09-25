@@ -18,6 +18,7 @@ class MyApp extends StatelessWidget {
       title: 'Umami',
       theme: ThemeData(
         primarySwatch: Colors.blue,
+        useMaterial3: true,
       ),
       home: const LoginPage(title: 'Umami'),
     );
