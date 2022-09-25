@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:umami/controllers/api_common.dart' as api_common;
+import 'package:umami/controllers/metrics.dart';
 import 'package:umami/controllers/pageviews.dart';
 import 'package:umami/controllers/stats.dart';
 import 'package:umami/controllers/storage.dart';
+import 'package:umami/models/api/metrics.dart';
 import 'package:umami/models/api/pageviews.dart';
 import 'package:umami/models/api/stats.dart';
 import 'package:umami/models/api/website.dart';
@@ -173,20 +175,106 @@ class _StatsPageState extends State<StatsPage> {
               }
             },
           ),
+          _makeMetricsFutureBuilder(
+            type: MetricType.url,
+            cardKey: "metricsURLs",
+            cardTitle: "URLs",
+          ),
+          _makeMetricsFutureBuilder(
+            type: MetricType.referrer,
+            cardKey: "metricsReferrers",
+            cardTitle: "Referrers",
+          ),
+          _makeMetricsFutureBuilder(
+            type: MetricType.os,
+            cardKey: "metricsOS",
+            cardTitle: "OS",
+          ),
+          _makeMetricsFutureBuilder(
+            type: MetricType.device,
+            cardKey: "metricsDevices",
+            cardTitle: "Devices",
+          ),
+          _makeMetricsFutureBuilder(
+            type: MetricType.country,
+            cardKey: "metricsCountries",
+            cardTitle: "Countries",
+          ),
         ],
       ),
     );
   }
 
-  PageViewsRequest _makePageViewsRequest() {
-    return PageViewsRequest(
-      period: api_common.DateTimeRange(
-        DateTime.now().subtract(
-          const Duration(hours: 24),
-        ),
-        DateTime.now(),
-      ),
+  FutureBuilder<MetricsResponse> _makeMetricsFutureBuilder({
+    required MetricType type,
+    required String cardKey,
+    required String cardTitle,
+  }) {
+    return FutureBuilder<MetricsResponse>(
+      future: MetricsController(
+        Storage.instance.domain!,
+        Storage.instance.accessToken!,
+        widget.website.id,
+        _makeMetricsRequest(type),
+      ).doRequest(),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          return Row(
+            children: [
+              Expanded(
+                child: Card(
+                  key: Key(cardKey),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Text(
+                          cardTitle,
+                          style: Theme.of(context).textTheme.headline6,
+                        ),
+                        const Divider(
+                          color: Colors.transparent,
+                        ),
+                        ...snapshot.data!.metrics.map(
+                          (e) => Text(
+                            "${e.object} | ${e.number}",
+                            textAlign: TextAlign.left,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          );
+        } else if (snapshot.hasError) {
+          return Text("${snapshot.error}");
+        } else {
+          return const Card(
+            child: CircularProgressIndicator(),
+          );
+        }
+      },
     );
+  }
+
+  api_common.DateTimeRange _getLast24Hours() {
+    return api_common.DateTimeRange(
+      DateTime.now().subtract(
+        const Duration(hours: 24),
+      ),
+      DateTime.now(),
+    );
+  }
+
+  PageViewsRequest _makePageViewsRequest() {
+    return PageViewsRequest(period: _getLast24Hours());
+  }
+
+  MetricsRequest _makeMetricsRequest(MetricType type) {
+    return MetricsRequest(_getLast24Hours(), type);
   }
 
   String _prettyPrintDate(DateTime date) {
