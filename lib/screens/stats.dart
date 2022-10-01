@@ -121,9 +121,7 @@ class _StatsPageState extends State<StatsPage> {
                     } else if (snapshot.hasError) {
                       return Text("${snapshot.error}");
                     } else {
-                      return const Card(
-                        child: CircularProgressIndicator(),
-                      );
+                      return _makeProgressIndicatorCard(cardTitle: "Summary");
                     }
                   },
                 ),
@@ -195,9 +193,7 @@ class _StatsPageState extends State<StatsPage> {
                     } else if (snapshot.hasError) {
                       return Text("${snapshot.error}");
                     } else {
-                      return const Card(
-                        child: CircularProgressIndicator(),
-                      );
+                      return _makeProgressIndicatorCard(cardTitle: "Sessions");
                     }
                   },
                 ),
@@ -281,9 +277,7 @@ class _StatsPageState extends State<StatsPage> {
         } else if (snapshot.hasError) {
           return Text("${snapshot.error}");
         } else {
-          return const Card(
-            child: CircularProgressIndicator(),
-          );
+          return _makeProgressIndicatorCard(cardTitle: cardTitle);
         }
       },
     );
@@ -314,6 +308,27 @@ class _StatsPageState extends State<StatsPage> {
             style: const TextStyle(fontSize: 16),
           ),
         ),
+      ),
+    );
+  }
+
+  Card _makeProgressIndicatorCard({required String cardTitle}) {
+    return Card(
+      child: Column(
+        children: [
+          Text(
+            cardTitle,
+            style: Theme.of(context).textTheme.headline6,
+          ),
+          const Padding(
+            padding: EdgeInsets.all(8.0),
+            child: SizedBox(
+              height: 20,
+              width: 20,
+              child: CircularProgressIndicator(),
+            ),
+          ),
+        ],
       ),
     );
   }
