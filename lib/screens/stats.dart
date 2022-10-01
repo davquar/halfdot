@@ -27,10 +27,9 @@ class _StatsPageState extends State<StatsPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.website.name),
-      ),
-      body: Column(
-        children: [
-          Container(
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(kToolbarHeight),
+          child: Container(
             margin: const EdgeInsets.only(
               left: 4,
               top: 8,
@@ -46,6 +45,10 @@ class _StatsPageState extends State<StatsPage> {
               ],
             ),
           ),
+        ),
+      ),
+      body: Column(
+        children: [
           Expanded(
             child: ListView(
               children: [
@@ -300,13 +303,16 @@ class _StatsPageState extends State<StatsPage> {
           color: Theme.of(context).dialogBackgroundColor,
         ),
         child: TextButton(
+          style: const ButtonStyle(
+            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          ),
+          onPressed: () => _showDateTimePicker(isEnd),
           child: Text(
             text,
             key: key,
             textAlign: TextAlign.center,
             style: const TextStyle(fontSize: 16),
           ),
-          onPressed: () => _showDateTimePicker(isEnd),
         ),
       ),
     );
