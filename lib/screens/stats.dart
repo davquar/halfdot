@@ -8,6 +8,7 @@ import 'package:umami/models/api/metrics.dart';
 import 'package:umami/models/api/pageviews.dart';
 import 'package:umami/models/api/stats.dart';
 import 'package:umami/models/api/website.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 
 class StatsPage extends StatefulWidget {
   final Website website;
@@ -19,186 +20,211 @@ class StatsPage extends StatefulWidget {
 }
 
 class _StatsPageState extends State<StatsPage> {
+  api_common.DateTimeRange dateTimeRange = _getLast24Hours();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.website.name),
       ),
-      body: ListView(
+      body: Column(
         children: [
-          FutureBuilder<StatsResponse>(
-            future: StatsController(
-              Storage.instance.domain!,
-              Storage.instance.accessToken!,
-              widget.website.id,
-            ).doRequest(),
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                return Card(
-                  key: const Key("summary"),
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "Summary",
-                          style: Theme.of(context).textTheme.headline6,
-                        ),
-                        const Divider(
-                          color: Colors.transparent,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Column(
-                              children: [
-                                Text(
-                                  snapshot.data!.pageViews.toString(),
-                                  style: Theme.of(context).textTheme.titleLarge,
-                                ),
-                                const Text("Page views"),
-                              ],
-                            ),
-                            Column(children: [
-                              Text(
-                                snapshot.data!.uniques.toString(),
-                                style: Theme.of(context).textTheme.titleLarge,
-                              ),
-                              const Text("Uniques"),
-                            ]),
-                            Column(
-                              children: [
-                                Text(
-                                  snapshot.data!.bounces.toString(),
-                                  style: Theme.of(context).textTheme.titleLarge,
-                                ),
-                                const Text("Bounces"),
-                              ],
-                            ),
-                            Column(
-                              children: [
-                                Text(
-                                  snapshot.data!.totalTime.toString(),
-                                  style: Theme.of(context).textTheme.titleLarge,
-                                ),
-                                const Text("Total time"),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                );
-              } else if (snapshot.hasError) {
-                return Text("${snapshot.error}");
-              } else {
-                return const Card(
-                  child: CircularProgressIndicator(),
-                );
-              }
-            },
+          Container(
+            margin: const EdgeInsets.only(
+              left: 4,
+              top: 8,
+              right: 4,
+              bottom: 4,
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                _makeDateTimeBox(isEnd: false),
+                const Text("  —  "),
+                _makeDateTimeBox(isEnd: true),
+              ],
+            ),
           ),
-          FutureBuilder<PageViewsResponse>(
-            future: PageViewsController(
-              Storage.instance.domain!,
-              Storage.instance.accessToken!,
-              widget.website.id,
-              _makePageViewsRequest(),
-            ).doRequest(),
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                return Row(
-                  children: [
-                    Expanded(
-                      child: Card(
-                        key: const Key("pageViews"),
+          Expanded(
+            child: ListView(
+              children: [
+                FutureBuilder<StatsResponse>(
+                  future: StatsController(
+                    Storage.instance.domain!,
+                    Storage.instance.accessToken!,
+                    widget.website.id,
+                    dateTimeRange,
+                  ).doRequest(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return Card(
+                        key: const Key("summary"),
                         child: Padding(
                           padding: const EdgeInsets.all(16.0),
                           child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                "Page views",
+                                "Summary",
                                 style: Theme.of(context).textTheme.headline6,
                               ),
                               const Divider(
                                 color: Colors.transparent,
                               ),
-                              ...snapshot.data!.pageViews.map(
-                                (e) => Text(
-                                  "${_prettyPrintDate(e.dateTime)} | ${e.number}",
-                                  textAlign: TextAlign.left,
-                                ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Column(
+                                    children: [
+                                      Text(
+                                        snapshot.data!.pageViews.toString(),
+                                        style: Theme.of(context).textTheme.titleLarge,
+                                      ),
+                                      const Text("Page views"),
+                                    ],
+                                  ),
+                                  Column(children: [
+                                    Text(
+                                      snapshot.data!.uniques.toString(),
+                                      style: Theme.of(context).textTheme.titleLarge,
+                                    ),
+                                    const Text("Uniques"),
+                                  ]),
+                                  Column(
+                                    children: [
+                                      Text(
+                                        snapshot.data!.bounces.toString(),
+                                        style: Theme.of(context).textTheme.titleLarge,
+                                      ),
+                                      const Text("Bounces"),
+                                    ],
+                                  ),
+                                  Column(
+                                    children: [
+                                      Text(
+                                        snapshot.data!.totalTime.toString(),
+                                        style: Theme.of(context).textTheme.titleLarge,
+                                      ),
+                                      const Text("Total time"),
+                                    ],
+                                  ),
+                                ],
                               ),
                             ],
                           ),
                         ),
-                      ),
-                    ),
-                    Expanded(
-                      child: Card(
-                        key: const Key("sessions"),
-                        child: Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Sessions",
-                                style: Theme.of(context).textTheme.headline6,
-                              ),
-                              const Divider(
-                                color: Colors.transparent,
-                              ),
-                              ...snapshot.data!.sessions.map(
-                                (e) => Text(
-                                  "${_prettyPrintDate(e.dateTime)} | ${e.number}",
-                                  textAlign: TextAlign.left,
+                      );
+                    } else if (snapshot.hasError) {
+                      return Text("${snapshot.error}");
+                    } else {
+                      return const Card(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+                  },
+                ),
+                FutureBuilder<PageViewsResponse>(
+                  future: PageViewsController(
+                    Storage.instance.domain!,
+                    Storage.instance.accessToken!,
+                    widget.website.id,
+                    _makePageViewsRequest(),
+                  ).doRequest(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return Row(
+                        children: [
+                          Expanded(
+                            child: Card(
+                              key: const Key("pageViews"),
+                              child: Padding(
+                                padding: const EdgeInsets.all(16.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                                  children: [
+                                    Text(
+                                      "Page views",
+                                      style: Theme.of(context).textTheme.headline6,
+                                    ),
+                                    const Divider(
+                                      color: Colors.transparent,
+                                    ),
+                                    ...snapshot.data!.pageViews.map(
+                                      (e) => Text(
+                                        "${_prettyPrintDate(e.dateTime)} | ${e.number}",
+                                        textAlign: TextAlign.left,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
-                            ],
+                            ),
                           ),
-                        ),
-                      ),
-                    )
-                  ],
-                );
-              } else if (snapshot.hasError) {
-                return Text("${snapshot.error}");
-              } else {
-                return const Card(
-                  child: CircularProgressIndicator(),
-                );
-              }
-            },
-          ),
-          _makeMetricsFutureBuilder(
-            type: MetricType.url,
-            cardKey: "metricsURLs",
-            cardTitle: "URLs",
-          ),
-          _makeMetricsFutureBuilder(
-            type: MetricType.referrer,
-            cardKey: "metricsReferrers",
-            cardTitle: "Referrers",
-          ),
-          _makeMetricsFutureBuilder(
-            type: MetricType.os,
-            cardKey: "metricsOS",
-            cardTitle: "OS",
-          ),
-          _makeMetricsFutureBuilder(
-            type: MetricType.device,
-            cardKey: "metricsDevices",
-            cardTitle: "Devices",
-          ),
-          _makeMetricsFutureBuilder(
-            type: MetricType.country,
-            cardKey: "metricsCountries",
-            cardTitle: "Countries",
+                          Expanded(
+                            child: Card(
+                              key: const Key("sessions"),
+                              child: Padding(
+                                padding: const EdgeInsets.all(16.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "Sessions",
+                                      style: Theme.of(context).textTheme.headline6,
+                                    ),
+                                    const Divider(
+                                      color: Colors.transparent,
+                                    ),
+                                    ...snapshot.data!.sessions.map(
+                                      (e) => Text(
+                                        "${_prettyPrintDate(e.dateTime)} | ${e.number}",
+                                        textAlign: TextAlign.left,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          )
+                        ],
+                      );
+                    } else if (snapshot.hasError) {
+                      return Text("${snapshot.error}");
+                    } else {
+                      return const Card(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+                  },
+                ),
+                _makeMetricsFutureBuilder(
+                  type: MetricType.url,
+                  cardKey: "metricsURLs",
+                  cardTitle: "URLs",
+                ),
+                _makeMetricsFutureBuilder(
+                  type: MetricType.referrer,
+                  cardKey: "metricsReferrers",
+                  cardTitle: "Referrers",
+                ),
+                _makeMetricsFutureBuilder(
+                  type: MetricType.os,
+                  cardKey: "metricsOS",
+                  cardTitle: "OS",
+                ),
+                _makeMetricsFutureBuilder(
+                  type: MetricType.device,
+                  cardKey: "metricsDevices",
+                  cardTitle: "Devices",
+                ),
+                _makeMetricsFutureBuilder(
+                  type: MetricType.country,
+                  cardKey: "metricsCountries",
+                  cardTitle: "Countries",
+                ),
+              ],
+            ),
           ),
         ],
       ),
@@ -260,7 +286,52 @@ class _StatsPageState extends State<StatsPage> {
     );
   }
 
-  api_common.DateTimeRange _getLast24Hours() {
+  Expanded _makeDateTimeBox({required bool isEnd}) {
+    final Key key = isEnd ? const Key("rangeEnd") : const Key("rangeStart");
+    final text = isEnd ? dateTimeRange.getPrettyEnd() : dateTimeRange.getPrettyStart();
+
+    return Expanded(
+      child: Container(
+        decoration: BoxDecoration(
+          border: Border.all(
+            color: Theme.of(context).focusColor,
+          ),
+          borderRadius: BorderRadius.circular(10),
+          color: Theme.of(context).dialogBackgroundColor,
+        ),
+        child: TextButton(
+          child: Text(
+            text,
+            key: key,
+            textAlign: TextAlign.center,
+            style: const TextStyle(fontSize: 16),
+          ),
+          onPressed: () => _showDateTimePicker(isEnd),
+        ),
+      ),
+    );
+  }
+
+  void _showDateTimePicker(bool isEnd) {
+    DatePicker.showDateTimePicker(
+      context,
+      showTitleActions: true,
+      maxTime: DateTime.now(),
+      onConfirm: (date) {
+        setState(() {
+          if (isEnd) {
+            dateTimeRange.endAt = date;
+          } else {
+            dateTimeRange.startAt = date;
+          }
+        });
+      },
+      currentTime: isEnd ? dateTimeRange.endAt : dateTimeRange.startAt,
+      locale: LocaleType.en,
+    );
+  }
+
+  static api_common.DateTimeRange _getLast24Hours() {
     return api_common.DateTimeRange(
       DateTime.now().subtract(
         const Duration(hours: 24),
@@ -270,11 +341,11 @@ class _StatsPageState extends State<StatsPage> {
   }
 
   PageViewsRequest _makePageViewsRequest() {
-    return PageViewsRequest(period: _getLast24Hours());
+    return PageViewsRequest(period: dateTimeRange);
   }
 
   MetricsRequest _makeMetricsRequest(MetricType type) {
-    return MetricsRequest(_getLast24Hours(), type);
+    return MetricsRequest(dateTimeRange, type);
   }
 
   String _prettyPrintDate(DateTime date) {

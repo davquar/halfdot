@@ -10,15 +10,9 @@ class StatsController implements APIRequest {
   final int id;
   late Uri url;
 
-  late DateTimeRange period;
+  final DateTimeRange period;
 
-  StatsController(this.domain, this.accessToken, this.id) {
-    period = DateTimeRange(
-        DateTime.now().subtract(
-          const Duration(hours: 24),
-        ),
-        DateTime.now());
-
+  StatsController(this.domain, this.accessToken, this.id, this.period) {
     url = getRequestURL();
   }
 
