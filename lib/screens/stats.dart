@@ -313,10 +313,28 @@ class _StatsPageState extends State<StatsPage> {
   }
 
   void _showDateTimePicker(bool isEnd) {
+    late DateTime currentTime;
+    if (isEnd) {
+      if (dateTimeRange.endAt.isBefore(DateTime.now())) {
+        currentTime = dateTimeRange.endAt;
+      } else {
+        currentTime = DateTime.now();
+      }
+    } else {
+      if (dateTimeRange.startAt.isBefore(DateTime.now())) {
+        currentTime = dateTimeRange.startAt;
+      } else {
+        currentTime = DateTime.now();
+      }
+    }
+
     DatePicker.showDateTimePicker(
       context,
       showTitleActions: true,
-      maxTime: DateTime.now(),
+      minTime: isEnd ? dateTimeRange.startAt : DateTime(2010, 01, 01),
+      maxTime: isEnd ? DateTime.now() : dateTimeRange.endAt,
+      currentTime: currentTime,
+      locale: LocaleType.en,
       onConfirm: (date) {
         setState(() {
           if (isEnd) {
@@ -326,8 +344,6 @@ class _StatsPageState extends State<StatsPage> {
           }
         });
       },
-      currentTime: isEnd ? dateTimeRange.endAt : dateTimeRange.startAt,
-      locale: LocaleType.en,
     );
   }
 
