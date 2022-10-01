@@ -30,14 +30,25 @@ class MetricsResponse {
 }
 
 class Metric {
+  static const noneMetric = "(None)";
   final String object;
   final int number;
 
   Metric(this.object, this.number);
 
   Metric.fromJSON(Map<String, dynamic> json)
-      : object = json["x"],
-        number = json["y"];
+      : object = valueOrNone(json["x"]),
+        number = valueOrNone(json["y"]);
+
+  static dynamic valueOrNone(value) {
+    if (value == null) {
+      return noneMetric;
+    }
+    if (value.toString().isEmpty) {
+      return noneMetric;
+    }
+    return value!;
+  }
 }
 
 enum MetricType {

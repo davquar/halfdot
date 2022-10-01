@@ -26,6 +26,14 @@ class DateTimeRange {
     return "start_at=${startAt.millisecondsSinceEpoch}&end_at=${endAt.millisecondsSinceEpoch}";
   }
 
+  String getPrettyStart() {
+    return "${startAt.day}/${startAt.month}/${startAt.year} ${startAt.hour}:${startAt.second}";
+  }
+
+  String getPrettyEnd() {
+    return "${endAt.day}/${endAt.month}/${endAt.year} ${endAt.hour}:${endAt.second}";
+  }
+
   Map<String, String> toMap() {
     return {
       "start_at": startAt.millisecondsSinceEpoch.toString(),
