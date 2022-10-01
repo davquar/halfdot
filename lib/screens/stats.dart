@@ -152,9 +152,9 @@ class _StatsPageState extends State<StatsPage> {
                                       color: Colors.transparent,
                                     ),
                                     ...snapshot.data!.pageViews.map(
-                                      (e) => Text(
-                                        "${_prettyPrintDate(e.dateTime)} | ${e.number}",
-                                        textAlign: TextAlign.left,
+                                      (e) => _makeNumberedListItem(
+                                        item: _prettyPrintDate(e.dateTime, discardTime: true),
+                                        number: e.number,
                                       ),
                                     ),
                                   ],
@@ -178,9 +178,9 @@ class _StatsPageState extends State<StatsPage> {
                                       color: Colors.transparent,
                                     ),
                                     ...snapshot.data!.sessions.map(
-                                      (e) => Text(
-                                        "${_prettyPrintDate(e.dateTime)} | ${e.number}",
-                                        textAlign: TextAlign.left,
+                                      (e) => _makeNumberedListItem(
+                                        item: _prettyPrintDate(e.dateTime, discardTime: true),
+                                        number: e.number,
                                       ),
                                     ),
                                   ],
@@ -230,6 +230,40 @@ class _StatsPageState extends State<StatsPage> {
     );
   }
 
+  Widget _makeNumberedListItem({required String item, required int number}) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 4),
+      child: Row(
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              border: Border.all(),
+              borderRadius: BorderRadius.circular(5),
+            ),
+            child: SizedBox(
+              height: 20,
+              width: 40,
+              child: Text(
+                number.toString(),
+                style: const TextStyle(fontWeight: FontWeight.bold),
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ),
+          const VerticalDivider(
+            width: 4,
+            color: Colors.transparent,
+          ),
+          Expanded(
+            child: Text(
+              item,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   FutureBuilder<MetricsResponse> _makeMetricsFutureBuilder({
     required MetricType type,
     required String cardKey,
@@ -262,9 +296,9 @@ class _StatsPageState extends State<StatsPage> {
                           color: Colors.transparent,
                         ),
                         ...snapshot.data!.metrics.map(
-                          (e) => Text(
-                            "${e.object} | ${e.number}",
-                            textAlign: TextAlign.left,
+                          (e) => _makeNumberedListItem(
+                            item: e.object,
+                            number: e.number,
                           ),
                         ),
                       ],
@@ -385,7 +419,11 @@ class _StatsPageState extends State<StatsPage> {
     return MetricsRequest(dateTimeRange, type);
   }
 
-  String _prettyPrintDate(DateTime date) {
-    return "${date.year}-${date.month}-${date.day} ${date.hour}:${date.minute}";
+  String _prettyPrintDate(DateTime date, {bool discardTime = false}) {
+    var datePart = "${date.year}/${date.month}/${date.day}";
+    if (discardTime) {
+      return datePart;
+    }
+    return "$datePart ${date.hour}:${date.minute}";
   }
 }
