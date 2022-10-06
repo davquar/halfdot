@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:umami/controllers/api_common.dart' as api_common;
+import 'package:umami/controllers/api_common.dart';
 import 'package:umami/controllers/metrics.dart';
 import 'package:umami/controllers/pageviews.dart';
 import 'package:umami/controllers/stats.dart';
@@ -23,7 +23,7 @@ class StatsPage extends StatefulWidget {
 }
 
 class _StatsPageState extends State<StatsPage> {
-  api_common.DateTimeRange dateTimeRange = api_common.DateTimeRange.getLast24Hours();
+  DateTimeInterval dateTimeRange = DateTimeInterval.getLast24Hours();
 
   @override
   Widget build(BuildContext context) {

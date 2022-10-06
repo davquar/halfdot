@@ -15,11 +15,11 @@ enum GroupingUnit {
   const GroupingUnit(this.value);
 }
 
-class DateTimeRange {
+class DateTimeInterval {
   DateTime startAt;
   DateTime endAt;
 
-  DateTimeRange(this.startAt, this.endAt);
+  DateTimeInterval(this.startAt, this.endAt);
 
   @override
   String toString() {
@@ -41,8 +41,8 @@ class DateTimeRange {
     };
   }
 
-  static DateTimeRange getLast24Hours() {
-    return DateTimeRange(
+  static DateTimeInterval getLast24Hours() {
+    return DateTimeInterval(
       DateTime.now().subtract(
         const Duration(hours: 24),
       ),
