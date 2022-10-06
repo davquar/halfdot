@@ -9,6 +9,8 @@ import 'package:umami/models/api/pageviews.dart';
 import 'package:umami/models/api/stats.dart';
 import 'package:umami/models/api/website.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'package:umami/models/ui/numbered_list_item.dart';
+import 'package:umami/models/ui/progress_indicator_card.dart';
 
 class StatsPage extends StatefulWidget {
   final Website website;
@@ -121,7 +123,7 @@ class _StatsPageState extends State<StatsPage> {
                     } else if (snapshot.hasError) {
                       return Text("${snapshot.error}");
                     } else {
-                      return _makeProgressIndicatorCard(cardTitle: "Summary");
+                      return const ProgressIndicatorCard(cardTitle: "Summary");
                     }
                   },
                 ),
@@ -152,7 +154,7 @@ class _StatsPageState extends State<StatsPage> {
                                       color: Colors.transparent,
                                     ),
                                     ...snapshot.data!.pageViews.map(
-                                      (e) => _makeNumberedListItem(
+                                      (e) => NumberedListItem(
                                         item: _prettyPrintDate(e.dateTime, discardTime: true),
                                         number: e.number,
                                       ),
@@ -178,7 +180,7 @@ class _StatsPageState extends State<StatsPage> {
                                       color: Colors.transparent,
                                     ),
                                     ...snapshot.data!.sessions.map(
-                                      (e) => _makeNumberedListItem(
+                                      (e) => NumberedListItem(
                                         item: _prettyPrintDate(e.dateTime, discardTime: true),
                                         number: e.number,
                                       ),
@@ -193,7 +195,7 @@ class _StatsPageState extends State<StatsPage> {
                     } else if (snapshot.hasError) {
                       return Text("${snapshot.error}");
                     } else {
-                      return _makeProgressIndicatorCard(cardTitle: "Sessions");
+                      return const ProgressIndicatorCard(cardTitle: "Sessions");
                     }
                   },
                 ),
@@ -223,40 +225,6 @@ class _StatsPageState extends State<StatsPage> {
                   cardTitle: "Countries",
                 ),
               ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _makeNumberedListItem({required String item, required int number}) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 4),
-      child: Row(
-        children: [
-          Container(
-            decoration: BoxDecoration(
-              border: Border.all(),
-              borderRadius: BorderRadius.circular(5),
-            ),
-            child: SizedBox(
-              height: 20,
-              width: 40,
-              child: Text(
-                number.toString(),
-                style: const TextStyle(fontWeight: FontWeight.bold),
-                textAlign: TextAlign.center,
-              ),
-            ),
-          ),
-          const VerticalDivider(
-            width: 4,
-            color: Colors.transparent,
-          ),
-          Expanded(
-            child: Text(
-              item,
             ),
           ),
         ],
@@ -296,7 +264,7 @@ class _StatsPageState extends State<StatsPage> {
                           color: Colors.transparent,
                         ),
                         ...snapshot.data!.metrics.map(
-                          (e) => _makeNumberedListItem(
+                          (e) => NumberedListItem(
                             item: e.object,
                             number: e.number,
                           ),
@@ -311,7 +279,7 @@ class _StatsPageState extends State<StatsPage> {
         } else if (snapshot.hasError) {
           return Text("${snapshot.error}");
         } else {
-          return _makeProgressIndicatorCard(cardTitle: cardTitle);
+          return ProgressIndicatorCard(cardTitle: cardTitle);
         }
       },
     );
@@ -342,27 +310,6 @@ class _StatsPageState extends State<StatsPage> {
             style: const TextStyle(fontSize: 16),
           ),
         ),
-      ),
-    );
-  }
-
-  Card _makeProgressIndicatorCard({required String cardTitle}) {
-    return Card(
-      child: Column(
-        children: [
-          Text(
-            cardTitle,
-            style: Theme.of(context).textTheme.headline6,
-          ),
-          const Padding(
-            padding: EdgeInsets.all(8.0),
-            child: SizedBox(
-              height: 20,
-              width: 20,
-              child: CircularProgressIndicator(),
-            ),
-          ),
-        ],
       ),
     );
   }
