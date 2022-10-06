@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:umami/controllers/api_common.dart' as api_common;
+import 'package:umami/controllers/api_common.dart';
 import 'package:umami/controllers/metrics.dart';
 import 'package:umami/controllers/pageviews.dart';
 import 'package:umami/controllers/stats.dart';
@@ -9,18 +9,21 @@ import 'package:umami/models/api/pageviews.dart';
 import 'package:umami/models/api/stats.dart';
 import 'package:umami/models/api/website.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'package:umami/models/ui/datetime_box.dart';
+import 'package:umami/models/ui/numbered_list_item.dart';
+import 'package:umami/models/ui/progress_indicator_card.dart';
 
-class StatsPage extends StatefulWidget {
+class WebsiteStatisticsPage extends StatefulWidget {
   final Website website;
 
-  const StatsPage({super.key, required this.website});
+  const WebsiteStatisticsPage({super.key, required this.website});
 
   @override
-  State<StatsPage> createState() => _StatsPageState();
+  State<WebsiteStatisticsPage> createState() => _WebsiteStatisticsPageState();
 }
 
-class _StatsPageState extends State<StatsPage> {
-  api_common.DateTimeRange dateTimeRange = _getLast24Hours();
+class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
+  DateTimeInterval dateTimeRange = DateTimeInterval.getLast24Hours();
 
   @override
   Widget build(BuildContext context) {
@@ -39,9 +42,17 @@ class _StatsPageState extends State<StatsPage> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                _makeDateTimeBox(isEnd: false),
+                DateTimeBox(
+                  key: const Key("rangeStart"),
+                  text: dateTimeRange.getPrettyStart(),
+                  onPressed: () => _showDateTimePicker(false),
+                ),
                 const Text("  —  "),
-                _makeDateTimeBox(isEnd: true),
+                DateTimeBox(
+                  key: const Key("rangeEnd"),
+                  text: dateTimeRange.getPrettyEnd(),
+                  onPressed: () => _showDateTimePicker(true),
+                ),
               ],
             ),
           ),
@@ -121,7 +132,7 @@ class _StatsPageState extends State<StatsPage> {
                     } else if (snapshot.hasError) {
                       return Text("${snapshot.error}");
                     } else {
-                      return _makeProgressIndicatorCard(cardTitle: "Summary");
+                      return const ProgressIndicatorCard(cardTitle: "Summary");
                     }
                   },
                 ),
@@ -152,7 +163,7 @@ class _StatsPageState extends State<StatsPage> {
                                       color: Colors.transparent,
                                     ),
                                     ...snapshot.data!.pageViews.map(
-                                      (e) => _makeNumberedListItem(
+                                      (e) => NumberedListItem(
                                         item: _prettyPrintDate(e.dateTime, discardTime: true),
                                         number: e.number,
                                       ),
@@ -178,7 +189,7 @@ class _StatsPageState extends State<StatsPage> {
                                       color: Colors.transparent,
                                     ),
                                     ...snapshot.data!.sessions.map(
-                                      (e) => _makeNumberedListItem(
+                                      (e) => NumberedListItem(
                                         item: _prettyPrintDate(e.dateTime, discardTime: true),
                                         number: e.number,
                                       ),
@@ -193,7 +204,7 @@ class _StatsPageState extends State<StatsPage> {
                     } else if (snapshot.hasError) {
                       return Text("${snapshot.error}");
                     } else {
-                      return _makeProgressIndicatorCard(cardTitle: "Sessions");
+                      return const ProgressIndicatorCard(cardTitle: "Sessions");
                     }
                   },
                 ),
@@ -223,40 +234,6 @@ class _StatsPageState extends State<StatsPage> {
                   cardTitle: "Countries",
                 ),
               ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _makeNumberedListItem({required String item, required int number}) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 4),
-      child: Row(
-        children: [
-          Container(
-            decoration: BoxDecoration(
-              border: Border.all(),
-              borderRadius: BorderRadius.circular(5),
-            ),
-            child: SizedBox(
-              height: 20,
-              width: 40,
-              child: Text(
-                number.toString(),
-                style: const TextStyle(fontWeight: FontWeight.bold),
-                textAlign: TextAlign.center,
-              ),
-            ),
-          ),
-          const VerticalDivider(
-            width: 4,
-            color: Colors.transparent,
-          ),
-          Expanded(
-            child: Text(
-              item,
             ),
           ),
         ],
@@ -296,7 +273,7 @@ class _StatsPageState extends State<StatsPage> {
                           color: Colors.transparent,
                         ),
                         ...snapshot.data!.metrics.map(
-                          (e) => _makeNumberedListItem(
+                          (e) => NumberedListItem(
                             item: e.object,
                             number: e.number,
                           ),
@@ -311,59 +288,9 @@ class _StatsPageState extends State<StatsPage> {
         } else if (snapshot.hasError) {
           return Text("${snapshot.error}");
         } else {
-          return _makeProgressIndicatorCard(cardTitle: cardTitle);
+          return ProgressIndicatorCard(cardTitle: cardTitle);
         }
       },
-    );
-  }
-
-  Expanded _makeDateTimeBox({required bool isEnd}) {
-    final Key key = isEnd ? const Key("rangeEnd") : const Key("rangeStart");
-    final text = isEnd ? dateTimeRange.getPrettyEnd() : dateTimeRange.getPrettyStart();
-
-    return Expanded(
-      child: Container(
-        decoration: BoxDecoration(
-          border: Border.all(
-            color: Theme.of(context).focusColor,
-          ),
-          borderRadius: BorderRadius.circular(10),
-          color: Theme.of(context).dialogBackgroundColor,
-        ),
-        child: TextButton(
-          style: const ButtonStyle(
-            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-          ),
-          onPressed: () => _showDateTimePicker(isEnd),
-          child: Text(
-            text,
-            key: key,
-            textAlign: TextAlign.center,
-            style: const TextStyle(fontSize: 16),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Card _makeProgressIndicatorCard({required String cardTitle}) {
-    return Card(
-      child: Column(
-        children: [
-          Text(
-            cardTitle,
-            style: Theme.of(context).textTheme.headline6,
-          ),
-          const Padding(
-            padding: EdgeInsets.all(8.0),
-            child: SizedBox(
-              height: 20,
-              width: 20,
-              child: CircularProgressIndicator(),
-            ),
-          ),
-        ],
-      ),
     );
   }
 
@@ -399,15 +326,6 @@ class _StatsPageState extends State<StatsPage> {
           }
         });
       },
-    );
-  }
-
-  static api_common.DateTimeRange _getLast24Hours() {
-    return api_common.DateTimeRange(
-      DateTime.now().subtract(
-        const Duration(hours: 24),
-      ),
-      DateTime.now(),
     );
   }
 

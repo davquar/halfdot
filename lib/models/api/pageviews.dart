@@ -6,7 +6,7 @@ class PageViewsRequest {
   late GroupingUnit groupingUnit;
   final String tz = "Europe/Rome";
 
-  PageViewsRequest({required DateTimeRange period, this.groupingUnit = GroupingUnit.day}) {
+  PageViewsRequest({required DateTimeInterval period, this.groupingUnit = GroupingUnit.day}) {
     startAt = period.startAt.millisecondsSinceEpoch;
     endAt = period.endAt.millisecondsSinceEpoch;
   }

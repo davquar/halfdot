@@ -5,7 +5,7 @@ class MetricsRequest {
   late int endAt;
   final MetricType type;
 
-  MetricsRequest(DateTimeRange period, this.type) {
+  MetricsRequest(DateTimeInterval period, this.type) {
     startAt = period.startAt.millisecondsSinceEpoch;
     endAt = period.endAt.millisecondsSinceEpoch;
   }
