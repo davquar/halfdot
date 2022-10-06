@@ -1,0 +1,50 @@
+{
+    "websites": "Websites",
+    "@websites": {
+      "description": "Websites screen title"
+    },
+    "summary": "Summary",
+    "@summary": {
+      "description": "Summary card title"
+    },
+    "pageViews": "Page views",
+    "@pageViews": {
+      "description": "Page views card title and label"
+    },
+    "uniques": "Uniques",
+    "@uniques": {
+      "description": "Uniques"
+    },
+    "bounces": "Bounces",
+    "@bounces": {
+      "description": "Bounces"
+    },
+    "totalTime": "Total time",
+    "@totalTime": {
+      "description": "Total time"
+    },
+    "sessions": "Sessions",
+    "@sessions": {
+      "description": "Sessions card title"
+    },
+    "urls": "URLs",
+    "@urls": {
+      "description": "URLs card title"
+    },
+    "referrers": "Referrers",
+    "@referrers": {
+      "description": "Referrers card title"
+    },
+    "os": "OS",
+    "@os": {
+      "description": "OS card title"
+    },
+    "devices": "Devices",
+    "@devices": {
+      "description": "Devices card title"
+    },
+    "countries": "Countries",
+    "@countries": {
+      "description": "Countries card title"
+    }
+}
