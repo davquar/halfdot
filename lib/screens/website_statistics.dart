@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:umami/controllers/api_common.dart';
 import 'package:umami/controllers/metrics.dart';
 import 'package:umami/controllers/pageviews.dart';
@@ -80,7 +81,7 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                "Summary",
+                                AppLocalizations.of(context)!.summary,
                                 style: Theme.of(context).textTheme.headline6,
                               ),
                               const Divider(
@@ -95,7 +96,7 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
                                         snapshot.data!.pageViews.toString(),
                                         style: Theme.of(context).textTheme.titleLarge,
                                       ),
-                                      const Text("Page views"),
+                                      Text(AppLocalizations.of(context)!.pageViews),
                                     ],
                                   ),
                                   Column(children: [
@@ -103,7 +104,7 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
                                       snapshot.data!.uniques.toString(),
                                       style: Theme.of(context).textTheme.titleLarge,
                                     ),
-                                    const Text("Uniques"),
+                                    Text(AppLocalizations.of(context)!.uniques),
                                   ]),
                                   Column(
                                     children: [
@@ -111,7 +112,7 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
                                         snapshot.data!.bounces.toString(),
                                         style: Theme.of(context).textTheme.titleLarge,
                                       ),
-                                      const Text("Bounces"),
+                                      Text(AppLocalizations.of(context)!.bounces),
                                     ],
                                   ),
                                   Column(
@@ -120,7 +121,7 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
                                         snapshot.data!.totalTime.toString(),
                                         style: Theme.of(context).textTheme.titleLarge,
                                       ),
-                                      const Text("Total time"),
+                                      Text(AppLocalizations.of(context)!.totalTime),
                                     ],
                                   ),
                                 ],
@@ -132,7 +133,7 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
                     } else if (snapshot.hasError) {
                       return Text("${snapshot.error}");
                     } else {
-                      return const ProgressIndicatorCard(cardTitle: "Summary");
+                      return ProgressIndicatorCard(cardTitle: AppLocalizations.of(context)!.summary);
                     }
                   },
                 ),
@@ -156,7 +157,7 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
                                   crossAxisAlignment: CrossAxisAlignment.stretch,
                                   children: [
                                     Text(
-                                      "Page views",
+                                      AppLocalizations.of(context)!.pageViews,
                                       style: Theme.of(context).textTheme.headline6,
                                     ),
                                     const Divider(
@@ -182,7 +183,7 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      "Sessions",
+                                      AppLocalizations.of(context)!.sessions,
                                       style: Theme.of(context).textTheme.headline6,
                                     ),
                                     const Divider(
@@ -204,34 +205,34 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
                     } else if (snapshot.hasError) {
                       return Text("${snapshot.error}");
                     } else {
-                      return const ProgressIndicatorCard(cardTitle: "Sessions");
+                      return ProgressIndicatorCard(cardTitle: AppLocalizations.of(context)!.sessions);
                     }
                   },
                 ),
                 _makeMetricsFutureBuilder(
                   type: MetricType.url,
                   cardKey: "metricsURLs",
-                  cardTitle: "URLs",
+                  cardTitle: AppLocalizations.of(context)!.urls,
                 ),
                 _makeMetricsFutureBuilder(
                   type: MetricType.referrer,
                   cardKey: "metricsReferrers",
-                  cardTitle: "Referrers",
+                  cardTitle: AppLocalizations.of(context)!.referrers,
                 ),
                 _makeMetricsFutureBuilder(
                   type: MetricType.os,
                   cardKey: "metricsOS",
-                  cardTitle: "OS",
+                  cardTitle: AppLocalizations.of(context)!.os,
                 ),
                 _makeMetricsFutureBuilder(
                   type: MetricType.device,
                   cardKey: "metricsDevices",
-                  cardTitle: "Devices",
+                  cardTitle: AppLocalizations.of(context)!.devices,
                 ),
                 _makeMetricsFutureBuilder(
                   type: MetricType.country,
                   cardKey: "metricsCountries",
-                  cardTitle: "Countries",
+                  cardTitle: AppLocalizations.of(context)!.countries,
                 ),
               ],
             ),

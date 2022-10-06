@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:umami/controllers/storage.dart';
 import 'package:umami/controllers/websites.dart';
 import 'package:umami/models/api/website.dart';
@@ -16,7 +17,7 @@ class _WebsitesPageState extends State<WebsitesPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Websites"),
+        title: Text(AppLocalizations.of(context)!.websites),
       ),
       body: FutureBuilder<WebsitesResponse>(
         future: WebsitesController(
