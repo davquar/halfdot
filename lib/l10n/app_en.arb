@@ -46,5 +46,37 @@
     "countries": "Countries",
     "@countries": {
       "description": "Countries card title"
+    },
+    "loginScreenTitle": "Login",
+    "@loginScreenTitle": {
+      "description": "Login screen title"
+    },
+    "loginUrlLabel": "URL (without https://)",
+    "@loginUrlLabel": {
+      "description": "Label text for the URL field"
+    },
+    "loginUrlHint": "Enter the URL (without scheme) of your Umami instance",
+    "@loginUrlHint": {
+      "description": "Hint text for the URL field"
+    },
+    "usernameLabel": "Username",
+    "@usernameLabel": {
+      "description": "Username field label"
+    },
+    "usernameHint": "Enter the username of your Umami profile",
+    "@usernameHint": {
+      "description": "Username field hint"
+    },
+    "passwordLabel": "Password",
+    "@passwordLabel": {
+      "description": "Password field label"
+    },
+    "passwordHint": "Enter the password of your Umami profile",
+    "@passwordHint": {
+      "description": "Password field hint"
+    },
+    "loginButton": "Login",
+    "@loginButton": {
+      "description": "Login button text"
     }
 }

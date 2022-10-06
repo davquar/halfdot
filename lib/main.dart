@@ -63,7 +63,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Login")),
+      appBar: AppBar(title: Text(AppLocalizations.of(context)!.loginScreenTitle)),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20.0),
         child: Column(
@@ -72,18 +72,18 @@ class _LoginPageState extends State<LoginPage> {
               key: const Key("url"),
               controller: urlController,
               autocorrect: false,
-              decoration: const InputDecoration(
-                labelText: "URL (without https://)",
-                hintText: "Enter the URL (without scheme) of your Umami instance.",
+              decoration: InputDecoration(
+                labelText: AppLocalizations.of(context)!.loginUrlLabel,
+                hintText: AppLocalizations.of(context)!.loginUrlHint,
               ),
             ),
             TextField(
               key: const Key("username"),
               controller: usernameController,
               autocorrect: false,
-              decoration: const InputDecoration(
-                labelText: "Username",
-                hintText: "Enter the username of your Umami profile.",
+              decoration: InputDecoration(
+                labelText: AppLocalizations.of(context)!.usernameLabel,
+                hintText: AppLocalizations.of(context)!.usernameHint,
               ),
             ),
             TextField(
@@ -92,14 +92,14 @@ class _LoginPageState extends State<LoginPage> {
               obscureText: true,
               autocorrect: false,
               enableSuggestions: false,
-              decoration: const InputDecoration(
-                labelText: "Password",
-                hintText: "Enter the password of your Umami profile.",
+              decoration: InputDecoration(
+                labelText: AppLocalizations.of(context)!.passwordLabel,
+                hintText: AppLocalizations.of(context)!.passwordHint,
               ),
             ),
             ElevatedButton(
               onPressed: () => _doLogin(),
-              child: const Text("Login"),
+              child: Text(AppLocalizations.of(context)!.loginButton),
             ),
           ],
         ),
