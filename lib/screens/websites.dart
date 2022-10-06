@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:umami/controllers/storage.dart';
 import 'package:umami/controllers/websites.dart';
 import 'package:umami/models/api/website.dart';
-import 'package:umami/screens/stats.dart';
+import 'package:umami/screens/website_statistics.dart';
 
 class WebsitesPage extends StatefulWidget {
   const WebsitesPage({super.key});
@@ -52,7 +52,7 @@ class _WebsitesPageState extends State<WebsitesPage> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (_) => StatsPage(
+        builder: (_) => WebsiteStatisticsPage(
           website: website,
         ),
       ),

@@ -13,16 +13,16 @@ import 'package:umami/models/ui/datetime_box.dart';
 import 'package:umami/models/ui/numbered_list_item.dart';
 import 'package:umami/models/ui/progress_indicator_card.dart';
 
-class StatsPage extends StatefulWidget {
+class WebsiteStatisticsPage extends StatefulWidget {
   final Website website;
 
-  const StatsPage({super.key, required this.website});
+  const WebsiteStatisticsPage({super.key, required this.website});
 
   @override
-  State<StatsPage> createState() => _StatsPageState();
+  State<WebsiteStatisticsPage> createState() => _WebsiteStatisticsPageState();
 }
 
-class _StatsPageState extends State<StatsPage> {
+class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
   DateTimeInterval dateTimeRange = DateTimeInterval.getLast24Hours();
 
   @override
