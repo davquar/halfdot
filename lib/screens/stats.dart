@@ -9,6 +9,7 @@ import 'package:umami/models/api/pageviews.dart';
 import 'package:umami/models/api/stats.dart';
 import 'package:umami/models/api/website.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'package:umami/models/ui/datetime_box.dart';
 import 'package:umami/models/ui/numbered_list_item.dart';
 import 'package:umami/models/ui/progress_indicator_card.dart';
 
@@ -22,7 +23,7 @@ class StatsPage extends StatefulWidget {
 }
 
 class _StatsPageState extends State<StatsPage> {
-  api_common.DateTimeRange dateTimeRange = _getLast24Hours();
+  api_common.DateTimeRange dateTimeRange = api_common.DateTimeRange.getLast24Hours();
 
   @override
   Widget build(BuildContext context) {
@@ -41,9 +42,17 @@ class _StatsPageState extends State<StatsPage> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                _makeDateTimeBox(isEnd: false),
+                DateTimeBox(
+                  key: const Key("rangeStart"),
+                  text: dateTimeRange.getPrettyStart(),
+                  onPressed: () => _showDateTimePicker(false),
+                ),
                 const Text("  —  "),
-                _makeDateTimeBox(isEnd: true),
+                DateTimeBox(
+                  key: const Key("rangeEnd"),
+                  text: dateTimeRange.getPrettyEnd(),
+                  onPressed: () => _showDateTimePicker(true),
+                ),
               ],
             ),
           ),
@@ -285,35 +294,6 @@ class _StatsPageState extends State<StatsPage> {
     );
   }
 
-  Expanded _makeDateTimeBox({required bool isEnd}) {
-    final Key key = isEnd ? const Key("rangeEnd") : const Key("rangeStart");
-    final text = isEnd ? dateTimeRange.getPrettyEnd() : dateTimeRange.getPrettyStart();
-
-    return Expanded(
-      child: Container(
-        decoration: BoxDecoration(
-          border: Border.all(
-            color: Theme.of(context).focusColor,
-          ),
-          borderRadius: BorderRadius.circular(10),
-          color: Theme.of(context).dialogBackgroundColor,
-        ),
-        child: TextButton(
-          style: const ButtonStyle(
-            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-          ),
-          onPressed: () => _showDateTimePicker(isEnd),
-          child: Text(
-            text,
-            key: key,
-            textAlign: TextAlign.center,
-            style: const TextStyle(fontSize: 16),
-          ),
-        ),
-      ),
-    );
-  }
-
   void _showDateTimePicker(bool isEnd) {
     late DateTime currentTime;
     if (isEnd) {
@@ -346,15 +326,6 @@ class _StatsPageState extends State<StatsPage> {
           }
         });
       },
-    );
-  }
-
-  static api_common.DateTimeRange _getLast24Hours() {
-    return api_common.DateTimeRange(
-      DateTime.now().subtract(
-        const Duration(hours: 24),
-      ),
-      DateTime.now(),
     );
   }
 

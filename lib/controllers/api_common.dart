@@ -40,6 +40,15 @@ class DateTimeRange {
       "end_at": endAt.millisecondsSinceEpoch.toString(),
     };
   }
+
+  static DateTimeRange getLast24Hours() {
+    return DateTimeRange(
+      DateTime.now().subtract(
+        const Duration(hours: 24),
+      ),
+      DateTime.now(),
+    );
+  }
 }
 
 class TimestampedEntry {
