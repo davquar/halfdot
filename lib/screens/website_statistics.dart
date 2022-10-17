@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:umami/controllers/api_common.dart';
+import 'package:umami/controllers/country_codes.dart';
 import 'package:umami/controllers/metrics.dart';
 import 'package:umami/controllers/pageviews.dart';
 import 'package:umami/controllers/stats.dart';
@@ -26,9 +27,13 @@ class WebsiteStatisticsPage extends StatefulWidget {
 
 class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
   DateTimeInterval dateTimeRange = DateTimeInterval.getLast24Hours();
+  late CountryCodes _countryCodes;
 
   @override
   Widget build(BuildContext context) {
+    _countryCodes = CountryCodes(context);
+    _countryCodes.load();
+
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.website.name),
@@ -286,8 +291,8 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
                         ),
                         ...snapshot.data!.metrics.map(
                           (e) => NumberedListItem(
-                            item: e.object,
                             number: e.number,
+                            item: type == MetricType.country ? _countryCodes.getCountry(e.object) : e.object,
                           ),
                         ),
                       ],
