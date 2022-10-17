@@ -33,7 +33,7 @@ class PageViewsController implements APIRequest {
     );
 
     if (!isResponseOK(response)) {
-      throw Exception("Failed to get page views: ${response.statusCode}");
+      throw getHTTPException(response.statusCode, "failed to get page views");
     }
 
     return PageViewsResponse.fromJSON(

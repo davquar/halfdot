@@ -78,5 +78,10 @@
     "loginButton": "Login",
     "@loginButton": {
       "description": "Login button text"
-    }
+    },
+    "errNotFound": "Nothing found",
+    "errForbidden": "You don't have permission to access this data.",
+    "errUnauthorized": "The server doesn't want to authorize your request.",
+    "errBadRequest": "Your request is malformed.",
+    "errInternalServerError": "The server encountered an internal error. Try again later."
 }

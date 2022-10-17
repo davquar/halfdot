@@ -27,7 +27,7 @@ class LoginController implements APIRequest {
       );
 
       if (!isResponseOK(response)) {
-        throw Exception("Failed to authenticate: ${response.statusCode}");
+        throw getHTTPException(response.statusCode, "failed to authenticate");
       }
 
       return LoginResponse.fromJSON(

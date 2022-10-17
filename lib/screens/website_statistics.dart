@@ -11,6 +11,7 @@ import 'package:umami/models/api/stats.dart';
 import 'package:umami/models/api/website.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:umami/models/ui/datetime_box.dart';
+import 'package:umami/models/ui/error_card.dart';
 import 'package:umami/models/ui/numbered_list_item.dart';
 import 'package:umami/models/ui/progress_indicator_card.dart';
 
@@ -131,7 +132,12 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
                         ),
                       );
                     } else if (snapshot.hasError) {
-                      return Text("${snapshot.error}");
+                      return ErrorCard(
+                        cardTitle: AppLocalizations.of(context)!.summary,
+                        msg: (snapshot.error! as APIException).getFriendlyErrorString(
+                          AppLocalizations.of(context)!,
+                        ),
+                      );
                     } else {
                       return ProgressIndicatorCard(cardTitle: AppLocalizations.of(context)!.summary);
                     }
@@ -203,7 +209,12 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
                         ],
                       );
                     } else if (snapshot.hasError) {
-                      return Text("${snapshot.error}");
+                      return ErrorCard(
+                        cardTitle: AppLocalizations.of(context)!.sessions,
+                        msg: (snapshot.error! as APIException).getFriendlyErrorString(
+                          AppLocalizations.of(context)!,
+                        ),
+                      );
                     } else {
                       return ProgressIndicatorCard(cardTitle: AppLocalizations.of(context)!.sessions);
                     }
@@ -287,7 +298,12 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
             ],
           );
         } else if (snapshot.hasError) {
-          return Text("${snapshot.error}");
+          return ErrorCard(
+            cardTitle: cardTitle,
+            msg: (snapshot.error! as APIException).getFriendlyErrorString(
+              AppLocalizations.of(context)!,
+            ),
+          );
         } else {
           return ProgressIndicatorCard(cardTitle: cardTitle);
         }
