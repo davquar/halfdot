@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:umami/controllers/api_common.dart';
 import 'package:umami/screens/websites.dart';
 import 'controllers/storage.dart';
 import 'controllers/login.dart';
@@ -138,10 +139,12 @@ class _LoginPageState extends State<LoginPage> {
             );
       },
     ).onError(
-      (error, stackTrace) {
+      (error, _) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(error.toString()),
+            content: Text((error as APIException).getFriendlyErrorString(
+              AppLocalizations.of(context)!,
+            )),
           ),
         );
       },

@@ -33,7 +33,7 @@ class MetricsController implements APIRequest {
     );
 
     if (!isResponseOK(response)) {
-      throw Exception("Failed to get metrics: ${response.statusCode}");
+      throw getHTTPException(response.statusCode, "failed to get metrics");
     }
 
     return MetricsResponse.fromJSON(

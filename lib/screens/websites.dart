@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:umami/controllers/api_common.dart';
 import 'package:umami/controllers/storage.dart';
 import 'package:umami/controllers/websites.dart';
 import 'package:umami/models/api/website.dart';
@@ -38,7 +39,13 @@ class _WebsitesPageState extends State<WebsitesPage> {
               ],
             );
           } else if (snapshot.hasError) {
-            return Text("${snapshot.error}");
+            return Center(
+              child: Text(
+                (snapshot.error! as APIException).getFriendlyErrorString(
+                  AppLocalizations.of(context)!,
+                ),
+              ),
+            );
           } else {
             return const Center(
               child: CircularProgressIndicator(),
