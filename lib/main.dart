@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         useMaterial3: true,
       ),
-      home: const LoginPage(title: 'Umami'),
+      home: const LoginPage(),
       localizationsDelegates: const [
         AppLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
@@ -38,9 +38,7 @@ class MyApp extends StatelessWidget {
 }
 
 class LoginPage extends StatefulWidget {
-  final String title;
-
-  const LoginPage({super.key, required this.title});
+  const LoginPage({super.key});
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -133,6 +131,7 @@ class _LoginPageState extends State<LoginPage> {
             .writeUmamiCredentials(
               loginController.domain,
               value.token,
+              loginRequest.username,
             )
             .then(
               (_) => _goToWebsites(),
