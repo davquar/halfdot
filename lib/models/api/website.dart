@@ -22,11 +22,11 @@ class Website {
   Website(this.id, this.uuid, this.userId, this.name, this.domain, this.createdAt, this.shareId);
 
   Website.fromJSON(Map<String, dynamic> json)
-      : id = json["website_id"],
-        uuid = json["website_uuid"],
-        userId = json["user_id"],
+      : id = json["id"],
+        uuid = json["websiteUuid"],
+        userId = json["userId"],
         name = json["name"],
         domain = json["domain"],
-        createdAt = DateTime.parse(json["created_at"]),
-        shareId = json["share_id"];
+        createdAt = DateTime.parse(json["createdAt"]),
+        shareId = json["shareId"];
 }

@@ -7,12 +7,12 @@ import 'package:umami/models/api/metrics.dart';
 class MetricsController implements APIRequest {
   final String domain;
   final String accessToken;
-  final int id;
+  final String uuid;
   late Uri url;
 
   late MetricsRequest metricsRequest;
 
-  MetricsController(this.domain, this.accessToken, this.id, this.metricsRequest) {
+  MetricsController(this.domain, this.accessToken, this.uuid, this.metricsRequest) {
     url = getRequestURL();
   }
 
@@ -20,7 +20,7 @@ class MetricsController implements APIRequest {
   Uri getRequestURL() {
     return Uri.https(
       domain,
-      "api/website/$id/metrics",
+      "api/websites/$uuid/metrics",
       metricsRequest.toMap(),
     );
   }

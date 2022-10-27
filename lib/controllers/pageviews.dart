@@ -7,12 +7,12 @@ import 'package:umami/models/api/pageviews.dart';
 class PageViewsController implements APIRequest {
   final String domain;
   final String accessToken;
-  final int id;
+  final String uuid;
   late Uri url;
 
   late PageViewsRequest pageViewsRequest;
 
-  PageViewsController(this.domain, this.accessToken, this.id, this.pageViewsRequest) {
+  PageViewsController(this.domain, this.accessToken, this.uuid, this.pageViewsRequest) {
     url = getRequestURL();
   }
 
@@ -20,7 +20,7 @@ class PageViewsController implements APIRequest {
   Uri getRequestURL() {
     return Uri.https(
       domain,
-      "api/website/$id/pageviews",
+      "api/websites/$uuid/pageviews",
       pageViewsRequest.toMap(),
     );
   }

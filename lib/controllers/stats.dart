@@ -7,12 +7,12 @@ import 'package:umami/models/api/stats.dart';
 class StatsController implements APIRequest {
   final String domain;
   final String accessToken;
-  final int id;
+  final String uuid;
   late Uri url;
 
   final DateTimeInterval period;
 
-  StatsController(this.domain, this.accessToken, this.id, this.period) {
+  StatsController(this.domain, this.accessToken, this.uuid, this.period) {
     url = getRequestURL();
   }
 
@@ -20,7 +20,7 @@ class StatsController implements APIRequest {
   Uri getRequestURL() {
     return Uri.https(
       domain,
-      "api/website/$id/stats",
+      "api/websites/$uuid/stats",
       period.toMap(),
     );
   }
