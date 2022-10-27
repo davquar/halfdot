@@ -4,6 +4,7 @@ import 'package:umami/controllers/api_common.dart';
 import 'package:umami/controllers/storage.dart';
 import 'package:umami/controllers/websites.dart';
 import 'package:umami/models/api/website.dart';
+import 'package:umami/screens/settings.dart';
 import 'package:umami/screens/website_statistics.dart';
 
 class WebsitesPage extends StatefulWidget {
@@ -19,6 +20,12 @@ class _WebsitesPageState extends State<WebsitesPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.websites),
+        actions: <Widget>[
+          IconButton(
+            onPressed: _goToSettings,
+            icon: const Icon(Icons.settings),
+          )
+        ],
       ),
       body: FutureBuilder<WebsitesResponse>(
         future: WebsitesController(
@@ -63,6 +70,15 @@ class _WebsitesPageState extends State<WebsitesPage> {
         builder: (_) => WebsiteStatisticsPage(
           website: website,
         ),
+      ),
+    );
+  }
+
+  _goToSettings() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => const SettingsPage(),
       ),
     );
   }

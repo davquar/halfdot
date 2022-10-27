@@ -74,7 +74,7 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
                   future: StatsController(
                     Storage.instance.domain!,
                     Storage.instance.accessToken!,
-                    widget.website.id,
+                    widget.website.uuid,
                     dateTimeRange,
                   ).doRequest(),
                   builder: (context, snapshot) {
@@ -152,7 +152,7 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
                   future: PageViewsController(
                     Storage.instance.domain!,
                     Storage.instance.accessToken!,
-                    widget.website.id,
+                    widget.website.uuid,
                     _makePageViewsRequest(),
                   ).doRequest(),
                   builder: (context, snapshot) {
@@ -267,7 +267,7 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
       future: MetricsController(
         Storage.instance.domain!,
         Storage.instance.accessToken!,
-        widget.website.id,
+        widget.website.uuid,
         _makeMetricsRequest(type),
       ).doRequest(),
       builder: (context, snapshot) {
