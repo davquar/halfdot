@@ -81,7 +81,7 @@
     },
     "errNotFound": "Nothing found",
     "errForbidden": "You don't have permission to access this data.",
-    "errUnauthorized": "Authentication error: your credentials may be wrong.",
-    "errBadRequest": "Your request is malformed.",
-    "errInternalServerError": "The server encountered an internal error. Try again later."
+    "errUnauthorized": "It looks like your credentials are wrong or have been changed.",
+    "errBadRequest": "The request is not well formed and the server cannot accept it. Maybe the Umami server version is not supported by the app.",
+    "errInternalServerError": "There was an internal problem on the server. Try again later or logout and log back in."
 }
