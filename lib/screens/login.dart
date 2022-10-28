@@ -67,9 +67,15 @@ class _LoginPageState extends State<LoginPage> {
                 enabled: !isLoading,
                 keyboardType: TextInputType.url,
                 autofillHints: const [AutofillHints.url],
+                onTap: () {
+                  if (urlController.text.isEmpty) {
+                    urlController.text = "https://";
+                  }
+                },
                 decoration: InputDecoration(
                   labelText: AppLocalizations.of(context)!.loginUrlLabel,
                   hintText: AppLocalizations.of(context)!.loginUrlHint,
+                  errorText: !_isURLAccepted() ? AppLocalizations.of(context)!.loginUrlErrorLabel : null,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),
@@ -125,9 +131,27 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
+  bool _isURLAccepted() {
+    var url = urlController.text;
+
+    if (!url.startsWith("https") && !url.contains(":/")) {
+      url = "https://$url";
+    }
+    if (!url.endsWith("/")) {
+      url += "/";
+    }
+
+    var parsed = Uri.tryParse(url);
+    if (parsed == null) {
+      return false;
+    }
+
+    return parsed.isScheme("HTTPS") && parsed.hasAbsolutePath;
+  }
+
   _validateForm() {
     setState(() {
-      isFormFilled = urlController.text.isNotEmpty && usernameController.text.isNotEmpty && passwordController.text.isNotEmpty;
+      isFormFilled = _isURLAccepted() && usernameController.text.isNotEmpty && passwordController.text.isNotEmpty;
     });
   }
 
@@ -151,7 +175,7 @@ class _LoginPageState extends State<LoginPage> {
     );
 
     var loginController = LoginController(
-      urlController.text,
+      urlController.text.replaceFirst("https://", ""),
       loginRequest,
     );
 

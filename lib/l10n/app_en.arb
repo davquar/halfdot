@@ -90,5 +90,6 @@
     "loginSubtitle": "Unofficial client",
     "errGenericHttp": "There was a problem connecting to the URL: check that the address is correct, that it is alive and that listens on the HTTPS protocol. Check also that the TLS certificate is valid and trusted.",
     "umamiError": "Umami error",
-    "connectionError": "Connection error"
+    "connectionError": "Connection error",
+    "loginUrlErrorLabel": "The URL must be full and start with https://"
 }
