@@ -31,11 +31,19 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(AppLocalizations.of(context)!.loginScreenTitle)),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20.0),
         child: Column(
           children: <Widget>[
+            const SizedBox(height: 50),
+            SizedBox(
+              height: 100,
+              child: Image.asset("assets/app_icon.png"),
+            ),
+            const SizedBox(height: 10),
+            Text("Umami", style: Theme.of(context).textTheme.headline6),
+            Text(AppLocalizations.of(context)!.loginSubtitle),
+            const SizedBox(height: 20),
             TextField(
               key: const Key("url"),
               controller: urlController,
@@ -43,8 +51,12 @@ class _LoginPageState extends State<LoginPage> {
               decoration: InputDecoration(
                 labelText: AppLocalizations.of(context)!.loginUrlLabel,
                 hintText: AppLocalizations.of(context)!.loginUrlHint,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
               ),
             ),
+            const SizedBox(height: 20),
             TextField(
               key: const Key("username"),
               controller: usernameController,
@@ -52,8 +64,12 @@ class _LoginPageState extends State<LoginPage> {
               decoration: InputDecoration(
                 labelText: AppLocalizations.of(context)!.usernameLabel,
                 hintText: AppLocalizations.of(context)!.usernameHint,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
               ),
             ),
+            const SizedBox(height: 20),
             TextField(
               key: const Key("password"),
               controller: passwordController,
@@ -63,11 +79,19 @@ class _LoginPageState extends State<LoginPage> {
               decoration: InputDecoration(
                 labelText: AppLocalizations.of(context)!.passwordLabel,
                 hintText: AppLocalizations.of(context)!.passwordHint,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
               ),
             ),
-            ElevatedButton(
+            const SizedBox(height: 20),
+            ElevatedButton.icon(
               onPressed: () => _doLogin(),
-              child: Text(AppLocalizations.of(context)!.loginButton),
+              icon: const Icon(Icons.login),
+              label: Text(AppLocalizations.of(context)!.loginButton),
+              style: ElevatedButton.styleFrom(
+                minimumSize: const Size.fromHeight(50),
+              ),
             ),
           ],
         ),

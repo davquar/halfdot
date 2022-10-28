@@ -51,11 +51,11 @@
     "@loginScreenTitle": {
       "description": "Login screen title"
     },
-    "loginUrlLabel": "URL (without https://)",
+    "loginUrlLabel": "Umami instance URL",
     "@loginUrlLabel": {
       "description": "Label text for the URL field"
     },
-    "loginUrlHint": "Enter the URL (without scheme) of your Umami instance",
+    "loginUrlHint": "https://myumami.mysite.tld",
     "@loginUrlHint": {
       "description": "Hint text for the URL field"
     },
@@ -75,7 +75,7 @@
     "@passwordHint": {
       "description": "Password field hint"
     },
-    "loginButton": "Login",
+    "loginButton": "Sign in",
     "@loginButton": {
       "description": "Login button text"
     },
@@ -85,5 +85,6 @@
     "errBadRequest": "The request is not well formed and the server cannot accept it. Maybe the Umami server version is not supported by the app.",
     "errInternalServerError": "There was an internal problem on the server. Try again later or logout and log back in.",
     "settingsTitle": "Settings",
-    "userProfile": "User profile"
+    "userProfile": "User profile",
+    "loginSubtitle": "Unofficial client"
 }
