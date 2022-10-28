@@ -18,6 +18,8 @@ class _LoginPageState extends State<LoginPage> {
   var usernameController = TextEditingController();
   var passwordController = TextEditingController();
 
+  var isFormFilled = false;
+
   @override
   void initState() {
     super.initState();
@@ -26,6 +28,10 @@ class _LoginPageState extends State<LoginPage> {
         _goToWebsites();
       }
     });
+
+    urlController.addListener(_validateForm);
+    usernameController.addListener(_validateForm);
+    passwordController.addListener(_validateForm);
   }
 
   @override
@@ -86,7 +92,7 @@ class _LoginPageState extends State<LoginPage> {
             ),
             const SizedBox(height: 20),
             ElevatedButton.icon(
-              onPressed: () => _doLogin(),
+              onPressed: isFormFilled ? () => _doLogin() : null,
               icon: const Icon(Icons.login),
               label: Text(AppLocalizations.of(context)!.loginButton),
               style: ElevatedButton.styleFrom(
@@ -97,6 +103,12 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
     );
+  }
+
+  _validateForm() {
+    setState(() {
+      isFormFilled = urlController.text.isNotEmpty && usernameController.text.isNotEmpty && passwordController.text.isNotEmpty;
+    });
   }
 
   _goToWebsites() {
@@ -132,11 +144,32 @@ class _LoginPageState extends State<LoginPage> {
       },
     ).onError(
       (error, _) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text((error as APIException).getFriendlyErrorString(
-              AppLocalizations.of(context)!,
-            )),
+        var loc = AppLocalizations.of(context)!;
+        late String title;
+        late String content;
+
+        if (error is NotFoundException) {
+          title = loc.connectionError;
+          content = loc.errNotFoundWhileLogin;
+        } else if (error is APIException) {
+          title = loc.umamiError;
+          content = error.getFriendlyErrorString(loc);
+        } else {
+          title = loc.connectionError;
+          content = "${loc.errGenericHttp} [${error.toString()}]";
+        }
+
+        showDialog(
+          context: context,
+          builder: (BuildContext context) => AlertDialog(
+            title: Text(title),
+            content: Text(content),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context, "OK"),
+                child: const Text("OK"),
+              ),
+            ],
           ),
         );
       },
