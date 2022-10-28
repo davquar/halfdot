@@ -40,78 +40,86 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20.0),
-        child: Column(
-          children: <Widget>[
-            const SizedBox(height: 50),
-            SizedBox(
-              height: 100,
-              width: 100,
-              child: isLoading
-                  ? const CircularProgressIndicator(
-                      backgroundColor: Colors.grey,
-                      strokeWidth: 10,
-                    )
-                  : Image.asset(
-                      "assets/app_icon.png",
-                    ),
-            ),
-            const SizedBox(height: 10),
-            Text("Umami", style: Theme.of(context).textTheme.headline6),
-            Text(AppLocalizations.of(context)!.loginSubtitle),
-            const SizedBox(height: 20),
-            TextField(
-              key: const Key("url"),
-              controller: urlController,
-              autocorrect: false,
-              enabled: !isLoading,
-              decoration: InputDecoration(
-                labelText: AppLocalizations.of(context)!.loginUrlLabel,
-                hintText: AppLocalizations.of(context)!.loginUrlHint,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
+        child: AutofillGroup(
+          child: Column(
+            children: <Widget>[
+              const SizedBox(height: 50),
+              SizedBox(
+                height: 100,
+                width: 100,
+                child: isLoading
+                    ? const CircularProgressIndicator(
+                        backgroundColor: Colors.grey,
+                        strokeWidth: 10,
+                      )
+                    : Image.asset(
+                        "assets/app_icon.png",
+                      ),
+              ),
+              const SizedBox(height: 10),
+              Text("Umami", style: Theme.of(context).textTheme.headline6),
+              Text(AppLocalizations.of(context)!.loginSubtitle),
+              const SizedBox(height: 20),
+              TextField(
+                key: const Key("url"),
+                controller: urlController,
+                autocorrect: false,
+                enabled: !isLoading,
+                keyboardType: TextInputType.url,
+                autofillHints: const [AutofillHints.url],
+                decoration: InputDecoration(
+                  labelText: AppLocalizations.of(context)!.loginUrlLabel,
+                  hintText: AppLocalizations.of(context)!.loginUrlHint,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
                 ),
               ),
-            ),
-            const SizedBox(height: 20),
-            TextField(
-              key: const Key("username"),
-              controller: usernameController,
-              autocorrect: false,
-              enabled: !isLoading,
-              decoration: InputDecoration(
-                labelText: AppLocalizations.of(context)!.usernameLabel,
-                hintText: AppLocalizations.of(context)!.usernameHint,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
+              const SizedBox(height: 20),
+              TextField(
+                key: const Key("username"),
+                controller: usernameController,
+                autocorrect: false,
+                enabled: !isLoading,
+                keyboardType: TextInputType.visiblePassword,
+                autofillHints: const [AutofillHints.username],
+                decoration: InputDecoration(
+                  labelText: AppLocalizations.of(context)!.usernameLabel,
+                  hintText: AppLocalizations.of(context)!.usernameHint,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
                 ),
               ),
-            ),
-            const SizedBox(height: 20),
-            TextField(
-              key: const Key("password"),
-              controller: passwordController,
-              obscureText: true,
-              autocorrect: false,
-              enableSuggestions: false,
-              enabled: !isLoading,
-              decoration: InputDecoration(
-                labelText: AppLocalizations.of(context)!.passwordLabel,
-                hintText: AppLocalizations.of(context)!.passwordHint,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
+              const SizedBox(height: 20),
+              TextField(
+                key: const Key("password"),
+                controller: passwordController,
+                obscureText: true,
+                autocorrect: false,
+                enableSuggestions: false,
+                enabled: !isLoading,
+                keyboardType: TextInputType.visiblePassword,
+                autofillHints: const [AutofillHints.password],
+                decoration: InputDecoration(
+                  labelText: AppLocalizations.of(context)!.passwordLabel,
+                  hintText: AppLocalizations.of(context)!.passwordHint,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
                 ),
               ),
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton.icon(
-              onPressed: (isFormFilled && !isLoading) ? () => _doLogin() : null,
-              icon: const Icon(Icons.login),
-              label: Text(AppLocalizations.of(context)!.loginButton),
-              style: ElevatedButton.styleFrom(
-                minimumSize: const Size.fromHeight(50),
+              const SizedBox(height: 20),
+              ElevatedButton.icon(
+                onPressed: (isFormFilled && !isLoading) ? () => _doLogin() : null,
+                icon: const Icon(Icons.login),
+                label: Text(AppLocalizations.of(context)!.loginButton),
+                style: ElevatedButton.styleFrom(
+                  minimumSize: const Size.fromHeight(50),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
