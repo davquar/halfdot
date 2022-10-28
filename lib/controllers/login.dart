@@ -27,7 +27,7 @@ class LoginController implements APIRequest {
       );
 
       if (!isResponseOK(response)) {
-        throw getHTTPException(response.statusCode, "failed to authenticate");
+        throw getAPIException(response.statusCode, "failed to authenticate");
       }
 
       return LoginResponse.fromJSON(
@@ -36,7 +36,7 @@ class LoginController implements APIRequest {
         ) as Map<String, dynamic>,
       );
     } catch (e) {
-      return Future.error(e.toString());
+      return Future.error(e);
     }
   }
 }
