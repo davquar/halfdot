@@ -19,6 +19,7 @@ class _LoginPageState extends State<LoginPage> {
   var passwordController = TextEditingController();
 
   var isFormFilled = false;
+  var isLoading = false;
 
   @override
   void initState() {
@@ -44,7 +45,15 @@ class _LoginPageState extends State<LoginPage> {
             const SizedBox(height: 50),
             SizedBox(
               height: 100,
-              child: Image.asset("assets/app_icon.png"),
+              width: 100,
+              child: isLoading
+                  ? const CircularProgressIndicator(
+                      backgroundColor: Colors.grey,
+                      strokeWidth: 10,
+                    )
+                  : Image.asset(
+                      "assets/app_icon.png",
+                    ),
             ),
             const SizedBox(height: 10),
             Text("Umami", style: Theme.of(context).textTheme.headline6),
@@ -54,6 +63,7 @@ class _LoginPageState extends State<LoginPage> {
               key: const Key("url"),
               controller: urlController,
               autocorrect: false,
+              enabled: !isLoading,
               decoration: InputDecoration(
                 labelText: AppLocalizations.of(context)!.loginUrlLabel,
                 hintText: AppLocalizations.of(context)!.loginUrlHint,
@@ -67,6 +77,7 @@ class _LoginPageState extends State<LoginPage> {
               key: const Key("username"),
               controller: usernameController,
               autocorrect: false,
+              enabled: !isLoading,
               decoration: InputDecoration(
                 labelText: AppLocalizations.of(context)!.usernameLabel,
                 hintText: AppLocalizations.of(context)!.usernameHint,
@@ -82,6 +93,7 @@ class _LoginPageState extends State<LoginPage> {
               obscureText: true,
               autocorrect: false,
               enableSuggestions: false,
+              enabled: !isLoading,
               decoration: InputDecoration(
                 labelText: AppLocalizations.of(context)!.passwordLabel,
                 hintText: AppLocalizations.of(context)!.passwordHint,
@@ -92,7 +104,7 @@ class _LoginPageState extends State<LoginPage> {
             ),
             const SizedBox(height: 20),
             ElevatedButton.icon(
-              onPressed: isFormFilled ? () => _doLogin() : null,
+              onPressed: (isFormFilled && !isLoading) ? () => _doLogin() : null,
               icon: const Icon(Icons.login),
               label: Text(AppLocalizations.of(context)!.loginButton),
               style: ElevatedButton.styleFrom(
@@ -121,10 +133,15 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   _doLogin() {
+    setState(() {
+      isLoading = true;
+    });
+
     var loginRequest = LoginRequest(
       usernameController.text,
       passwordController.text,
     );
+
     var loginController = LoginController(
       urlController.text,
       loginRequest,
@@ -144,6 +161,10 @@ class _LoginPageState extends State<LoginPage> {
       },
     ).onError(
       (error, _) {
+        setState(() {
+          isLoading = false;
+        });
+
         var loc = AppLocalizations.of(context)!;
         late String title;
         late String content;
