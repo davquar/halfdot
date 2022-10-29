@@ -26,7 +26,7 @@ class WebsitesController implements APIRequest {
     );
 
     if (!isResponseOK(response)) {
-      throw getHTTPException(response.statusCode, "failed to get website data");
+      throw getAPIException(response.statusCode, "failed to get website data");
     }
 
     return WebsitesResponse.fromJSON(

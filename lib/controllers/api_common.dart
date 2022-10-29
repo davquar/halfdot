@@ -80,7 +80,7 @@ bool isResponseOK(Response response) {
   return response.statusCode == 200 || response.statusCode == 201;
 }
 
-Exception getHTTPException(int statusCode, msg) {
+Exception getAPIException(int statusCode, String msg) {
   switch (statusCode) {
     case 400:
       return BadRequestException(msg);

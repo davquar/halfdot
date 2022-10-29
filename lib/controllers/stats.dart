@@ -33,7 +33,7 @@ class StatsController implements APIRequest {
     );
 
     if (!isResponseOK(response)) {
-      throw getHTTPException(response.statusCode, "failed to get statistics");
+      throw getAPIException(response.statusCode, "failed to get statistics");
     }
 
     return StatsResponse.fromJSON(
