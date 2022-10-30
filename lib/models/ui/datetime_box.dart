@@ -30,7 +30,10 @@ class DateTimeBox extends StatelessWidget {
             text,
             key: key,
             textAlign: TextAlign.center,
-            style: const TextStyle(fontSize: 16),
+            style: TextStyle(
+              fontSize: 16,
+              color: Theme.of(context).textTheme.bodyText1?.color,
+            ),
           ),
         ),
       ),

@@ -10,7 +10,6 @@ import 'package:umami/models/api/metrics.dart';
 import 'package:umami/models/api/pageviews.dart';
 import 'package:umami/models/api/stats.dart';
 import 'package:umami/models/api/website.dart';
-import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:umami/models/ui/datetime_box.dart';
 import 'package:umami/models/ui/error_card.dart';
 import 'package:umami/models/ui/numbered_list_item.dart';
@@ -50,15 +49,9 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 DateTimeBox(
-                  key: const Key("rangeStart"),
-                  text: dateTimeRange.getPrettyStart(),
-                  onPressed: () => _showDateTimePicker(false),
-                ),
-                const Text("  —  "),
-                DateTimeBox(
-                  key: const Key("rangeEnd"),
-                  text: dateTimeRange.getPrettyEnd(),
-                  onPressed: () => _showDateTimePicker(true),
+                  key: const Key("dateRange"),
+                  text: dateTimeRange.getPretty(),
+                  onPressed: () => _showDateRangePicker(),
                 ),
               ],
             ),
@@ -316,39 +309,25 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
     );
   }
 
-  void _showDateTimePicker(bool isEnd) {
-    late DateTime currentTime;
-    if (isEnd) {
-      if (dateTimeRange.endAt.isBefore(DateTime.now())) {
-        currentTime = dateTimeRange.endAt;
-      } else {
-        currentTime = DateTime.now();
+  void _showDateRangePicker() {
+    showDateRangePicker(
+      context: context,
+      firstDate: DateTime(2010, 01, 01),
+      lastDate: dateTimeRange.endAt,
+      currentDate: dateTimeRange.startAt,
+    ).then((value) {
+      if (value == null) {
+        return;
       }
-    } else {
-      if (dateTimeRange.startAt.isBefore(DateTime.now())) {
-        currentTime = dateTimeRange.startAt;
-      } else {
-        currentTime = DateTime.now();
-      }
-    }
-
-    DatePicker.showDateTimePicker(
-      context,
-      showTitleActions: true,
-      minTime: isEnd ? dateTimeRange.startAt : DateTime(2010, 01, 01),
-      maxTime: isEnd ? DateTime.now() : dateTimeRange.endAt,
-      currentTime: currentTime,
-      locale: LocaleType.en,
-      onConfirm: (date) {
-        setState(() {
-          if (isEnd) {
-            dateTimeRange.endAt = date;
-          } else {
-            dateTimeRange.startAt = date;
-          }
-        });
-      },
-    );
+      setState(() {
+        dateTimeRange.startAt = value.start;
+        dateTimeRange.endAt = value.end.add(const Duration(
+          hours: 23,
+          minutes: 59,
+          seconds: 59,
+        ));
+      });
+    });
   }
 
   PageViewsRequest _makePageViewsRequest() {

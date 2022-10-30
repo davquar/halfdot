@@ -27,12 +27,16 @@ class DateTimeInterval {
     return "start_at=${startAt.millisecondsSinceEpoch}&end_at=${endAt.millisecondsSinceEpoch}";
   }
 
+  String getPretty() {
+    return "${getPrettyStart()} — ${getPrettyEnd()}";
+  }
+
   String getPrettyStart() {
-    return "${startAt.day}/${startAt.month}/${startAt.year} ${startAt.hour}:${startAt.second}";
+    return "${startAt.year}/${startAt.month}/${startAt.day}";
   }
 
   String getPrettyEnd() {
-    return "${endAt.day}/${endAt.month}/${endAt.year} ${endAt.hour}:${endAt.second}";
+    return "${endAt.year}/${endAt.month}/${endAt.day}";
   }
 
   Map<String, String> toMap() {

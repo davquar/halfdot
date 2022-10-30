@@ -16,8 +16,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: "Umami",
       theme: ThemeData(
-        primarySwatch: Colors.blue,
         useMaterial3: true,
+        brightness: Brightness.light,
+        primarySwatch: Colors.grey,
       ),
       home: const LoginPage(),
       localizationsDelegates: const [
