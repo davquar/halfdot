@@ -28,6 +28,12 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
   DateTimeInterval dateTimeRange = DateTimeInterval.getLast24Hours();
   late CountryCodes _countryCodes;
 
+  final Key _metricsURLs = const Key("metricsURLs");
+  final Key _metricsReferrers = const Key("metricsReferrers");
+  final Key _metricsOS = const Key("metricsOS");
+  final Key _metricsDevices = const Key("metricsDevices");
+  final Key _metricsCountries = const Key("metricsCountries");
+
   @override
   Widget build(BuildContext context) {
     _countryCodes = CountryCodes(context);
@@ -225,27 +231,27 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
                 _makeCardTitle(AppLocalizations.of(context)!.urls),
                 _makeMetricsFutureBuilder(
                   type: MetricType.url,
-                  cardKey: "metricsURLs",
+                  cardKey: _metricsURLs,
                 ),
                 _makeCardTitle(AppLocalizations.of(context)!.referrers),
                 _makeMetricsFutureBuilder(
                   type: MetricType.referrer,
-                  cardKey: "metricsReferrers",
+                  cardKey: _metricsReferrers,
                 ),
                 _makeCardTitle(AppLocalizations.of(context)!.os),
                 _makeMetricsFutureBuilder(
                   type: MetricType.os,
-                  cardKey: "metricsOS",
+                  cardKey: _metricsOS,
                 ),
                 _makeCardTitle(AppLocalizations.of(context)!.devices),
                 _makeMetricsFutureBuilder(
                   type: MetricType.device,
-                  cardKey: "metricsDevices",
+                  cardKey: _metricsDevices,
                 ),
                 _makeCardTitle(AppLocalizations.of(context)!.countries),
                 _makeMetricsFutureBuilder(
                   type: MetricType.country,
-                  cardKey: "metricsCountries",
+                  cardKey: _metricsCountries,
                 ),
               ],
             ),
@@ -257,7 +263,7 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
 
   FutureBuilder<MetricsResponse> _makeMetricsFutureBuilder({
     required MetricType type,
-    required String cardKey,
+    required Key cardKey,
   }) {
     return FutureBuilder<MetricsResponse>(
       future: MetricsController(
@@ -269,7 +275,7 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           return Card(
-            key: Key(cardKey),
+            key: cardKey,
             elevation: 0,
             color: Theme.of(context).colorScheme.surfaceVariant,
             child: Padding(
@@ -282,7 +288,7 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
                       ...snapshot.data!.metrics.map(
                         (e) => ListTile(
                           title: Text(
-                            e.object,
+                            _processListTileData(e.object, cardKey),
                             style: Theme.of(context).textTheme.bodyMedium,
                           ),
                           trailing: Text(e.number.toString()),
@@ -308,6 +314,13 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
         }
       },
     );
+  }
+
+  String _processListTileData(String data, Key key) {
+    if (key == _metricsCountries) {
+      return _countryCodes.getCountry(data);
+    }
+    return data;
   }
 
   Padding _makeCardTitle(String title) {
