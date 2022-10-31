@@ -74,6 +74,8 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
                     if (snapshot.hasData) {
                       return Card(
                         key: const Key("summary"),
+                        elevation: 0,
+                        color: Theme.of(context).colorScheme.surfaceVariant,
                         child: Padding(
                           padding: const EdgeInsets.all(16.0),
                           child: Column(
@@ -131,13 +133,12 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
                       );
                     } else if (snapshot.hasError) {
                       return ErrorCard(
-                        cardTitle: AppLocalizations.of(context)!.summary,
                         msg: (snapshot.error! as APIException).getFriendlyErrorString(
                           AppLocalizations.of(context)!,
                         ),
                       );
                     } else {
-                      return ProgressIndicatorCard(cardTitle: AppLocalizations.of(context)!.summary);
+                      return const ProgressIndicatorCard();
                     }
                   },
                 ),
@@ -155,6 +156,8 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
                           Expanded(
                             child: Card(
                               key: const Key("pageViews"),
+                              elevation: 0,
+                              color: Theme.of(context).colorScheme.surfaceVariant,
                               child: Padding(
                                 padding: const EdgeInsets.all(16.0),
                                 child: Column(
@@ -181,6 +184,8 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
                           Expanded(
                             child: Card(
                               key: const Key("sessions"),
+                              elevation: 0,
+                              color: Theme.of(context).colorScheme.surfaceVariant,
                               child: Padding(
                                 padding: const EdgeInsets.all(16.0),
                                 child: Column(
@@ -208,40 +213,39 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
                       );
                     } else if (snapshot.hasError) {
                       return ErrorCard(
-                        cardTitle: AppLocalizations.of(context)!.sessions,
                         msg: (snapshot.error! as APIException).getFriendlyErrorString(
                           AppLocalizations.of(context)!,
                         ),
                       );
                     } else {
-                      return ProgressIndicatorCard(cardTitle: AppLocalizations.of(context)!.sessions);
+                      return const ProgressIndicatorCard();
                     }
                   },
                 ),
+                _makeCardTitle(AppLocalizations.of(context)!.urls),
                 _makeMetricsFutureBuilder(
                   type: MetricType.url,
                   cardKey: "metricsURLs",
-                  cardTitle: AppLocalizations.of(context)!.urls,
                 ),
+                _makeCardTitle(AppLocalizations.of(context)!.referrers),
                 _makeMetricsFutureBuilder(
                   type: MetricType.referrer,
                   cardKey: "metricsReferrers",
-                  cardTitle: AppLocalizations.of(context)!.referrers,
                 ),
+                _makeCardTitle(AppLocalizations.of(context)!.os),
                 _makeMetricsFutureBuilder(
                   type: MetricType.os,
                   cardKey: "metricsOS",
-                  cardTitle: AppLocalizations.of(context)!.os,
                 ),
+                _makeCardTitle(AppLocalizations.of(context)!.devices),
                 _makeMetricsFutureBuilder(
                   type: MetricType.device,
                   cardKey: "metricsDevices",
-                  cardTitle: AppLocalizations.of(context)!.devices,
                 ),
+                _makeCardTitle(AppLocalizations.of(context)!.countries),
                 _makeMetricsFutureBuilder(
                   type: MetricType.country,
                   cardKey: "metricsCountries",
-                  cardTitle: AppLocalizations.of(context)!.countries,
                 ),
               ],
             ),
@@ -254,7 +258,6 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
   FutureBuilder<MetricsResponse> _makeMetricsFutureBuilder({
     required MetricType type,
     required String cardKey,
-    required String cardTitle,
   }) {
     return FutureBuilder<MetricsResponse>(
       future: MetricsController(
@@ -265,47 +268,55 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
       ).doRequest(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          return Row(
-            children: [
-              Expanded(
-                child: Card(
-                  key: Key(cardKey),
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        Text(
-                          cardTitle,
-                          style: Theme.of(context).textTheme.headline6,
-                        ),
-                        const Divider(
-                          color: Colors.transparent,
-                        ),
-                        ...snapshot.data!.metrics.map(
-                          (e) => NumberedListItem(
-                            number: e.number,
-                            item: type == MetricType.country ? _countryCodes.getCountry(e.object) : e.object,
+          return Card(
+            key: Key(cardKey),
+            elevation: 0,
+            color: Theme.of(context).colorScheme.surfaceVariant,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Column(
+                children: [
+                  ...ListTile.divideTiles(
+                    context: context,
+                    tiles: [
+                      ...snapshot.data!.metrics.map(
+                        (e) => ListTile(
+                          title: Text(
+                            e.object,
+                            style: Theme.of(context).textTheme.bodyMedium,
+                          ),
+                          trailing: Text(e.number.toString()),
+                          contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 1,
                           ),
                         ),
-                      ],
-                    ),
-                  ),
-                ),
+                      ),
+                    ],
+                  ).toList(),
+                ],
               ),
-            ],
+            ),
           );
         } else if (snapshot.hasError) {
           return ErrorCard(
-            cardTitle: cardTitle,
             msg: (snapshot.error! as APIException).getFriendlyErrorString(
               AppLocalizations.of(context)!,
             ),
           );
         } else {
-          return ProgressIndicatorCard(cardTitle: cardTitle);
+          return const ProgressIndicatorCard();
         }
       },
+    );
+  }
+
+  Padding _makeCardTitle(String title) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 18, top: 8),
+      child: Text(
+        title,
+        style: Theme.of(context).textTheme.headlineSmall,
+      ),
     );
   }
 
