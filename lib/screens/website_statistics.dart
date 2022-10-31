@@ -12,7 +12,7 @@ import 'package:umami/models/api/stats.dart';
 import 'package:umami/models/api/website.dart';
 import 'package:umami/models/ui/datetime_box.dart';
 import 'package:umami/models/ui/error_card.dart';
-import 'package:umami/models/ui/numbered_list_item.dart';
+import 'package:umami/models/ui/line_plot.dart';
 import 'package:umami/models/ui/progress_indicator_card.dart';
 
 class WebsiteStatisticsPage extends StatefulWidget {
@@ -142,6 +142,7 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
                     }
                   },
                 ),
+                _makeCardTitle(AppLocalizations.of(context)!.pageViews),
                 FutureBuilder<PageViewsResponse>(
                   future: PageViewsController(
                     Storage.instance.domain!,
@@ -159,56 +160,15 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
                               elevation: 0,
                               color: Theme.of(context).colorScheme.surfaceVariant,
                               child: Padding(
-                                padding: const EdgeInsets.all(16.0),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                                  children: [
-                                    Text(
-                                      AppLocalizations.of(context)!.pageViews,
-                                      style: Theme.of(context).textTheme.headline6,
-                                    ),
-                                    const Divider(
-                                      color: Colors.transparent,
-                                    ),
-                                    ...snapshot.data!.pageViews.map(
-                                      (e) => NumberedListItem(
-                                        item: _prettyPrintDate(e.dateTime, discardTime: true),
-                                        number: e.number,
-                                      ),
-                                    ),
-                                  ],
+                                padding: const EdgeInsets.only(
+                                  top: 16.0,
+                                  bottom: 16.0,
+                                  right: 16.0,
                                 ),
+                                child: LinePlotDateTime(snapshot.data!.pageViews),
                               ),
                             ),
                           ),
-                          Expanded(
-                            child: Card(
-                              key: const Key("sessions"),
-                              elevation: 0,
-                              color: Theme.of(context).colorScheme.surfaceVariant,
-                              child: Padding(
-                                padding: const EdgeInsets.all(16.0),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      AppLocalizations.of(context)!.sessions,
-                                      style: Theme.of(context).textTheme.headline6,
-                                    ),
-                                    const Divider(
-                                      color: Colors.transparent,
-                                    ),
-                                    ...snapshot.data!.sessions.map(
-                                      (e) => NumberedListItem(
-                                        item: _prettyPrintDate(e.dateTime, discardTime: true),
-                                        number: e.number,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          )
                         ],
                       );
                     } else if (snapshot.hasError) {
@@ -331,7 +291,7 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
     showDateRangePicker(
       context: context,
       firstDate: DateTime(2010, 01, 01),
-      lastDate: dateTimeRange.endAt,
+      lastDate: DateTime.now(),
       currentDate: dateTimeRange.startAt,
     ).then((value) {
       if (value == null) {
@@ -354,13 +314,5 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
 
   MetricsRequest _makeMetricsRequest(MetricType type) {
     return MetricsRequest(dateTimeRange, type);
-  }
-
-  String _prettyPrintDate(DateTime date, {bool discardTime = false}) {
-    var datePart = "${date.year}/${date.month}/${date.day}";
-    if (discardTime) {
-      return datePart;
-    }
-    return "$datePart ${date.hour}:${date.minute}";
   }
 }
