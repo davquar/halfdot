@@ -12,7 +12,7 @@ import 'package:umami/models/api/stats.dart';
 import 'package:umami/models/api/website.dart';
 import 'package:umami/models/ui/datetime_box.dart';
 import 'package:umami/models/ui/error_card.dart';
-import 'package:umami/models/ui/numbered_list_item.dart';
+import 'package:umami/models/ui/line_plot.dart';
 import 'package:umami/models/ui/progress_indicator_card.dart';
 
 class WebsiteStatisticsPage extends StatefulWidget {
@@ -25,8 +25,14 @@ class WebsiteStatisticsPage extends StatefulWidget {
 }
 
 class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
-  DateTimeInterval dateTimeRange = DateTimeInterval.getLast24Hours();
+  DateTimeInterval dateTimeRange = DateTimeInterval.getLast7Days();
   late CountryCodes _countryCodes;
+
+  final Key _metricsURLs = const Key("metricsURLs");
+  final Key _metricsReferrers = const Key("metricsReferrers");
+  final Key _metricsOS = const Key("metricsOS");
+  final Key _metricsDevices = const Key("metricsDevices");
+  final Key _metricsCountries = const Key("metricsCountries");
 
   @override
   Widget build(BuildContext context) {
@@ -63,6 +69,7 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
           Expanded(
             child: ListView(
               children: [
+                _makeCardTitle(AppLocalizations.of(context)!.summary),
                 FutureBuilder<StatsResponse>(
                   future: StatsController(
                     Storage.instance.domain!,
@@ -74,18 +81,13 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
                     if (snapshot.hasData) {
                       return Card(
                         key: const Key("summary"),
+                        elevation: 0,
+                        color: Theme.of(context).colorScheme.surfaceVariant,
                         child: Padding(
                           padding: const EdgeInsets.all(16.0),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text(
-                                AppLocalizations.of(context)!.summary,
-                                style: Theme.of(context).textTheme.headline6,
-                              ),
-                              const Divider(
-                                color: Colors.transparent,
-                              ),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                 children: [
@@ -131,16 +133,16 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
                       );
                     } else if (snapshot.hasError) {
                       return ErrorCard(
-                        cardTitle: AppLocalizations.of(context)!.summary,
                         msg: (snapshot.error! as APIException).getFriendlyErrorString(
                           AppLocalizations.of(context)!,
                         ),
                       );
                     } else {
-                      return ProgressIndicatorCard(cardTitle: AppLocalizations.of(context)!.summary);
+                      return const ProgressIndicatorCard();
                     }
                   },
                 ),
+                _makePageViewsCardTitle(),
                 FutureBuilder<PageViewsResponse>(
                   future: PageViewsController(
                     Storage.instance.domain!,
@@ -155,93 +157,58 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
                           Expanded(
                             child: Card(
                               key: const Key("pageViews"),
+                              elevation: 0,
+                              color: Theme.of(context).colorScheme.surfaceVariant,
                               child: Padding(
-                                padding: const EdgeInsets.all(16.0),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                                  children: [
-                                    Text(
-                                      AppLocalizations.of(context)!.pageViews,
-                                      style: Theme.of(context).textTheme.headline6,
-                                    ),
-                                    const Divider(
-                                      color: Colors.transparent,
-                                    ),
-                                    ...snapshot.data!.pageViews.map(
-                                      (e) => NumberedListItem(
-                                        item: _prettyPrintDate(e.dateTime, discardTime: true),
-                                        number: e.number,
-                                      ),
-                                    ),
-                                  ],
+                                padding: const EdgeInsets.only(
+                                  top: 16.0,
+                                  bottom: 16.0,
+                                  right: 16.0,
+                                ),
+                                child: LinePlotDateTime(
+                                  snapshot.data!.pageViews,
+                                  snapshot.data!.sessions,
                                 ),
                               ),
                             ),
                           ),
-                          Expanded(
-                            child: Card(
-                              key: const Key("sessions"),
-                              child: Padding(
-                                padding: const EdgeInsets.all(16.0),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      AppLocalizations.of(context)!.sessions,
-                                      style: Theme.of(context).textTheme.headline6,
-                                    ),
-                                    const Divider(
-                                      color: Colors.transparent,
-                                    ),
-                                    ...snapshot.data!.sessions.map(
-                                      (e) => NumberedListItem(
-                                        item: _prettyPrintDate(e.dateTime, discardTime: true),
-                                        number: e.number,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          )
                         ],
                       );
                     } else if (snapshot.hasError) {
                       return ErrorCard(
-                        cardTitle: AppLocalizations.of(context)!.sessions,
                         msg: (snapshot.error! as APIException).getFriendlyErrorString(
                           AppLocalizations.of(context)!,
                         ),
                       );
                     } else {
-                      return ProgressIndicatorCard(cardTitle: AppLocalizations.of(context)!.sessions);
+                      return const ProgressIndicatorCard();
                     }
                   },
                 ),
+                _makeCardTitle(AppLocalizations.of(context)!.urls),
                 _makeMetricsFutureBuilder(
                   type: MetricType.url,
-                  cardKey: "metricsURLs",
-                  cardTitle: AppLocalizations.of(context)!.urls,
+                  cardKey: _metricsURLs,
                 ),
+                _makeCardTitle(AppLocalizations.of(context)!.referrers),
                 _makeMetricsFutureBuilder(
                   type: MetricType.referrer,
-                  cardKey: "metricsReferrers",
-                  cardTitle: AppLocalizations.of(context)!.referrers,
+                  cardKey: _metricsReferrers,
                 ),
+                _makeCardTitle(AppLocalizations.of(context)!.os),
                 _makeMetricsFutureBuilder(
                   type: MetricType.os,
-                  cardKey: "metricsOS",
-                  cardTitle: AppLocalizations.of(context)!.os,
+                  cardKey: _metricsOS,
                 ),
+                _makeCardTitle(AppLocalizations.of(context)!.devices),
                 _makeMetricsFutureBuilder(
                   type: MetricType.device,
-                  cardKey: "metricsDevices",
-                  cardTitle: AppLocalizations.of(context)!.devices,
+                  cardKey: _metricsDevices,
                 ),
+                _makeCardTitle(AppLocalizations.of(context)!.countries),
                 _makeMetricsFutureBuilder(
                   type: MetricType.country,
-                  cardKey: "metricsCountries",
-                  cardTitle: AppLocalizations.of(context)!.countries,
+                  cardKey: _metricsCountries,
                 ),
               ],
             ),
@@ -253,8 +220,7 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
 
   FutureBuilder<MetricsResponse> _makeMetricsFutureBuilder({
     required MetricType type,
-    required String cardKey,
-    required String cardTitle,
+    required Key cardKey,
   }) {
     return FutureBuilder<MetricsResponse>(
       future: MetricsController(
@@ -265,55 +231,94 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
       ).doRequest(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          return Row(
-            children: [
-              Expanded(
-                child: Card(
-                  key: Key(cardKey),
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        Text(
-                          cardTitle,
-                          style: Theme.of(context).textTheme.headline6,
-                        ),
-                        const Divider(
-                          color: Colors.transparent,
-                        ),
-                        ...snapshot.data!.metrics.map(
-                          (e) => NumberedListItem(
-                            number: e.number,
-                            item: type == MetricType.country ? _countryCodes.getCountry(e.object) : e.object,
+          return Card(
+            key: cardKey,
+            elevation: 0,
+            color: Theme.of(context).colorScheme.surfaceVariant,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Column(
+                children: [
+                  ...ListTile.divideTiles(
+                    context: context,
+                    tiles: [
+                      ...snapshot.data!.metrics.map(
+                        (e) => ListTile(
+                          title: Text(
+                            _processListTileData(e.object, cardKey),
+                            style: Theme.of(context).textTheme.bodyMedium,
+                          ),
+                          trailing: Text(e.number.toString()),
+                          contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 1,
                           ),
                         ),
-                      ],
-                    ),
-                  ),
-                ),
+                      ),
+                    ],
+                  ).toList(),
+                ],
               ),
-            ],
+            ),
           );
         } else if (snapshot.hasError) {
           return ErrorCard(
-            cardTitle: cardTitle,
             msg: (snapshot.error! as APIException).getFriendlyErrorString(
               AppLocalizations.of(context)!,
             ),
           );
         } else {
-          return ProgressIndicatorCard(cardTitle: cardTitle);
+          return const ProgressIndicatorCard();
         }
       },
     );
+  }
+
+  String _processListTileData(String data, Key key) {
+    if (key == _metricsCountries) {
+      return _countryCodes.getCountry(data);
+    }
+    return data;
+  }
+
+  Padding _makeCardTitle(String title) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 18, top: 8),
+      child: Text(
+        title,
+        style: Theme.of(context).textTheme.headlineSmall,
+      ),
+    );
+  }
+
+  Padding _makePageViewsCardTitle() {
+    return Padding(
+        padding: const EdgeInsets.only(left: 18, top: 8),
+        child: Row(
+          children: [
+            Text(
+              AppLocalizations.of(context)!.pageViews,
+              style: TextStyle(
+                fontSize: Theme.of(context).textTheme.headlineSmall!.fontSize,
+                color: Theme.of(context).primaryColorDark,
+              ),
+            ),
+            const VerticalDivider(width: 10),
+            Text(
+              AppLocalizations.of(context)!.sessions,
+              style: TextStyle(
+                fontSize: Theme.of(context).textTheme.headlineSmall!.fontSize,
+                color: Theme.of(context).primaryColorDark,
+              ),
+            ),
+          ],
+        ));
   }
 
   void _showDateRangePicker() {
     showDateRangePicker(
       context: context,
       firstDate: DateTime(2010, 01, 01),
-      lastDate: dateTimeRange.endAt,
+      lastDate: DateTime.now(),
       currentDate: dateTimeRange.startAt,
     ).then((value) {
       if (value == null) {
@@ -336,13 +341,5 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
 
   MetricsRequest _makeMetricsRequest(MetricType type) {
     return MetricsRequest(dateTimeRange, type);
-  }
-
-  String _prettyPrintDate(DateTime date, {bool discardTime = false}) {
-    var datePart = "${date.year}/${date.month}/${date.day}";
-    if (discardTime) {
-      return datePart;
-    }
-    return "$datePart ${date.hour}:${date.minute}";
   }
 }

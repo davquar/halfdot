@@ -41,6 +41,7 @@ dependencies:
   flutter_secure_storage: ^6.0.0
   flutter_launcher_icons: "^0.10.0"
   intl: ^0.17.0
+  fl_chart: ^0.55.2
 
 dev_dependencies:
   flutter_test:

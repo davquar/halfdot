@@ -54,6 +54,15 @@ class DateTimeInterval {
       DateTime.now(),
     );
   }
+
+  static DateTimeInterval getLast7Days() {
+    return DateTimeInterval(
+      DateTime.now().subtract(
+        const Duration(days: 7),
+      ),
+      DateTime.now(),
+    );
+  }
 }
 
 class TimestampedEntry {
