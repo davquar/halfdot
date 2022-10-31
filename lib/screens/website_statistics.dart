@@ -25,7 +25,7 @@ class WebsiteStatisticsPage extends StatefulWidget {
 }
 
 class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
-  DateTimeInterval dateTimeRange = DateTimeInterval.getLast24Hours();
+  DateTimeInterval dateTimeRange = DateTimeInterval.getLast7Days();
   late CountryCodes _countryCodes;
 
   final Key _metricsURLs = const Key("metricsURLs");
@@ -142,7 +142,7 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
                     }
                   },
                 ),
-                _makeCardTitle(AppLocalizations.of(context)!.pageViews),
+                _makePageViewsCardTitle(),
                 FutureBuilder<PageViewsResponse>(
                   future: PageViewsController(
                     Storage.instance.domain!,
@@ -165,7 +165,10 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
                                   bottom: 16.0,
                                   right: 16.0,
                                 ),
-                                child: LinePlotDateTime(snapshot.data!.pageViews),
+                                child: LinePlotDateTime(
+                                  snapshot.data!.pageViews,
+                                  snapshot.data!.sessions,
+                                ),
                               ),
                             ),
                           ),
@@ -285,6 +288,30 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
         style: Theme.of(context).textTheme.headlineSmall,
       ),
     );
+  }
+
+  Padding _makePageViewsCardTitle() {
+    return Padding(
+        padding: const EdgeInsets.only(left: 18, top: 8),
+        child: Row(
+          children: [
+            Text(
+              AppLocalizations.of(context)!.pageViews,
+              style: TextStyle(
+                fontSize: Theme.of(context).textTheme.headlineSmall!.fontSize,
+                color: Theme.of(context).primaryColorDark,
+              ),
+            ),
+            const VerticalDivider(width: 10),
+            Text(
+              AppLocalizations.of(context)!.sessions,
+              style: TextStyle(
+                fontSize: Theme.of(context).textTheme.headlineSmall!.fontSize,
+                color: Theme.of(context).primaryColorDark,
+              ),
+            ),
+          ],
+        ));
   }
 
   void _showDateRangePicker() {
