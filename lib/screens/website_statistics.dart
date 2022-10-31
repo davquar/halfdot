@@ -69,6 +69,7 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
           Expanded(
             child: ListView(
               children: [
+                _makeCardTitle(AppLocalizations.of(context)!.summary),
                 FutureBuilder<StatsResponse>(
                   future: StatsController(
                     Storage.instance.domain!,
@@ -87,13 +88,6 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text(
-                                AppLocalizations.of(context)!.summary,
-                                style: Theme.of(context).textTheme.headline6,
-                              ),
-                              const Divider(
-                                color: Colors.transparent,
-                              ),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                 children: [
