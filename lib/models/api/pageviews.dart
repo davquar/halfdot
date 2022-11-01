@@ -36,5 +36,8 @@ class PageViewsResponse {
         sessions.add(TimestampedEntry.fromJSON(entry));
       }
     }
+
+    pageViews.sort((a, b) => a.dateTime.difference(b.dateTime).inMilliseconds);
+    sessions.sort((a, b) => a.dateTime.difference(b.dateTime).inMilliseconds);
   }
 }
