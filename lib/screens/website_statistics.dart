@@ -133,9 +133,7 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
                       );
                     } else if (snapshot.hasError) {
                       return ErrorCard(
-                        msg: (snapshot.error! as APIException).getFriendlyErrorString(
-                          AppLocalizations.of(context)!,
-                        ),
+                        msg: handleSnapshotError(context, snapshot.error),
                       );
                     } else {
                       return const ProgressIndicatorCard();
@@ -183,9 +181,7 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
                       );
                     } else if (snapshot.hasError) {
                       return ErrorCard(
-                        msg: (snapshot.error! as APIException).getFriendlyErrorString(
-                          AppLocalizations.of(context)!,
-                        ),
+                        msg: handleSnapshotError(context, snapshot.error),
                       );
                     } else {
                       return const ProgressIndicatorCard();
@@ -269,9 +265,7 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
           );
         } else if (snapshot.hasError) {
           return ErrorCard(
-            msg: (snapshot.error! as APIException).getFriendlyErrorString(
-              AppLocalizations.of(context)!,
-            ),
+            msg: handleSnapshotError(context, snapshot.error),
           );
         } else {
           return const ProgressIndicatorCard();

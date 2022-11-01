@@ -48,9 +48,7 @@ class _WebsitesPageState extends State<WebsitesPage> {
           } else if (snapshot.hasError) {
             return Center(
               child: Text(
-                (snapshot.error! as APIException).getFriendlyErrorString(
-                  AppLocalizations.of(context)!,
-                ),
+                handleSnapshotError(context, snapshot.error),
               ),
             );
           } else {

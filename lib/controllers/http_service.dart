@@ -27,7 +27,15 @@ class HttpService {
       newClient();
     }
     _ongoingCalls++;
-    return http.get(url, headers: headers).whenComplete(() => _callCompleted());
+    return http
+        .get(
+          url,
+          headers: headers,
+        )
+        .timeout(const Duration(seconds: 30))
+        .whenComplete(
+          () => _callCompleted(),
+        );
   }
 
   static _callCompleted() {
