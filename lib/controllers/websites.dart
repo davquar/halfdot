@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import 'package:http/http.dart' as http;
 import 'package:umami/controllers/api_common.dart';
+import 'package:umami/controllers/http_service.dart';
 import 'package:umami/models/api/website.dart';
 
 class WebsitesController implements APIRequest {
@@ -20,9 +20,9 @@ class WebsitesController implements APIRequest {
 
   @override
   Future<WebsitesResponse> doRequest() async {
-    var response = await http.get(
+    var response = await HttpService.get(
       url,
-      headers: makeAccessTokenHeader(accessToken),
+      makeAccessTokenHeader(accessToken),
     );
 
     if (!isResponseOK(response)) {
