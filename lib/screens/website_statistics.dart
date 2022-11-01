@@ -142,7 +142,6 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
                     }
                   },
                 ),
-                _makePageViewsCardTitle(),
                 FutureBuilder<PageViewsResponse>(
                   future: PageViewsController(
                     Storage.instance.domain!,
@@ -152,25 +151,33 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
                   ).doRequest(),
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
-                      return Row(
+                      if (snapshot.data!.pageViews.length == 1) {
+                        return Container();
+                      }
+                      return Column(
                         children: [
-                          Expanded(
-                            child: Card(
-                              key: const Key("pageViews"),
-                              elevation: 0,
-                              color: Theme.of(context).colorScheme.surfaceVariant,
-                              child: Padding(
-                                padding: const EdgeInsets.only(
-                                  top: 16.0,
-                                  bottom: 16.0,
-                                  right: 16.0,
-                                ),
-                                child: LinePlotDateTime(
-                                  snapshot.data!.pageViews,
-                                  snapshot.data!.sessions,
+                          _makePageViewsCardTitle(),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: Card(
+                                  key: const Key("pageViews"),
+                                  elevation: 0,
+                                  color: Theme.of(context).colorScheme.surfaceVariant,
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(
+                                      top: 16.0,
+                                      bottom: 16.0,
+                                      right: 16.0,
+                                    ),
+                                    child: LinePlotDateTime(
+                                      snapshot.data!.pageViews,
+                                      snapshot.data!.sessions,
+                                    ),
+                                  ),
                                 ),
                               ),
-                            ),
+                            ],
                           ),
                         ],
                       );
@@ -292,6 +299,7 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
 
   Padding _makePageViewsCardTitle() {
     return Padding(
+        key: const Key("pageViewsTitle"),
         padding: const EdgeInsets.only(left: 18, top: 8),
         child: Row(
           children: [
