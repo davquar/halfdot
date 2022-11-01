@@ -295,19 +295,29 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
         padding: const EdgeInsets.only(left: 18, top: 8),
         child: Row(
           children: [
+            Icon(
+              Icons.circle,
+              color: Theme.of(context).colorScheme.background,
+              size: 10,
+            ),
+            const VerticalDivider(width: 5),
             Text(
               AppLocalizations.of(context)!.pageViews,
               style: TextStyle(
                 fontSize: Theme.of(context).textTheme.headlineSmall!.fontSize,
-                color: Theme.of(context).primaryColorDark,
               ),
             ),
-            const VerticalDivider(width: 10),
+            const VerticalDivider(width: 15),
+            Icon(
+              Icons.circle,
+              color: Theme.of(context).colorScheme.primary,
+              size: 10,
+            ),
+            const VerticalDivider(width: 5),
             Text(
               AppLocalizations.of(context)!.sessions,
               style: TextStyle(
                 fontSize: Theme.of(context).textTheme.headlineSmall!.fontSize,
-                color: Theme.of(context).primaryColorDark,
               ),
             ),
           ],

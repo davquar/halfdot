@@ -31,7 +31,7 @@ class LinePlotDateTime extends StatelessWidget {
                     ),
                   )
                   .toList(),
-              color: Theme.of(context).primaryColor,
+              color: Theme.of(context).colorScheme.background,
               isCurved: true,
               dotData: FlDotData(
                 show: false,
@@ -46,7 +46,7 @@ class LinePlotDateTime extends StatelessWidget {
                     ),
                   )
                   .toList(),
-              color: Theme.of(context).primaryColorDark,
+              color: Theme.of(context).colorScheme.primary,
               isCurved: true,
               dotData: FlDotData(
                 show: false,
