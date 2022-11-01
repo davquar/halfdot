@@ -33,6 +33,18 @@ class _WebsitesPageState extends State<WebsitesPage> {
           Storage.instance.accessToken!,
         ).doRequest(),
         builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return Center(
+              child: Text(
+                handleSnapshotError(context, snapshot.error),
+              ),
+            );
+          }
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
           if (snapshot.hasData) {
             return ListView(
               children: [
@@ -45,18 +57,8 @@ class _WebsitesPageState extends State<WebsitesPage> {
                 )
               ],
             );
-          } else if (snapshot.hasError) {
-            return Center(
-              child: Text(
-                (snapshot.error! as APIException).getFriendlyErrorString(
-                  AppLocalizations.of(context)!,
-                ),
-              ),
-            );
           } else {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
+            return Container();
           }
         },
       ),

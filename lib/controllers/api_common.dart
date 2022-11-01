@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:http/http.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -172,4 +174,16 @@ class GenericAPIException implements APIException {
   String getFriendlyErrorString(AppLocalizations loc) {
     return msg;
   }
+}
+
+String handleSnapshotError(context, error) {
+  switch (error.runtimeType) {
+    case APIException:
+      return (error as APIException).getFriendlyErrorString(
+        AppLocalizations.of(context)!,
+      );
+    case TimeoutException:
+      return AppLocalizations.of(context)!.errTimeout;
+  }
+  return "Error";
 }

@@ -78,6 +78,14 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
                     dateTimeRange,
                   ).doRequest(),
                   builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const ProgressIndicatorCard();
+                    }
+                    if (snapshot.hasError) {
+                      return ErrorCard(
+                        msg: handleSnapshotError(context, snapshot.error),
+                      );
+                    }
                     if (snapshot.hasData) {
                       return Card(
                         key: const Key("summary"),
@@ -131,14 +139,8 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
                           ),
                         ),
                       );
-                    } else if (snapshot.hasError) {
-                      return ErrorCard(
-                        msg: (snapshot.error! as APIException).getFriendlyErrorString(
-                          AppLocalizations.of(context)!,
-                        ),
-                      );
                     } else {
-                      return const ProgressIndicatorCard();
+                      return Container();
                     }
                   },
                 ),
@@ -150,6 +152,14 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
                     _makePageViewsRequest(),
                   ).doRequest(),
                   builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const ProgressIndicatorCard();
+                    }
+                    if (snapshot.hasError) {
+                      return ErrorCard(
+                        msg: handleSnapshotError(context, snapshot.error),
+                      );
+                    }
                     if (snapshot.hasData) {
                       if (snapshot.data!.pageViews.length == 1) {
                         return Container();
@@ -181,14 +191,8 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
                           ),
                         ],
                       );
-                    } else if (snapshot.hasError) {
-                      return ErrorCard(
-                        msg: (snapshot.error! as APIException).getFriendlyErrorString(
-                          AppLocalizations.of(context)!,
-                        ),
-                      );
                     } else {
-                      return const ProgressIndicatorCard();
+                      return Container();
                     }
                   },
                 ),
@@ -237,6 +241,14 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
         _makeMetricsRequest(type),
       ).doRequest(),
       builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const ProgressIndicatorCard();
+        }
+        if (snapshot.hasError) {
+          return ErrorCard(
+            msg: handleSnapshotError(context, snapshot.error),
+          );
+        }
         if (snapshot.hasData) {
           return Card(
             key: cardKey,
@@ -267,14 +279,8 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
               ),
             ),
           );
-        } else if (snapshot.hasError) {
-          return ErrorCard(
-            msg: (snapshot.error! as APIException).getFriendlyErrorString(
-              AppLocalizations.of(context)!,
-            ),
-          );
         } else {
-          return const ProgressIndicatorCard();
+          return Container();
         }
       },
     );
