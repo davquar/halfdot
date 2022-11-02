@@ -54,6 +54,8 @@ linter:
     - avoid_slow_async_io
     - avoid_types_as_parameter_names
     - sized_box_for_whitespace
+    - package_names
+    - file_names
 
 
 # Additional information about this file can be found at
