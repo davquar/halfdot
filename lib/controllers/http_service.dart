@@ -1,15 +1,15 @@
 import 'package:http/http.dart' as http;
 
 class HttpService {
-  static late http.Client _client;
-  static int _ongoingCalls = 0;
-
-  HttpService._();
-  static final HttpService _instance = HttpService._();
-
   factory HttpService() {
     return _instance;
   }
+
+  HttpService._();
+
+  static late http.Client _client;
+  static int _ongoingCalls = 0;
+  static final HttpService _instance = HttpService._();
 
   static get client => _client;
   static get ongoingCalls => _ongoingCalls;
@@ -33,9 +33,7 @@ class HttpService {
           headers: headers,
         )
         .timeout(const Duration(seconds: 30))
-        .whenComplete(
-          () => _callCompleted(),
-        );
+        .whenComplete(_callCompleted);
   }
 
   static _callCompleted() {

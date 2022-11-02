@@ -32,7 +32,7 @@ class _WebsitesPageState extends State<WebsitesPage> {
           Storage.instance.domain!,
           Storage.instance.accessToken!,
         ).doRequest(),
-        builder: (context, snapshot) {
+        builder: (BuildContext context, dynamic snapshot) {
           if (snapshot.hasError) {
             return Center(
               child: Text(
@@ -47,9 +47,9 @@ class _WebsitesPageState extends State<WebsitesPage> {
           }
           if (snapshot.hasData) {
             return ListView(
-              children: [
+              children: <Widget>[
                 ...snapshot.data!.websites.map(
-                  (website) => ListTile(
+                  (Website website) => ListTile(
                     title: Text(website.name),
                     subtitle: Text(website.domain),
                     onTap: () => _goToStats(website),
@@ -68,7 +68,7 @@ class _WebsitesPageState extends State<WebsitesPage> {
   _goToStats(Website website) {
     Navigator.push(
       context,
-      MaterialPageRoute(
+      MaterialPageRoute<WebsiteStatisticsPage>(
         builder: (_) => WebsiteStatisticsPage(
           website: website,
         ),
@@ -79,7 +79,7 @@ class _WebsitesPageState extends State<WebsitesPage> {
   _goToSettings() {
     Navigator.push(
       context,
-      MaterialPageRoute(
+      MaterialPageRoute<SettingsPage>(
         builder: (_) => const SettingsPage(),
       ),
     );

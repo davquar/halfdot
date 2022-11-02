@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
 class ProgressIndicatorCard extends StatelessWidget {
-  final int height;
-  final int width;
-
   const ProgressIndicatorCard({
     super.key,
     this.height = 20,
     this.width = 20,
   });
+
+  final int height;
+  final int width;
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +16,7 @@ class ProgressIndicatorCard extends StatelessWidget {
       elevation: 0,
       color: Theme.of(context).colorScheme.surfaceVariant,
       child: Column(
-        children: const [
+        children: const <Widget>[
           Padding(
             padding: EdgeInsets.all(8.0),
             child: SizedBox(

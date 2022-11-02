@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 
 class NumberedListItem extends StatelessWidget {
+  const NumberedListItem({
+    required this.item,
+    required this.number,
+    super.key,
+  });
+
   final num number;
   final String item;
-
-  const NumberedListItem({
-    super.key,
-    required this.number,
-    required this.item,
-  });
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 4),
       child: Row(
-        children: [
+        children: <Widget>[
           Container(
             decoration: BoxDecoration(
               border: Border.all(),

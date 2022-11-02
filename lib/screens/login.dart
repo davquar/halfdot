@@ -14,12 +14,12 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  var urlController = TextEditingController();
-  var usernameController = TextEditingController();
-  var passwordController = TextEditingController();
+  TextEditingController urlController = TextEditingController();
+  TextEditingController usernameController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
 
-  var isFormFilled = false;
-  var isLoading = false;
+  bool isFormFilled = false;
+  bool isLoading = false;
 
   @override
   void initState() {
@@ -53,23 +53,23 @@ class _LoginPageState extends State<LoginPage> {
                         strokeWidth: 10,
                       )
                     : Image.asset(
-                        "assets/app_icon.png",
+                        'assets/app_icon.png',
                       ),
               ),
               const SizedBox(height: 10),
-              Text("Umami", style: Theme.of(context).textTheme.headline6),
+              Text('Umami', style: Theme.of(context).textTheme.headline6),
               Text(AppLocalizations.of(context)!.loginSubtitle),
               const SizedBox(height: 20),
               TextField(
-                key: const Key("url"),
+                key: const Key('url'),
                 controller: urlController,
                 autocorrect: false,
                 enabled: !isLoading,
                 keyboardType: TextInputType.url,
-                autofillHints: const [AutofillHints.url],
+                autofillHints: const <String>[AutofillHints.url],
                 onTap: () {
                   if (urlController.text.isEmpty) {
-                    urlController.text = "https://";
+                    urlController.text = 'https://';
                   }
                 },
                 decoration: InputDecoration(
@@ -83,12 +83,12 @@ class _LoginPageState extends State<LoginPage> {
               ),
               const SizedBox(height: 20),
               TextField(
-                key: const Key("username"),
+                key: const Key('username'),
                 controller: usernameController,
                 autocorrect: false,
                 enabled: !isLoading,
                 keyboardType: TextInputType.visiblePassword,
-                autofillHints: const [AutofillHints.username],
+                autofillHints: const <String>[AutofillHints.username],
                 decoration: InputDecoration(
                   labelText: AppLocalizations.of(context)!.usernameLabel,
                   hintText: AppLocalizations.of(context)!.usernameHint,
@@ -99,14 +99,14 @@ class _LoginPageState extends State<LoginPage> {
               ),
               const SizedBox(height: 20),
               TextField(
-                key: const Key("password"),
+                key: const Key('password'),
                 controller: passwordController,
                 obscureText: true,
                 autocorrect: false,
                 enableSuggestions: false,
                 enabled: !isLoading,
                 keyboardType: TextInputType.visiblePassword,
-                autofillHints: const [AutofillHints.password],
+                autofillHints: const <String>[AutofillHints.password],
                 decoration: InputDecoration(
                   labelText: AppLocalizations.of(context)!.passwordLabel,
                   hintText: AppLocalizations.of(context)!.passwordHint,
@@ -117,7 +117,7 @@ class _LoginPageState extends State<LoginPage> {
               ),
               const SizedBox(height: 20),
               ElevatedButton.icon(
-                onPressed: (isFormFilled && !isLoading) ? () => _doLogin() : null,
+                onPressed: (isFormFilled && !isLoading) ? _doLogin : null,
                 icon: const Icon(Icons.login),
                 label: Text(AppLocalizations.of(context)!.loginButton),
                 style: ElevatedButton.styleFrom(
@@ -132,21 +132,21 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   bool _isURLAccepted() {
-    var url = urlController.text;
+    String url = urlController.text;
 
-    if (!url.startsWith("https") && !url.contains(":/")) {
-      url = "https://$url";
+    if (!url.startsWith('https') && !url.contains(':/')) {
+      url = 'https://$url';
     }
-    if (!url.endsWith("/")) {
-      url += "/";
+    if (!url.endsWith('/')) {
+      url += '/';
     }
 
-    var parsed = Uri.tryParse(url);
+    Uri? parsed = Uri.tryParse(url);
     if (parsed == null) {
       return false;
     }
 
-    return parsed.isScheme("HTTPS") && parsed.hasAbsolutePath;
+    return parsed.isScheme('HTTPS') && parsed.hasAbsolutePath;
   }
 
   _validateForm() {
@@ -158,8 +158,8 @@ class _LoginPageState extends State<LoginPage> {
   _goToWebsites() {
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(
-        builder: ((_) => const WebsitesPage()),
+      MaterialPageRoute<dynamic>(
+        builder: (_) => const WebsitesPage(),
       ),
     );
   }
@@ -169,18 +169,18 @@ class _LoginPageState extends State<LoginPage> {
       isLoading = true;
     });
 
-    var loginRequest = LoginRequest(
+    LoginRequest loginRequest = LoginRequest(
       usernameController.text,
       passwordController.text,
     );
 
-    var loginController = LoginController(
-      urlController.text.replaceFirst("https://", ""),
+    LoginController loginController = LoginController(
+      urlController.text.replaceFirst('https://', ''),
       loginRequest,
     );
 
     loginController.doRequest().then(
-      (value) {
+      (LoginResponse value) {
         Storage.instance
             .writeUmamiCredentials(
               loginController.domain,
@@ -192,12 +192,12 @@ class _LoginPageState extends State<LoginPage> {
             );
       },
     ).onError(
-      (error, _) {
+      (Object? error, _) {
         setState(() {
           isLoading = false;
         });
 
-        var loc = AppLocalizations.of(context)!;
+        AppLocalizations loc = AppLocalizations.of(context)!;
         late String title;
         late String content;
 
@@ -209,7 +209,7 @@ class _LoginPageState extends State<LoginPage> {
           content = error.getFriendlyErrorString(loc);
         } else {
           title = loc.connectionError;
-          content = "${loc.errGenericHttp} [${error.toString()}]";
+          content = '${loc.errGenericHttp} [${error.toString()}]';
         }
 
         showDialog(
@@ -217,10 +217,10 @@ class _LoginPageState extends State<LoginPage> {
           builder: (BuildContext context) => AlertDialog(
             title: Text(title),
             content: Text(content),
-            actions: [
+            actions: <Widget>[
               TextButton(
-                onPressed: () => Navigator.pop(context, "OK"),
-                child: const Text("OK"),
+                onPressed: () => Navigator.pop(context, 'OK'),
+                child: const Text('OK'),
               ),
             ],
           ),

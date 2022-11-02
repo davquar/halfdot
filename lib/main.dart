@@ -15,8 +15,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DynamicColorBuilder(
-      builder: (lightDynamic, darkDynamic) => MaterialApp(
-        title: "Umami",
+      builder: (ColorScheme? lightDynamic, ColorScheme? darkDynamic) => MaterialApp(
+        title: 'Umami',
         theme: ThemeData(
           useMaterial3: true,
           colorScheme: _defaultLightColorScheme,
@@ -26,14 +26,14 @@ class MyApp extends StatelessWidget {
           colorScheme: _defaultDarkColorScheme,
         ),
         home: const LoginPage(),
-        localizationsDelegates: const [
+        localizationsDelegates: const <LocalizationsDelegate<dynamic>>[
           AppLocalizations.delegate,
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
           GlobalCupertinoLocalizations.delegate,
         ],
-        supportedLocales: const [
-          Locale("en", ""),
+        supportedLocales: const <Locale>[
+          Locale('en', ''),
         ],
       ),
     );

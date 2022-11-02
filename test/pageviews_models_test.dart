@@ -4,8 +4,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:umami/models/api/pageviews.dart';
 
 void main() {
-  test("Test deserializing", () {
-    const sampleResponse = '''
+  test('Test deserializing', () {
+    String sampleResponse = '''
 {
   "pageviews": [
       {"t": "2020-04-20 01:00:00", "y": 3},
@@ -18,11 +18,11 @@ void main() {
 }
 ''';
 
-    var json = jsonDecode(sampleResponse) as Map<String, dynamic>;
-    var resp = PageViewsResponse.fromJSON(json);
+    dynamic json = jsonDecode(sampleResponse) as Map<String, dynamic>;
+    PageViewsResponse resp = PageViewsResponse.fromJSON(json);
 
     expect(resp.pageViews.length, 2);
     expect(resp.sessions.length, 2);
-    expect(resp.pageViews.toString(), "[{t: 2020-04-20 01:00:00.000, y: 3}, {t: 2020-04-20 02:00:00.000, y: 7}]");
+    expect(resp.pageViews.toString(), '[{t: 2020-04-20 01:00:00.000, y: 3}, {t: 2020-04-20 02:00:00.000, y: 7}]');
   });
 }

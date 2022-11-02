@@ -5,10 +5,10 @@ import 'package:intl/intl.dart';
 import 'package:umami/controllers/api_common.dart';
 
 class LinePlotDateTime extends StatelessWidget {
+  const LinePlotDateTime(this.pageViews, this.sessions, {Key? key}) : super(key: key);
+
   final List<TimestampedEntry> pageViews;
   final List<TimestampedEntry> sessions;
-
-  const LinePlotDateTime(this.pageViews, this.sessions, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -21,11 +21,11 @@ class LinePlotDateTime extends StatelessWidget {
             verticalInterval: _xAxisInterval,
           ),
           borderData: FlBorderData(show: false),
-          lineBarsData: [
+          lineBarsData: <LineChartBarData>[
             LineChartBarData(
               spots: pageViews
                   .map(
-                    (point) => FlSpot(
+                    (final TimestampedEntry point) => FlSpot(
                       point.dateTime.millisecondsSinceEpoch.toDouble(),
                       point.number.toDouble(),
                     ),
@@ -40,7 +40,7 @@ class LinePlotDateTime extends StatelessWidget {
             LineChartBarData(
               spots: sessions
                   .map(
-                    (point) => FlSpot(
+                    (final TimestampedEntry point) => FlSpot(
                       point.dateTime.millisecondsSinceEpoch.toDouble(),
                       point.number.toDouble(),
                     ),
@@ -67,7 +67,7 @@ class LinePlotDateTime extends StatelessWidget {
               fitInsideHorizontally: true,
               tooltipPadding: const EdgeInsets.all(8.0),
               tooltipMargin: 0,
-              getTooltipItems: (touchedSpots) {
+              getTooltipItems: (List<LineBarSpot> touchedSpots) {
                 return touchedSpots.map(
                   (LineBarSpot touchedSpot) {
                     return LineTooltipItem(
@@ -94,32 +94,32 @@ class LinePlotDateTime extends StatelessWidget {
     required int barIndex,
     required int spotIndex,
   }) {
-    String date = "";
-    String barName = "";
-    String value = "";
+    String date = '';
+    String barName = '';
+    String value = '';
     if (barIndex == 0) {
-      date = DateFormat("yyyy/MM/dd\n\n").format(pageViews[spotIndex].dateTime);
+      date = DateFormat('yyyy/MM/dd\n\n').format(pageViews[spotIndex].dateTime);
       barName = AppLocalizations.of(context)!.pageViews;
       value = pageViews[spotIndex].number.toString();
     } else if (barIndex == 1) {
       barName = AppLocalizations.of(context)!.sessions;
       value = sessions[spotIndex].number.toString();
     }
-    return "$date$barName: $value";
+    return '$date$barName: $value';
   }
 
   SideTitles _makeBottomTitles(BuildContext context) {
     return SideTitles(
       showTitles: true,
       interval: _xAxisInterval,
-      getTitlesWidget: (value, meta) {
-        String text = DateFormat("d/MM").format(
+      getTitlesWidget: (double value, TitleMeta meta) {
+        String text = DateFormat('d/MM').format(
           DateTime.fromMillisecondsSinceEpoch(value.toInt()),
         );
 
         if (meta.min == value || meta.max == value) {
           // fix repeated min/max label bug in fl_chart
-          text = "";
+          text = '';
         }
 
         return Padding(
@@ -142,7 +142,7 @@ class LinePlotDateTime extends StatelessWidget {
     return SideTitles(
       showTitles: true,
       reservedSize: 40,
-      getTitlesWidget: (value, meta) {
+      getTitlesWidget: (double value, TitleMeta meta) {
         return Padding(
           padding: const EdgeInsets.only(right: 8.0),
           child: Text(

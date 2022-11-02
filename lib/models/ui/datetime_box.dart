@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
 class DateTimeBox extends StatelessWidget {
-  final String text;
-  final void Function() onPressed;
-
   const DateTimeBox({
-    super.key,
     required this.text,
     required this.onPressed,
+    super.key,
   });
+
+  final String text;
+  final void Function() onPressed;
 
   @override
   Widget build(BuildContext context) {

@@ -1,39 +1,39 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class Storage {
-  static const _keyAccessToken = "accessToken";
-  static const _keyDomain = "domain";
-  static const _keyUsername = "username";
-
-  late String? _accessToken;
-  late String? _domain;
-  late String? _username;
-
-  static final Storage _instance = Storage._();
-  final _storage = const FlutterSecureStorage();
-
   Storage._() {
     readUmamiCredentials();
   }
 
+  static final Storage _instance = Storage._();
+  final FlutterSecureStorage _storage = const FlutterSecureStorage();
+
   static Storage get instance {
     return _instance;
   }
+
+  static const String _keyAccessToken = 'accessToken';
+  static const String _keyDomain = 'domain';
+  static const String _keyUsername = 'username';
+
+  late String? _accessToken;
+  late String? _domain;
+  late String? _username;
 
   String? get accessToken => _accessToken;
   String? get domain => _domain;
   String? get username => _username;
 
   Future<String?> readAccessToken() async {
-    return await _storage.read(key: _keyAccessToken);
+    return _storage.read(key: _keyAccessToken);
   }
 
   bool hasAccessToken() {
-    return !(_isEmpty(accessToken));
+    return accessToken != null && accessToken != '';
   }
 
   Future<void> readUmamiCredentials() {
-    return _storage.readAll().then((map) {
+    return _storage.readAll().then((Map<String, String> map) {
       _domain = map[_keyDomain];
       _accessToken = map[_keyAccessToken];
       _username = map[_keyUsername];
@@ -55,23 +55,19 @@ class Storage {
   }
 
   Future<String?> readDomain() async {
-    return await _storage.read(key: _keyDomain);
+    return _storage.read(key: _keyDomain);
   }
 
   Future<bool> hasDomain() async {
-    var domain = await readDomain();
-    return !(domain == null || domain == "");
+    String? domain = await readDomain();
+    return !(domain == null || domain == '');
   }
 
   Future<String?> readUsername() async {
-    return await _storage.read(key: _keyUsername);
+    return _storage.read(key: _keyUsername);
   }
 
   Future<void> clear() async {
-    return await _storage.deleteAll();
-  }
-
-  static _isEmpty(value) {
-    return value == null || value == "";
+    return _storage.deleteAll();
   }
 }

@@ -1,50 +1,52 @@
 import 'dart:async';
 
+import 'package:flutter/widgets.dart';
 import 'package:http/http.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:umami/models/api/common.dart';
 
 abstract class APIRequest {
   Uri getRequestURL();
-  Future doRequest();
+  Future<APIModel> doRequest();
 }
 
 enum GroupingUnit {
-  hour("hour"),
-  day("day"),
-  month("month"),
-  year("year");
+  hour('hour'),
+  day('day'),
+  month('month'),
+  year('year');
 
-  final String value;
   const GroupingUnit(this.value);
+  final String value;
 }
 
 class DateTimeInterval {
+  DateTimeInterval(this.startAt, this.endAt);
+
   DateTime startAt;
   DateTime endAt;
 
-  DateTimeInterval(this.startAt, this.endAt);
-
   @override
   String toString() {
-    return "start_at=${startAt.millisecondsSinceEpoch}&end_at=${endAt.millisecondsSinceEpoch}";
+    return 'start_at=${startAt.millisecondsSinceEpoch}&end_at=${endAt.millisecondsSinceEpoch}';
   }
 
   String getPretty() {
-    return "${getPrettyStart()} — ${getPrettyEnd()}";
+    return '${getPrettyStart()} — ${getPrettyEnd()}';
   }
 
   String getPrettyStart() {
-    return "${startAt.year}/${startAt.month}/${startAt.day}";
+    return '${startAt.year}/${startAt.month}/${startAt.day}';
   }
 
   String getPrettyEnd() {
-    return "${endAt.year}/${endAt.month}/${endAt.day}";
+    return '${endAt.year}/${endAt.month}/${endAt.day}';
   }
 
   Map<String, String> toMap() {
-    return {
-      "start_at": startAt.millisecondsSinceEpoch.toString(),
-      "end_at": endAt.millisecondsSinceEpoch.toString(),
+    return <String, String>{
+      'start_at': startAt.millisecondsSinceEpoch.toString(),
+      'end_at': endAt.millisecondsSinceEpoch.toString(),
     };
   }
 
@@ -68,17 +70,17 @@ class DateTimeInterval {
 }
 
 class TimestampedEntry {
-  final DateTime dateTime;
-  final int number;
-
   TimestampedEntry(this.dateTime, this.number);
 
   TimestampedEntry.fromJSON(Map<String, dynamic> json)
-      : dateTime = DateTime.parse(json["t"]),
-        number = json["y"];
+      : dateTime = DateTime.parse(json['t']),
+        number = json['y'];
+
+  final DateTime dateTime;
+  final int number;
 
   toMap() {
-    return {"t": dateTime.toString(), "y": number};
+    return <String, dynamic>{'t': dateTime.toString(), 'y': number};
   }
 
   @override
@@ -88,7 +90,7 @@ class TimestampedEntry {
 }
 
 Map<String, String> makeAccessTokenHeader(String accessToken) {
-  return {"Authorization": "Bearer $accessToken"};
+  return <String, String>{'Authorization': 'Bearer $accessToken'};
 }
 
 bool isResponseOK(Response response) {
@@ -108,7 +110,7 @@ Exception getAPIException(int statusCode, String msg) {
     case 500:
       return InternalServerErrorException(msg);
     default:
-      return GenericAPIException("http error: $statusCode");
+      return GenericAPIException('http error: $statusCode');
   }
 }
 
@@ -117,8 +119,8 @@ abstract class APIException implements Exception {
 }
 
 class NotFoundException implements APIException {
-  String msg;
   NotFoundException(this.msg);
+  String msg;
 
   @override
   String getFriendlyErrorString(AppLocalizations loc) {
@@ -127,8 +129,8 @@ class NotFoundException implements APIException {
 }
 
 class BadRequestException implements APIException {
-  String msg;
   BadRequestException(this.msg);
+  String msg;
 
   @override
   String getFriendlyErrorString(AppLocalizations loc) {
@@ -137,8 +139,8 @@ class BadRequestException implements APIException {
 }
 
 class InternalServerErrorException implements APIException {
-  String msg;
   InternalServerErrorException(this.msg);
+  String msg;
 
   @override
   String getFriendlyErrorString(AppLocalizations loc) {
@@ -147,8 +149,8 @@ class InternalServerErrorException implements APIException {
 }
 
 class UnauthorizedException implements APIException {
-  String msg;
   UnauthorizedException(this.msg);
+  String msg;
 
   @override
   String getFriendlyErrorString(AppLocalizations loc) {
@@ -157,8 +159,8 @@ class UnauthorizedException implements APIException {
 }
 
 class ForbiddenException implements APIException {
-  String msg;
   ForbiddenException(this.msg);
+  String msg;
 
   @override
   String getFriendlyErrorString(AppLocalizations loc) {
@@ -167,8 +169,8 @@ class ForbiddenException implements APIException {
 }
 
 class GenericAPIException implements APIException {
-  String msg;
   GenericAPIException(this.msg);
+  String msg;
 
   @override
   String getFriendlyErrorString(AppLocalizations loc) {
@@ -176,7 +178,7 @@ class GenericAPIException implements APIException {
   }
 }
 
-String handleSnapshotError(context, error) {
+String handleSnapshotError(BuildContext context, Object? error) {
   switch (error.runtimeType) {
     case APIException:
       return (error as APIException).getFriendlyErrorString(
@@ -185,5 +187,5 @@ String handleSnapshotError(context, error) {
     case TimeoutException:
       return AppLocalizations.of(context)!.errTimeout;
   }
-  return "Error";
+  return 'Error';
 }
