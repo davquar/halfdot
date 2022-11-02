@@ -5,14 +5,14 @@ class LoginRequest {
   final String username;
   final String password;
 
-  Map<String, dynamic> toJSON() => <String, dynamic>{
+  Map<String, dynamic> toJson() => <String, dynamic>{
         'username': username,
         'password': password,
       };
 }
 
-class LoginResponse implements APIModel {
+class LoginResponse implements ApiModel {
   LoginResponse(this.token);
-  LoginResponse.fromJSON(Map<String, dynamic> json) : token = json['token'];
+  LoginResponse.fromJson(Map<String, dynamic> json) : token = json['token'];
   final String token;
 }

@@ -1,1 +1,1 @@
-abstract class APIModel {}
+abstract class ApiModel {}

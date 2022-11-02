@@ -75,7 +75,7 @@ class _LoginPageState extends State<LoginPage> {
                 decoration: InputDecoration(
                   labelText: AppLocalizations.of(context)!.loginUrlLabel,
                   hintText: AppLocalizations.of(context)!.loginUrlHint,
-                  errorText: !_isURLAccepted() ? AppLocalizations.of(context)!.loginUrlErrorLabel : null,
+                  errorText: !_isUrlAccepted() ? AppLocalizations.of(context)!.loginUrlErrorLabel : null,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),
@@ -131,7 +131,7 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  bool _isURLAccepted() {
+  bool _isUrlAccepted() {
     String url = urlController.text;
 
     if (!url.startsWith('https') && !url.contains(':/')) {
@@ -151,7 +151,7 @@ class _LoginPageState extends State<LoginPage> {
 
   _validateForm() {
     setState(() {
-      isFormFilled = _isURLAccepted() && usernameController.text.isNotEmpty && passwordController.text.isNotEmpty;
+      isFormFilled = _isUrlAccepted() && usernameController.text.isNotEmpty && passwordController.text.isNotEmpty;
     });
   }
 
@@ -204,7 +204,7 @@ class _LoginPageState extends State<LoginPage> {
         if (error is NotFoundException) {
           title = loc.connectionError;
           content = loc.errNotFoundWhileLogin;
-        } else if (error is APIException) {
+        } else if (error is ApiException) {
           title = loc.umamiError;
           content = error.getFriendlyErrorString(loc);
         } else {

@@ -4,9 +4,9 @@ import 'package:http/http.dart' as http;
 import 'package:umami/controllers/api_common.dart';
 import 'package:umami/models/api/login.dart';
 
-class LoginController implements APIRequest {
+class LoginController implements ApiRequest {
   LoginController(this.domain, this.loginRequest) {
-    url = getRequestURL();
+    url = getRequestUrl();
   }
 
   final String domain;
@@ -14,7 +14,7 @@ class LoginController implements APIRequest {
   late Uri url;
 
   @override
-  Uri getRequestURL() {
+  Uri getRequestUrl() {
     return Uri.https(domain, 'api/auth/login');
   }
 
@@ -23,14 +23,14 @@ class LoginController implements APIRequest {
     try {
       http.Response response = await http.post(
         url,
-        body: loginRequest.toJSON(),
+        body: loginRequest.toJson(),
       );
 
-      if (!isResponseOK(response)) {
-        throw getAPIException(response.statusCode, 'failed to authenticate');
+      if (!isResponseOk(response)) {
+        throw getApiException(response.statusCode, 'failed to authenticate');
       }
 
-      return LoginResponse.fromJSON(
+      return LoginResponse.fromJson(
         jsonDecode(
           utf8.decode(response.bodyBytes),
         ) as Map<String, dynamic>,

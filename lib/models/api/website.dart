@@ -1,10 +1,10 @@
 import 'package:umami/models/api/common.dart';
 
-class WebsitesResponse implements APIModel {
+class WebsitesResponse implements ApiModel {
   WebsitesResponse(this.websites);
-  WebsitesResponse.fromJSON(List<dynamic> json) {
+  WebsitesResponse.fromJson(List<dynamic> json) {
     for (final dynamic website in json) {
-      websites.add(Website.fromJSON(website));
+      websites.add(Website.fromJson(website));
     }
   }
   List<Website> websites = <Website>[];
@@ -13,7 +13,7 @@ class WebsitesResponse implements APIModel {
 class Website {
   Website(this.id, this.uuid, this.userId, this.name, this.domain, this.createdAt, this.shareId);
 
-  Website.fromJSON(Map<String, dynamic> json)
+  Website.fromJson(Map<String, dynamic> json)
       : id = json['id'],
         uuid = json['websiteUuid'],
         userId = json['userId'],

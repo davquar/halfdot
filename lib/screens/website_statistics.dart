@@ -12,7 +12,7 @@ import 'package:umami/models/api/stats.dart';
 import 'package:umami/models/api/website.dart';
 import 'package:umami/models/ui/datetime_box.dart';
 import 'package:umami/models/ui/error_card.dart';
-import 'package:umami/models/ui/line_plot.dart';
+import 'package:umami/models/ui/line_plot_date_time.dart';
 import 'package:umami/models/ui/progress_indicator_card.dart';
 
 class WebsiteStatisticsPage extends StatefulWidget {

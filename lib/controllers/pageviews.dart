@@ -5,9 +5,9 @@ import 'package:umami/controllers/api_common.dart';
 import 'package:umami/controllers/http_service.dart';
 import 'package:umami/models/api/pageviews.dart';
 
-class PageViewsController implements APIRequest {
+class PageViewsController implements ApiRequest {
   PageViewsController(this.domain, this.accessToken, this.uuid, this.pageViewsRequest) {
-    url = getRequestURL();
+    url = getRequestUrl();
   }
 
   final String domain;
@@ -18,7 +18,7 @@ class PageViewsController implements APIRequest {
   late PageViewsRequest pageViewsRequest;
 
   @override
-  Uri getRequestURL() {
+  Uri getRequestUrl() {
     return Uri.https(
       domain,
       'api/websites/$uuid/pageviews',
@@ -33,11 +33,11 @@ class PageViewsController implements APIRequest {
       makeAccessTokenHeader(accessToken),
     );
 
-    if (!isResponseOK(response)) {
-      throw getAPIException(response.statusCode, 'failed to get page views');
+    if (!isResponseOk(response)) {
+      throw getApiException(response.statusCode, 'failed to get page views');
     }
 
-    return PageViewsResponse.fromJSON(
+    return PageViewsResponse.fromJson(
       jsonDecode(
         utf8.decode(response.bodyBytes),
       ) as Map<String, dynamic>,

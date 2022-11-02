@@ -5,9 +5,9 @@ import 'package:http/http.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:umami/models/api/common.dart';
 
-abstract class APIRequest {
-  Uri getRequestURL();
-  Future<APIModel> doRequest();
+abstract class ApiRequest {
+  Uri getRequestUrl();
+  Future<ApiModel> doRequest();
 }
 
 enum GroupingUnit {
@@ -72,7 +72,7 @@ class DateTimeInterval {
 class TimestampedEntry {
   TimestampedEntry(this.dateTime, this.number);
 
-  TimestampedEntry.fromJSON(Map<String, dynamic> json)
+  TimestampedEntry.fromJson(Map<String, dynamic> json)
       : dateTime = DateTime.parse(json['t']),
         number = json['y'];
 
@@ -93,11 +93,11 @@ Map<String, String> makeAccessTokenHeader(String accessToken) {
   return <String, String>{'Authorization': 'Bearer $accessToken'};
 }
 
-bool isResponseOK(Response response) {
+bool isResponseOk(Response response) {
   return response.statusCode == 200 || response.statusCode == 201;
 }
 
-Exception getAPIException(int statusCode, String msg) {
+Exception getApiException(int statusCode, String msg) {
   switch (statusCode) {
     case 400:
       return BadRequestException(msg);
@@ -110,15 +110,15 @@ Exception getAPIException(int statusCode, String msg) {
     case 500:
       return InternalServerErrorException(msg);
     default:
-      return GenericAPIException('http error: $statusCode');
+      return GenericApiException('http error: $statusCode');
   }
 }
 
-abstract class APIException implements Exception {
+abstract class ApiException implements Exception {
   String getFriendlyErrorString(AppLocalizations loc);
 }
 
-class NotFoundException implements APIException {
+class NotFoundException implements ApiException {
   NotFoundException(this.msg);
   String msg;
 
@@ -128,7 +128,7 @@ class NotFoundException implements APIException {
   }
 }
 
-class BadRequestException implements APIException {
+class BadRequestException implements ApiException {
   BadRequestException(this.msg);
   String msg;
 
@@ -138,7 +138,7 @@ class BadRequestException implements APIException {
   }
 }
 
-class InternalServerErrorException implements APIException {
+class InternalServerErrorException implements ApiException {
   InternalServerErrorException(this.msg);
   String msg;
 
@@ -148,7 +148,7 @@ class InternalServerErrorException implements APIException {
   }
 }
 
-class UnauthorizedException implements APIException {
+class UnauthorizedException implements ApiException {
   UnauthorizedException(this.msg);
   String msg;
 
@@ -158,7 +158,7 @@ class UnauthorizedException implements APIException {
   }
 }
 
-class ForbiddenException implements APIException {
+class ForbiddenException implements ApiException {
   ForbiddenException(this.msg);
   String msg;
 
@@ -168,8 +168,8 @@ class ForbiddenException implements APIException {
   }
 }
 
-class GenericAPIException implements APIException {
-  GenericAPIException(this.msg);
+class GenericApiException implements ApiException {
+  GenericApiException(this.msg);
   String msg;
 
   @override
@@ -180,8 +180,8 @@ class GenericAPIException implements APIException {
 
 String handleSnapshotError(BuildContext context, Object? error) {
   switch (error.runtimeType) {
-    case APIException:
-      return (error as APIException).getFriendlyErrorString(
+    case ApiException:
+      return (error as ApiException).getFriendlyErrorString(
         AppLocalizations.of(context)!,
       );
     case TimeoutException:

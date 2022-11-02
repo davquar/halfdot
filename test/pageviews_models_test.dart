@@ -19,7 +19,7 @@ void main() {
 ''';
 
     dynamic json = jsonDecode(sampleResponse) as Map<String, dynamic>;
-    PageViewsResponse resp = PageViewsResponse.fromJSON(json);
+    PageViewsResponse resp = PageViewsResponse.fromJson(json);
 
     expect(resp.pageViews.length, 2);
     expect(resp.sessions.length, 2);

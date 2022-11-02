@@ -5,9 +5,9 @@ import 'package:umami/controllers/api_common.dart';
 import 'package:umami/controllers/http_service.dart';
 import 'package:umami/models/api/metrics.dart';
 
-class MetricsController implements APIRequest {
+class MetricsController implements ApiRequest {
   MetricsController(this.domain, this.accessToken, this.uuid, this.metricsRequest) {
-    url = getRequestURL();
+    url = getRequestUrl();
   }
 
   final String domain;
@@ -18,7 +18,7 @@ class MetricsController implements APIRequest {
   late MetricsRequest metricsRequest;
 
   @override
-  Uri getRequestURL() {
+  Uri getRequestUrl() {
     return Uri.https(
       domain,
       'api/websites/$uuid/metrics',
@@ -33,11 +33,11 @@ class MetricsController implements APIRequest {
       makeAccessTokenHeader(accessToken),
     );
 
-    if (!isResponseOK(response)) {
-      throw getAPIException(response.statusCode, 'failed to get metrics');
+    if (!isResponseOk(response)) {
+      throw getApiException(response.statusCode, 'failed to get metrics');
     }
 
-    return MetricsResponse.fromJSON(
+    return MetricsResponse.fromJson(
       jsonDecode(
         utf8.decode(response.bodyBytes),
       ),

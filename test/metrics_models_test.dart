@@ -14,7 +14,7 @@ void main() {
 ''';
 
     dynamic json = jsonDecode(sampleResponse);
-    MetricsResponse resp = MetricsResponse.fromJSON(json);
+    MetricsResponse resp = MetricsResponse.fromJson(json);
 
     expect(resp.metrics.length, 3);
     expect(resp.metrics[0].object, '/');

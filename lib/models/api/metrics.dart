@@ -17,11 +17,11 @@ class MetricsRequest {
       };
 }
 
-class MetricsResponse implements APIModel {
+class MetricsResponse implements ApiModel {
   MetricsResponse(this.metrics);
-  MetricsResponse.fromJSON(List<dynamic> json) {
+  MetricsResponse.fromJson(List<dynamic> json) {
     for (final dynamic metric in json) {
-      metrics.add(Metric.fromJSON(metric));
+      metrics.add(Metric.fromJson(metric));
     }
   }
   List<Metric> metrics = <Metric>[];
@@ -29,7 +29,7 @@ class MetricsResponse implements APIModel {
 
 class Metric {
   Metric(this.object, this.number);
-  Metric.fromJSON(Map<String, dynamic> json)
+  Metric.fromJson(Map<String, dynamic> json)
       : object = valueOrNone(json['x']),
         number = valueOrNone(json['y']);
   static const String noneMetric = '(None)';

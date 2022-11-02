@@ -20,18 +20,18 @@ class PageViewsRequest {
       };
 }
 
-class PageViewsResponse implements APIModel {
+class PageViewsResponse implements ApiModel {
   PageViewsResponse(this.pageViews, this.sessions);
 
-  PageViewsResponse.fromJSON(Map<String, dynamic> json) {
+  PageViewsResponse.fromJson(Map<String, dynamic> json) {
     if (json['pageviews'] != null) {
       for (final Map<String, dynamic> entry in json['pageviews']!) {
-        pageViews.add(TimestampedEntry.fromJSON(entry));
+        pageViews.add(TimestampedEntry.fromJson(entry));
       }
     }
     if (json['sessions'] != null) {
       for (final Map<String, dynamic> entry in json['sessions']!) {
-        sessions.add(TimestampedEntry.fromJSON(entry));
+        sessions.add(TimestampedEntry.fromJson(entry));
       }
     }
 

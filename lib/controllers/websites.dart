@@ -6,9 +6,9 @@ import 'package:umami/controllers/api_common.dart';
 import 'package:umami/controllers/http_service.dart';
 import 'package:umami/models/api/website.dart';
 
-class WebsitesController implements APIRequest {
+class WebsitesController implements ApiRequest {
   WebsitesController(this.domain, this.accessToken) {
-    url = getRequestURL();
+    url = getRequestUrl();
   }
 
   final String domain;
@@ -16,7 +16,7 @@ class WebsitesController implements APIRequest {
   late Uri url;
 
   @override
-  Uri getRequestURL() {
+  Uri getRequestUrl() {
     return Uri.https(domain, 'api/websites');
   }
 
@@ -27,11 +27,11 @@ class WebsitesController implements APIRequest {
       makeAccessTokenHeader(accessToken),
     );
 
-    if (!isResponseOK(response)) {
-      throw getAPIException(response.statusCode, 'failed to get website data');
+    if (!isResponseOk(response)) {
+      throw getApiException(response.statusCode, 'failed to get website data');
     }
 
-    return WebsitesResponse.fromJSON(
+    return WebsitesResponse.fromJson(
       jsonDecode(
         utf8.decode(response.bodyBytes),
       ) as List<dynamic>,
