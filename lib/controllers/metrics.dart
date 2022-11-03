@@ -6,7 +6,12 @@ import 'package:umami/controllers/http_service.dart';
 import 'package:umami/models/api/metrics.dart';
 
 class MetricsController implements ApiRequest {
-  MetricsController(this.domain, this.accessToken, this.uuid, this.metricsRequest) {
+  MetricsController(
+    this.domain,
+    this.accessToken,
+    this.uuid,
+    this.metricsRequest,
+  ) {
     url = getRequestUrl();
   }
 

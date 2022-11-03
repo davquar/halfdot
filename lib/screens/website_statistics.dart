@@ -77,7 +77,10 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
                     widget.website.uuid,
                     dateTimeRange,
                   ).doRequest(),
-                  builder: (BuildContext context, AsyncSnapshot<StatsResponse> snapshot) {
+                  builder: (
+                    BuildContext context,
+                    AsyncSnapshot<StatsResponse> snapshot,
+                  ) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return const ProgressIndicatorCard();
                     }
@@ -97,21 +100,27 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
                                 children: <Widget>[
                                   Column(
                                     children: <Widget>[
                                       Text(
                                         snapshot.data!.pageViews.toString(),
-                                        style: Theme.of(context).textTheme.titleLarge,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .titleLarge,
                                       ),
-                                      Text(AppLocalizations.of(context)!.pageViews),
+                                      Text(AppLocalizations.of(context)!
+                                          .pageViews),
                                     ],
                                   ),
                                   Column(children: <Widget>[
                                     Text(
                                       snapshot.data!.uniques.toString(),
-                                      style: Theme.of(context).textTheme.titleLarge,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .titleLarge,
                                     ),
                                     Text(AppLocalizations.of(context)!.uniques),
                                   ]),
@@ -119,18 +128,24 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
                                     children: <Widget>[
                                       Text(
                                         snapshot.data!.bounces.toString(),
-                                        style: Theme.of(context).textTheme.titleLarge,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .titleLarge,
                                       ),
-                                      Text(AppLocalizations.of(context)!.bounces),
+                                      Text(AppLocalizations.of(context)!
+                                          .bounces),
                                     ],
                                   ),
                                   Column(
                                     children: <Widget>[
                                       Text(
                                         snapshot.data!.totalTime.toString(),
-                                        style: Theme.of(context).textTheme.titleLarge,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .titleLarge,
                                       ),
-                                      Text(AppLocalizations.of(context)!.totalTime),
+                                      Text(AppLocalizations.of(context)!
+                                          .totalTime),
                                     ],
                                   ),
                                 ],
@@ -151,7 +166,8 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
                     widget.website.uuid,
                     _makePageViewsRequest(),
                   ).doRequest(),
-                  builder: (BuildContext context, AsyncSnapshot<PageViewsResponse> snapshot) {
+                  builder: (BuildContext context,
+                      AsyncSnapshot<PageViewsResponse> snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return const ProgressIndicatorCard();
                     }
@@ -173,7 +189,9 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
                                 child: Card(
                                   key: const Key('pageViews'),
                                   elevation: 0,
-                                  color: Theme.of(context).colorScheme.surfaceVariant,
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .surfaceVariant,
                                   child: Padding(
                                     padding: const EdgeInsets.only(
                                       top: 16.0,

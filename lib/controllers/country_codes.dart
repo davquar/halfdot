@@ -9,7 +9,9 @@ class CountryCodes {
   late Map<String, dynamic> json;
 
   load() async {
-    String txt = await DefaultAssetBundle.of(context).loadString('assets/territories.json');
+    String txt = await DefaultAssetBundle.of(context).loadString(
+      'assets/territories.json',
+    );
     json = jsonDecode(txt);
   }
 

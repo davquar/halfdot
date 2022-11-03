@@ -6,7 +6,12 @@ import 'package:umami/controllers/http_service.dart';
 import 'package:umami/models/api/pageviews.dart';
 
 class PageViewsController implements ApiRequest {
-  PageViewsController(this.domain, this.accessToken, this.uuid, this.pageViewsRequest) {
+  PageViewsController(
+    this.domain,
+    this.accessToken,
+    this.uuid,
+    this.pageViewsRequest,
+  ) {
     url = getRequestUrl();
   }
 

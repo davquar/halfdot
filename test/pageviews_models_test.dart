@@ -23,6 +23,9 @@ void main() {
 
     expect(resp.pageViews.length, 2);
     expect(resp.sessions.length, 2);
-    expect(resp.pageViews.toString(), '[{t: 2020-04-20 01:00:00.000, y: 3}, {t: 2020-04-20 02:00:00.000, y: 7}]');
+    expect(
+      resp.pageViews.toString(),
+      '[{t: 2020-04-20 01:00:00.000, y: 3}, {t: 2020-04-20 02:00:00.000, y: 7}]',
+    );
   });
 }

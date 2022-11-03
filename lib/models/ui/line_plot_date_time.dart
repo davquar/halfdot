@@ -5,7 +5,8 @@ import 'package:intl/intl.dart';
 import 'package:umami/controllers/api_common.dart';
 
 class LinePlotDateTime extends StatelessWidget {
-  const LinePlotDateTime(this.pageViews, this.sessions, {Key? key}) : super(key: key);
+  const LinePlotDateTime(this.pageViews, this.sessions, {Key? key})
+      : super(key: key);
 
   final List<TimestampedEntry> pageViews;
   final List<TimestampedEntry> sessions;
@@ -55,7 +56,8 @@ class LinePlotDateTime extends StatelessWidget {
           ],
           titlesData: FlTitlesData(
               topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
-              rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+              rightTitles:
+                  AxisTitles(sideTitles: SideTitles(showTitles: false)),
               bottomTitles: AxisTitles(sideTitles: _makeBottomTitles(context)),
               leftTitles: AxisTitles(sideTitles: _makeLeftTitles(context))),
           lineTouchData: LineTouchData(

@@ -75,7 +75,9 @@ class _LoginPageState extends State<LoginPage> {
                 decoration: InputDecoration(
                   labelText: AppLocalizations.of(context)!.loginUrlLabel,
                   hintText: AppLocalizations.of(context)!.loginUrlHint,
-                  errorText: !_isUrlAccepted() ? AppLocalizations.of(context)!.loginUrlErrorLabel : null,
+                  errorText: !_isUrlAccepted()
+                      ? AppLocalizations.of(context)!.loginUrlErrorLabel
+                      : null,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),
@@ -151,7 +153,9 @@ class _LoginPageState extends State<LoginPage> {
 
   _validateForm() {
     setState(() {
-      isFormFilled = _isUrlAccepted() && usernameController.text.isNotEmpty && passwordController.text.isNotEmpty;
+      isFormFilled = _isUrlAccepted() &&
+          usernameController.text.isNotEmpty &&
+          passwordController.text.isNotEmpty;
     });
   }
 

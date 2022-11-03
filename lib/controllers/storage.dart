@@ -40,7 +40,11 @@ class Storage {
     });
   }
 
-  Future<void> writeUmamiCredentials(String domain, String accessToken, String username) {
+  Future<void> writeUmamiCredentials(
+    String domain,
+    String accessToken,
+    String username,
+  ) {
     return _storage.write(key: _keyDomain, value: domain).then(
           (_) => _storage.write(key: _keyAccessToken, value: accessToken).then(
                 (_) => _storage.write(key: _keyUsername, value: username).then(

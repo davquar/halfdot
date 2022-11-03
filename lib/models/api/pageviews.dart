@@ -2,7 +2,10 @@ import 'package:umami/controllers/api_common.dart';
 import 'package:umami/models/api/common.dart';
 
 class PageViewsRequest {
-  PageViewsRequest({required DateTimeInterval period, this.groupingUnit = GroupingUnit.day}) {
+  PageViewsRequest({
+    required DateTimeInterval period,
+    this.groupingUnit = GroupingUnit.day,
+  }) {
     startAt = period.startAt.millisecondsSinceEpoch;
     endAt = period.endAt.millisecondsSinceEpoch;
   }
@@ -35,8 +38,16 @@ class PageViewsResponse implements ApiModel {
       }
     }
 
-    pageViews.sort((TimestampedEntry a, TimestampedEntry b) => a.dateTime.difference(b.dateTime).inMilliseconds);
-    sessions.sort((TimestampedEntry a, TimestampedEntry b) => a.dateTime.difference(b.dateTime).inMilliseconds);
+    pageViews.sort((
+      TimestampedEntry a,
+      TimestampedEntry b,
+    ) =>
+        a.dateTime.difference(b.dateTime).inMilliseconds);
+    sessions.sort((
+      TimestampedEntry a,
+      TimestampedEntry b,
+    ) =>
+        a.dateTime.difference(b.dateTime).inMilliseconds);
   }
 
   List<TimestampedEntry> pageViews = <TimestampedEntry>[];

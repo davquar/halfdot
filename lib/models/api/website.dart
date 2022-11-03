@@ -11,7 +11,15 @@ class WebsitesResponse implements ApiModel {
 }
 
 class Website {
-  Website(this.id, this.uuid, this.userId, this.name, this.domain, this.createdAt, this.shareId);
+  Website(
+    this.id,
+    this.uuid,
+    this.userId,
+    this.name,
+    this.domain,
+    this.createdAt,
+    this.shareId,
+  );
 
   Website.fromJson(Map<String, dynamic> json)
       : id = json['id'],

@@ -15,7 +15,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DynamicColorBuilder(
-      builder: (ColorScheme? lightDynamic, ColorScheme? darkDynamic) => MaterialApp(
+      builder: (
+        ColorScheme? lightDynamic,
+        ColorScheme? darkDynamic,
+      ) =>
+          MaterialApp(
         title: 'Umami',
         theme: ThemeData(
           useMaterial3: true,
