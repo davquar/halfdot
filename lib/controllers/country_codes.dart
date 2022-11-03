@@ -3,20 +3,22 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 
 class CountryCodes {
+  CountryCodes(this.context);
+
   final BuildContext context;
   late Map<String, dynamic> json;
 
-  CountryCodes(this.context);
-
   load() async {
-    String txt = await DefaultAssetBundle.of(context).loadString("assets/territories.json");
+    String txt = await DefaultAssetBundle.of(context).loadString(
+      'assets/territories.json',
+    );
     json = jsonDecode(txt);
   }
 
-  String getCountry(code) {
+  String getCountry(String code) {
     try {
-      return json["main"]["en"]["localeDisplayNames"]["territories"][code];
-    } catch (e) {
+      return json['main']['en']['localeDisplayNames']['territories'][code];
+    } on Exception {
       return code;
     }
   }
@@ -79,5 +81,3 @@ class CountryCodes {
 // not be used in advertising or otherwise to promote the sale, use or other
 // dealings in these Data Files or Software without prior written authorization
 // of the copyright holder.
-
-

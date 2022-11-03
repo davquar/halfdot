@@ -1,10 +1,15 @@
 import 'dart:convert';
 
+import 'package:http/http.dart';
 import 'package:umami/controllers/api_common.dart';
 import 'package:umami/controllers/http_service.dart';
 import 'package:umami/models/api/stats.dart';
 
-class StatsController implements APIRequest {
+class StatsController implements ApiRequest {
+  StatsController(this.domain, this.accessToken, this.uuid, this.period) {
+    url = getRequestUrl();
+  }
+
   final String domain;
   final String accessToken;
   final String uuid;
@@ -12,31 +17,27 @@ class StatsController implements APIRequest {
 
   final DateTimeInterval period;
 
-  StatsController(this.domain, this.accessToken, this.uuid, this.period) {
-    url = getRequestURL();
-  }
-
   @override
-  Uri getRequestURL() {
+  Uri getRequestUrl() {
     return Uri.https(
       domain,
-      "api/websites/$uuid/stats",
+      'api/websites/$uuid/stats',
       period.toMap(),
     );
   }
 
   @override
   Future<StatsResponse> doRequest() async {
-    var response = await HttpService.get(
+    Response response = await HttpService.get(
       url,
       makeAccessTokenHeader(accessToken),
     );
 
-    if (!isResponseOK(response)) {
-      throw getAPIException(response.statusCode, "failed to get statistics");
+    if (!isResponseOk(response)) {
+      throw getApiException(response.statusCode, 'failed to get statistics');
     }
 
-    return StatsResponse.fromJSON(
+    return StatsResponse.fromJson(
       jsonDecode(
         utf8.decode(response.bodyBytes),
       ) as Map<String, dynamic>,

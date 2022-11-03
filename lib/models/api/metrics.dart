@@ -1,46 +1,42 @@
 import 'package:umami/controllers/api_common.dart';
+import 'package:umami/models/api/common.dart';
 
 class MetricsRequest {
-  late int startAt;
-  late int endAt;
-  final MetricType type;
-
   MetricsRequest(DateTimeInterval period, this.type) {
     startAt = period.startAt.millisecondsSinceEpoch;
     endAt = period.endAt.millisecondsSinceEpoch;
   }
+  late int startAt;
+  late int endAt;
+  final MetricType type;
 
-  Map<String, String> toMap() => {
-        "start_at": startAt.toString(),
-        "end_at": endAt.toString(),
-        "type": type.value,
+  Map<String, String> toMap() => <String, String>{
+        'start_at': startAt.toString(),
+        'end_at': endAt.toString(),
+        'type': type.value,
       };
 }
 
-class MetricsResponse {
-  List<Metric> metrics = [];
-
+class MetricsResponse implements ApiModel {
   MetricsResponse(this.metrics);
-
-  MetricsResponse.fromJSON(List<dynamic> json) {
-    for (var metric in json) {
-      metrics.add(Metric.fromJSON(metric));
+  MetricsResponse.fromJson(List<dynamic> json) {
+    for (final dynamic metric in json) {
+      metrics.add(Metric.fromJson(metric));
     }
   }
+  List<Metric> metrics = <Metric>[];
 }
 
 class Metric {
-  static const noneMetric = "(None)";
+  Metric(this.object, this.number);
+  Metric.fromJson(Map<String, dynamic> json)
+      : object = valueOrNone(json['x']),
+        number = valueOrNone(json['y']);
+  static const String noneMetric = '(None)';
   final String object;
   final int number;
 
-  Metric(this.object, this.number);
-
-  Metric.fromJSON(Map<String, dynamic> json)
-      : object = valueOrNone(json["x"]),
-        number = valueOrNone(json["y"]);
-
-  static dynamic valueOrNone(value) {
+  static dynamic valueOrNone(dynamic value) {
     if (value == null) {
       return noneMetric;
     }
@@ -52,14 +48,14 @@ class Metric {
 }
 
 enum MetricType {
-  url("url"),
-  referrer("referrer"),
-  browser("browser"),
-  os("os"),
-  device("device"),
-  country("country"),
-  event("event");
+  url('url'),
+  referrer('referrer'),
+  browser('browser'),
+  os('os'),
+  device('device'),
+  country('country'),
+  event('event');
 
-  final String value;
   const MetricType(this.value);
+  final String value;
 }

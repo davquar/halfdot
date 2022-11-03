@@ -12,13 +12,13 @@ import 'package:umami/models/api/stats.dart';
 import 'package:umami/models/api/website.dart';
 import 'package:umami/models/ui/datetime_box.dart';
 import 'package:umami/models/ui/error_card.dart';
-import 'package:umami/models/ui/line_plot.dart';
+import 'package:umami/models/ui/line_plot_date_time.dart';
 import 'package:umami/models/ui/progress_indicator_card.dart';
 
 class WebsiteStatisticsPage extends StatefulWidget {
-  final Website website;
+  const WebsiteStatisticsPage({required this.website, super.key});
 
-  const WebsiteStatisticsPage({super.key, required this.website});
+  final Website website;
 
   @override
   State<WebsiteStatisticsPage> createState() => _WebsiteStatisticsPageState();
@@ -28,11 +28,11 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
   DateTimeInterval dateTimeRange = DateTimeInterval.getLast7Days();
   late CountryCodes _countryCodes;
 
-  final Key _metricsURLs = const Key("metricsURLs");
-  final Key _metricsReferrers = const Key("metricsReferrers");
-  final Key _metricsOS = const Key("metricsOS");
-  final Key _metricsDevices = const Key("metricsDevices");
-  final Key _metricsCountries = const Key("metricsCountries");
+  final Key _metricsURLs = const Key('metricsURLs');
+  final Key _metricsReferrers = const Key('metricsReferrers');
+  final Key _metricsOS = const Key('metricsOS');
+  final Key _metricsDevices = const Key('metricsDevices');
+  final Key _metricsCountries = const Key('metricsCountries');
 
   @override
   Widget build(BuildContext context) {
@@ -53,11 +53,11 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
+              children: <Widget>[
                 DateTimeBox(
-                  key: const Key("dateRange"),
+                  key: const Key('dateRange'),
                   text: dateTimeRange.getPretty(),
-                  onPressed: () => _showDateRangePicker(),
+                  onPressed: _showDateRangePicker,
                 ),
               ],
             ),
@@ -65,10 +65,10 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
         ),
       ),
       body: Column(
-        children: [
+        children: <Widget>[
           Expanded(
             child: ListView(
-              children: [
+              children: <Widget>[
                 _makeCardTitle(AppLocalizations.of(context)!.summary),
                 FutureBuilder<StatsResponse>(
                   future: StatsController(
@@ -77,7 +77,10 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
                     widget.website.uuid,
                     dateTimeRange,
                   ).doRequest(),
-                  builder: (context, snapshot) {
+                  builder: (
+                    BuildContext context,
+                    AsyncSnapshot<StatsResponse> snapshot,
+                  ) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return const ProgressIndicatorCard();
                     }
@@ -88,49 +91,61 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
                     }
                     if (snapshot.hasData) {
                       return Card(
-                        key: const Key("summary"),
+                        key: const Key('summary'),
                         elevation: 0,
                         color: Theme.of(context).colorScheme.surfaceVariant,
                         child: Padding(
                           padding: const EdgeInsets.all(16.0),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
+                            children: <Widget>[
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                children: [
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: <Widget>[
                                   Column(
-                                    children: [
+                                    children: <Widget>[
                                       Text(
                                         snapshot.data!.pageViews.toString(),
-                                        style: Theme.of(context).textTheme.titleLarge,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .titleLarge,
                                       ),
-                                      Text(AppLocalizations.of(context)!.pageViews),
+                                      Text(AppLocalizations.of(context)!
+                                          .pageViews),
                                     ],
                                   ),
-                                  Column(children: [
+                                  Column(children: <Widget>[
                                     Text(
                                       snapshot.data!.uniques.toString(),
-                                      style: Theme.of(context).textTheme.titleLarge,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .titleLarge,
                                     ),
                                     Text(AppLocalizations.of(context)!.uniques),
                                   ]),
                                   Column(
-                                    children: [
+                                    children: <Widget>[
                                       Text(
                                         snapshot.data!.bounces.toString(),
-                                        style: Theme.of(context).textTheme.titleLarge,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .titleLarge,
                                       ),
-                                      Text(AppLocalizations.of(context)!.bounces),
+                                      Text(AppLocalizations.of(context)!
+                                          .bounces),
                                     ],
                                   ),
                                   Column(
-                                    children: [
+                                    children: <Widget>[
                                       Text(
                                         snapshot.data!.totalTime.toString(),
-                                        style: Theme.of(context).textTheme.titleLarge,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .titleLarge,
                                       ),
-                                      Text(AppLocalizations.of(context)!.totalTime),
+                                      Text(AppLocalizations.of(context)!
+                                          .totalTime),
                                     ],
                                   ),
                                 ],
@@ -151,7 +166,8 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
                     widget.website.uuid,
                     _makePageViewsRequest(),
                   ).doRequest(),
-                  builder: (context, snapshot) {
+                  builder: (BuildContext context,
+                      AsyncSnapshot<PageViewsResponse> snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return const ProgressIndicatorCard();
                     }
@@ -165,15 +181,17 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
                         return Container();
                       }
                       return Column(
-                        children: [
+                        children: <Widget>[
                           _makePageViewsCardTitle(),
                           Row(
-                            children: [
+                            children: <Widget>[
                               Expanded(
                                 child: Card(
-                                  key: const Key("pageViews"),
+                                  key: const Key('pageViews'),
                                   elevation: 0,
-                                  color: Theme.of(context).colorScheme.surfaceVariant,
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .surfaceVariant,
                                   child: Padding(
                                     padding: const EdgeInsets.only(
                                       top: 16.0,
@@ -240,7 +258,7 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
         widget.website.uuid,
         _makeMetricsRequest(type),
       ).doRequest(),
-      builder: (context, snapshot) {
+      builder: (BuildContext context, AsyncSnapshot<MetricsResponse> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const ProgressIndicatorCard();
         }
@@ -257,12 +275,12 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Column(
-                children: [
+                children: <Widget>[
                   ...ListTile.divideTiles(
                     context: context,
-                    tiles: [
+                    tiles: <Widget>[
                       ...snapshot.data!.metrics.map(
-                        (e) => ListTile(
+                        (Metric e) => ListTile(
                           title: Text(
                             _processListTileData(e.object, cardKey),
                             style: Theme.of(context).textTheme.bodyMedium,
@@ -305,10 +323,10 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
 
   Padding _makePageViewsCardTitle() {
     return Padding(
-        key: const Key("pageViewsTitle"),
+        key: const Key('pageViewsTitle'),
         padding: const EdgeInsets.only(left: 18, top: 8),
         child: Row(
-          children: [
+          children: <Widget>[
             Icon(
               Icons.circle,
               color: Theme.of(context).colorScheme.background,
@@ -344,7 +362,7 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
       firstDate: DateTime(2010, 01, 01),
       lastDate: DateTime.now(),
       currentDate: dateTimeRange.startAt,
-    ).then((value) {
+    ).then((DateTimeRange? value) {
       if (value == null) {
         return;
       }

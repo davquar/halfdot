@@ -1,10 +1,20 @@
 import 'dart:convert';
 
+import 'package:http/http.dart';
 import 'package:umami/controllers/api_common.dart';
 import 'package:umami/controllers/http_service.dart';
 import 'package:umami/models/api/metrics.dart';
 
-class MetricsController implements APIRequest {
+class MetricsController implements ApiRequest {
+  MetricsController(
+    this.domain,
+    this.accessToken,
+    this.uuid,
+    this.metricsRequest,
+  ) {
+    url = getRequestUrl();
+  }
+
   final String domain;
   final String accessToken;
   final String uuid;
@@ -12,31 +22,27 @@ class MetricsController implements APIRequest {
 
   late MetricsRequest metricsRequest;
 
-  MetricsController(this.domain, this.accessToken, this.uuid, this.metricsRequest) {
-    url = getRequestURL();
-  }
-
   @override
-  Uri getRequestURL() {
+  Uri getRequestUrl() {
     return Uri.https(
       domain,
-      "api/websites/$uuid/metrics",
+      'api/websites/$uuid/metrics',
       metricsRequest.toMap(),
     );
   }
 
   @override
   Future<MetricsResponse> doRequest() async {
-    var response = await HttpService.get(
+    Response response = await HttpService.get(
       url,
       makeAccessTokenHeader(accessToken),
     );
 
-    if (!isResponseOK(response)) {
-      throw getAPIException(response.statusCode, "failed to get metrics");
+    if (!isResponseOk(response)) {
+      throw getApiException(response.statusCode, 'failed to get metrics');
     }
 
-    return MetricsResponse.fromJSON(
+    return MetricsResponse.fromJson(
       jsonDecode(
         utf8.decode(response.bodyBytes),
       ),

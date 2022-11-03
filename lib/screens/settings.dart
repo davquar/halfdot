@@ -13,7 +13,7 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  var storage = Storage.instance;
+  Storage storage = Storage.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -23,14 +23,14 @@ class _SettingsPageState extends State<SettingsPage> {
         ),
         body: SingleChildScrollView(
           child: Column(
-            children: [
+            children: <Widget>[
               ListTile(
                 leading: const Icon(Icons.person),
                 title: Text(AppLocalizations.of(context)!.userProfile),
-                subtitle: Text("${storage.username}\n@${storage.domain}"),
+                subtitle: Text('${storage.username}\n@${storage.domain}'),
                 trailing: OutlinedButton(
+                  onPressed: _logout,
                   child: const Icon(Icons.logout),
-                  onPressed: () => _logout(),
                 ),
               ),
             ],
@@ -42,9 +42,9 @@ class _SettingsPageState extends State<SettingsPage> {
     storage.clear();
     Navigator.pushAndRemoveUntil(
         context,
-        MaterialPageRoute<dynamic>(
+        MaterialPageRoute<LoginPage>(
           builder: (BuildContext context) => const LoginPage(),
         ),
-        (route) => false);
+        (Route<dynamic> route) => false);
   }
 }

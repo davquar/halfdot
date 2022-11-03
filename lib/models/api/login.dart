@@ -1,19 +1,18 @@
+import 'package:umami/models/api/common.dart';
+
 class LoginRequest {
+  LoginRequest(this.username, this.password);
   final String username;
   final String password;
 
-  LoginRequest(this.username, this.password);
-
-  Map<String, dynamic> toJSON() => {
-        "username": username,
-        "password": password,
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'username': username,
+        'password': password,
       };
 }
 
-class LoginResponse {
-  final String token;
-
+class LoginResponse implements ApiModel {
   LoginResponse(this.token);
-
-  LoginResponse.fromJSON(Map<String, dynamic> json) : token = json["token"];
+  LoginResponse.fromJson(Map<String, dynamic> json) : token = json['token'];
+  final String token;
 }
