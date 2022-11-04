@@ -1,9 +1,11 @@
 import 'package:umami/controllers/api_common.dart';
 import 'package:umami/models/api/common.dart';
+import 'package:umami/models/api/filter.dart';
 
 class PageViewsRequest {
   PageViewsRequest({
     required DateTimeInterval period,
+    this.filter,
     this.groupingUnit = GroupingUnit.day,
   }) {
     startAt = period.startAt.millisecondsSinceEpoch;
@@ -12,15 +14,21 @@ class PageViewsRequest {
 
   late int startAt;
   late int endAt;
+  late Filter? filter;
   late GroupingUnit groupingUnit;
   final String tz = 'Europe/Rome';
 
-  Map<String, String> toMap() => <String, String>{
-        'start_at': startAt.toString(),
-        'end_at': endAt.toString(),
-        'unit': groupingUnit.value,
-        'tz': tz,
-      };
+  Map<String, String> toMap() {
+    Map<String, String> map = <String, String>{
+      'start_at': startAt.toString(),
+      'end_at': endAt.toString(),
+      'unit': groupingUnit.value,
+      'tz': tz,
+    };
+
+    if (filter != null) map.addAll(filter!.toMap());
+    return map;
+  }
 }
 
 class PageViewsResponse implements ApiModel {

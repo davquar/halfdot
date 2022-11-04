@@ -3,10 +3,12 @@ import 'dart:convert';
 import 'package:http/http.dart';
 import 'package:umami/controllers/api_common.dart';
 import 'package:umami/controllers/http_service.dart';
+import 'package:umami/models/api/filter.dart';
 import 'package:umami/models/api/stats.dart';
 
 class StatsController implements ApiRequest {
-  StatsController(this.domain, this.accessToken, this.uuid, this.period) {
+  StatsController(
+      this.domain, this.accessToken, this.uuid, this.period, this.filter) {
     url = getRequestUrl();
   }
 
@@ -14,15 +16,19 @@ class StatsController implements ApiRequest {
   final String accessToken;
   final String uuid;
   late Uri url;
+  late Filter? filter;
 
   final DateTimeInterval period;
 
   @override
   Uri getRequestUrl() {
+    Map<String, String> map = period.toMap();
+    if (filter != null) map.addAll(filter!.toMap());
+
     return Uri.https(
       domain,
       'api/websites/$uuid/stats',
-      period.toMap(),
+      map,
     );
   }
 

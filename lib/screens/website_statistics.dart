@@ -6,6 +6,7 @@ import 'package:umami/controllers/metrics.dart';
 import 'package:umami/controllers/pageviews.dart';
 import 'package:umami/controllers/stats.dart';
 import 'package:umami/controllers/storage.dart';
+import 'package:umami/models/api/filter.dart';
 import 'package:umami/models/api/metrics.dart';
 import 'package:umami/models/api/pageviews.dart';
 import 'package:umami/models/api/stats.dart';
@@ -27,6 +28,7 @@ class WebsiteStatisticsPage extends StatefulWidget {
 class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
   DateTimeInterval dateTimeRange = DateTimeInterval.getLast7Days();
   late CountryCodes _countryCodes;
+  final Filter _filter = Filter();
 
   final Key _metricsURLs = const Key('metricsURLs');
   final Key _metricsReferrers = const Key('metricsReferrers');
@@ -76,6 +78,7 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
                     Storage.instance.accessToken!,
                     widget.website.uuid,
                     dateTimeRange,
+                    _filter,
                   ).doRequest(),
                   builder: (
                     BuildContext context,
@@ -216,27 +219,27 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
                 ),
                 _makeCardTitle(AppLocalizations.of(context)!.urls),
                 _makeMetricsFutureBuilder(
-                  type: MetricType.url,
+                  metricType: MetricType.url,
                   cardKey: _metricsURLs,
                 ),
                 _makeCardTitle(AppLocalizations.of(context)!.referrers),
                 _makeMetricsFutureBuilder(
-                  type: MetricType.referrer,
+                  metricType: MetricType.referrer,
                   cardKey: _metricsReferrers,
                 ),
                 _makeCardTitle(AppLocalizations.of(context)!.os),
                 _makeMetricsFutureBuilder(
-                  type: MetricType.os,
+                  metricType: MetricType.os,
                   cardKey: _metricsOS,
                 ),
                 _makeCardTitle(AppLocalizations.of(context)!.devices),
                 _makeMetricsFutureBuilder(
-                  type: MetricType.device,
+                  metricType: MetricType.device,
                   cardKey: _metricsDevices,
                 ),
                 _makeCardTitle(AppLocalizations.of(context)!.countries),
                 _makeMetricsFutureBuilder(
-                  type: MetricType.country,
+                  metricType: MetricType.country,
                   cardKey: _metricsCountries,
                 ),
               ],
@@ -244,11 +247,14 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
           ),
         ],
       ),
+      bottomNavigationBar: BottomAppBar(
+        child: Text(_filter.toMap().toString()),
+      ),
     );
   }
 
   FutureBuilder<MetricsResponse> _makeMetricsFutureBuilder({
-    required MetricType type,
+    required MetricType metricType,
     required Key cardKey,
   }) {
     return FutureBuilder<MetricsResponse>(
@@ -256,7 +262,7 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
         Storage.instance.domain!,
         Storage.instance.accessToken!,
         widget.website.uuid,
-        _makeMetricsRequest(type),
+        _makeMetricsRequest(metricType),
       ).doRequest(),
       builder: (BuildContext context, AsyncSnapshot<MetricsResponse> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
@@ -289,6 +295,9 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
                           contentPadding: const EdgeInsets.symmetric(
                             horizontal: 1,
                           ),
+                          onTap: () => setState(() {
+                            _filter.add(metricType, e.object);
+                          }),
                         ),
                       ),
                     ],
@@ -378,10 +387,17 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
   }
 
   PageViewsRequest _makePageViewsRequest() {
-    return PageViewsRequest(period: dateTimeRange);
+    return PageViewsRequest(
+      period: dateTimeRange,
+      filter: _filter,
+    );
   }
 
   MetricsRequest _makeMetricsRequest(MetricType type) {
-    return MetricsRequest(dateTimeRange, type);
+    return MetricsRequest(
+      period: dateTimeRange,
+      metricType: type,
+      filter: _filter,
+    );
   }
 }
