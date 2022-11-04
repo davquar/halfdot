@@ -207,6 +207,7 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
                 ),
                 _makeCard(MetricType.url),
                 _makeCard(MetricType.referrer),
+                _makeCard(MetricType.browser),
                 _makeCard(MetricType.os),
                 _makeCard(MetricType.device),
                 _makeCard(MetricType.country),
