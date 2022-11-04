@@ -27,7 +27,7 @@ class _SettingsPageState extends State<SettingsPage> {
               ListTile(
                 leading: const Icon(Icons.person),
                 title: Text(AppLocalizations.of(context)!.userProfile),
-                subtitle: Text('${storage.username}\n@${storage.domain}'),
+                subtitle: Text('${storage.username}\n${storage.domain}'),
                 trailing: OutlinedButton(
                   onPressed: _logout,
                   child: const Icon(Icons.logout),

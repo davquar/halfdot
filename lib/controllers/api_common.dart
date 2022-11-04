@@ -43,6 +43,10 @@ class DateTimeInterval {
     return '${endAt.year}/${endAt.month}/${endAt.day}';
   }
 
+  int getNumDays() {
+    return endAt.difference(startAt).inDays + 1;
+  }
+
   Map<String, String> toMap() {
     return <String, String>{
       'start_at': startAt.millisecondsSinceEpoch.toString(),

@@ -52,7 +52,8 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
               children: <Widget>[
                 DateTimeBox(
                   key: const Key('dateRange'),
-                  text: dateTimeRange.getPretty(),
+                  text:
+                      '${dateTimeRange.getPretty()} (${dateTimeRange.getNumDays()}d)',
                   onPressed: _showDateRangePicker,
                 ),
               ],
