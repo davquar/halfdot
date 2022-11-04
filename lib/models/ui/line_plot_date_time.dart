@@ -13,6 +13,10 @@ class LinePlotDateTime extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (pageViews.isEmpty || sessions.isEmpty) {
+      return const SizedBox();
+    }
+
     return AspectRatio(
       aspectRatio: 2,
       child: LineChart(

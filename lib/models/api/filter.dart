@@ -45,6 +45,25 @@ class Filter {
     }
   }
 
+  bool isActive(MetricType metricType) {
+    switch (metricType) {
+      case MetricType.url:
+        return isUrlActive();
+      case MetricType.referrer:
+        return isReferrerActive();
+      case MetricType.browser:
+        return isBrowserActive();
+      case MetricType.os:
+        return isOsActive();
+      case MetricType.device:
+        return isDeviceActive();
+      case MetricType.country:
+        return isCountryCodeActive();
+      case MetricType.event:
+        return isEventActive();
+    }
+  }
+
   bool isUrlActive() {
     return url != null;
   }

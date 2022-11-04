@@ -30,12 +30,6 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
   late CountryCodes _countryCodes;
   final Filter _filter = Filter();
 
-  final Key _metricsURLs = const Key('metricsURLs');
-  final Key _metricsReferrers = const Key('metricsReferrers');
-  final Key _metricsOS = const Key('metricsOS');
-  final Key _metricsDevices = const Key('metricsDevices');
-  final Key _metricsCountries = const Key('metricsCountries');
-
   @override
   Widget build(BuildContext context) {
     _countryCodes = CountryCodes(context);
@@ -169,8 +163,10 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
                     widget.website.uuid,
                     _makePageViewsRequest(),
                   ).doRequest(),
-                  builder: (BuildContext context,
-                      AsyncSnapshot<PageViewsResponse> snapshot) {
+                  builder: (
+                    BuildContext context,
+                    AsyncSnapshot<PageViewsResponse> snapshot,
+                  ) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return const ProgressIndicatorCard();
                     }
@@ -180,35 +176,27 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
                       );
                     }
                     if (snapshot.hasData) {
-                      if (snapshot.data!.pageViews.length == 1) {
-                        return Container();
+                      if (snapshot.data!.pageViews.length <= 1) {
+                        return const SizedBox();
                       }
                       return Column(
                         children: <Widget>[
                           _makePageViewsCardTitle(),
-                          Row(
-                            children: <Widget>[
-                              Expanded(
-                                child: Card(
-                                  key: const Key('pageViews'),
-                                  elevation: 0,
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .surfaceVariant,
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(
-                                      top: 16.0,
-                                      bottom: 16.0,
-                                      right: 16.0,
-                                    ),
-                                    child: LinePlotDateTime(
-                                      snapshot.data!.pageViews,
-                                      snapshot.data!.sessions,
-                                    ),
-                                  ),
-                                ),
+                          Card(
+                            key: const Key('pageViews'),
+                            elevation: 0,
+                            color: Theme.of(context).colorScheme.surfaceVariant,
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                top: 16.0,
+                                bottom: 16.0,
+                                right: 16.0,
                               ),
-                            ],
+                              child: LinePlotDateTime(
+                                snapshot.data!.pageViews,
+                                snapshot.data!.sessions,
+                              ),
+                            ),
                           ),
                         ],
                       );
@@ -217,31 +205,11 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
                     }
                   },
                 ),
-                _makeCardTitle(AppLocalizations.of(context)!.urls),
-                _makeMetricsFutureBuilder(
-                  metricType: MetricType.url,
-                  cardKey: _metricsURLs,
-                ),
-                _makeCardTitle(AppLocalizations.of(context)!.referrers),
-                _makeMetricsFutureBuilder(
-                  metricType: MetricType.referrer,
-                  cardKey: _metricsReferrers,
-                ),
-                _makeCardTitle(AppLocalizations.of(context)!.os),
-                _makeMetricsFutureBuilder(
-                  metricType: MetricType.os,
-                  cardKey: _metricsOS,
-                ),
-                _makeCardTitle(AppLocalizations.of(context)!.devices),
-                _makeMetricsFutureBuilder(
-                  metricType: MetricType.device,
-                  cardKey: _metricsDevices,
-                ),
-                _makeCardTitle(AppLocalizations.of(context)!.countries),
-                _makeMetricsFutureBuilder(
-                  metricType: MetricType.country,
-                  cardKey: _metricsCountries,
-                ),
+                _makeCard(MetricType.url),
+                _makeCard(MetricType.referrer),
+                _makeCard(MetricType.os),
+                _makeCard(MetricType.device),
+                _makeCard(MetricType.country),
               ],
             ),
           ),
@@ -253,10 +221,9 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
     );
   }
 
-  FutureBuilder<MetricsResponse> _makeMetricsFutureBuilder({
-    required MetricType metricType,
-    required Key cardKey,
-  }) {
+  FutureBuilder<MetricsResponse> _makeMetricsFutureBuilder(
+    MetricType metricType,
+  ) {
     return FutureBuilder<MetricsResponse>(
       future: MetricsController(
         Storage.instance.domain!,
@@ -275,7 +242,6 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
         }
         if (snapshot.hasData) {
           return Card(
-            key: cardKey,
             elevation: 0,
             color: Theme.of(context).colorScheme.surfaceVariant,
             child: Padding(
@@ -288,7 +254,7 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
                       ...snapshot.data!.metrics.map(
                         (Metric e) => ListTile(
                           title: Text(
-                            _processListTileData(e.object, cardKey),
+                            _processListTileData(e.object, metricType),
                             style: Theme.of(context).textTheme.bodyMedium,
                           ),
                           trailing: Text(e.number.toString()),
@@ -313,11 +279,50 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
     );
   }
 
-  String _processListTileData(String data, Key key) {
-    if (key == _metricsCountries) {
+  String _processListTileData(String data, MetricType metricType) {
+    if (metricType == MetricType.country) {
       return _countryCodes.getCountry(data);
     }
     return data;
+  }
+
+  Widget _makeCard(MetricType metricType) {
+    String title = '';
+
+    switch (metricType) {
+      case MetricType.url:
+        title = AppLocalizations.of(context)!.urls;
+        break;
+      case MetricType.referrer:
+        title = AppLocalizations.of(context)!.referrers;
+        break;
+      case MetricType.browser:
+        title = AppLocalizations.of(context)!.browsers;
+        break;
+      case MetricType.device:
+        title = AppLocalizations.of(context)!.devices;
+        break;
+      case MetricType.os:
+        title = AppLocalizations.of(context)!.os;
+        break;
+      case MetricType.country:
+        title = AppLocalizations.of(context)!.countries;
+        break;
+      case MetricType.event:
+        title = AppLocalizations.of(context)!.events;
+        break;
+    }
+
+    return Visibility(
+      visible: !_filter.isActive(metricType),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          _makeCardTitle(title),
+          _makeMetricsFutureBuilder(metricType),
+        ],
+      ),
+    );
   }
 
   Padding _makeCardTitle(String title) {
