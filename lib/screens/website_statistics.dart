@@ -6,6 +6,7 @@ import 'package:umami/controllers/metrics.dart';
 import 'package:umami/controllers/pageviews.dart';
 import 'package:umami/controllers/stats.dart';
 import 'package:umami/controllers/storage.dart';
+import 'package:umami/models/api/filter.dart';
 import 'package:umami/models/api/metrics.dart';
 import 'package:umami/models/api/pageviews.dart';
 import 'package:umami/models/api/stats.dart';
@@ -27,12 +28,7 @@ class WebsiteStatisticsPage extends StatefulWidget {
 class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
   DateTimeInterval dateTimeRange = DateTimeInterval.getLast7Days();
   late CountryCodes _countryCodes;
-
-  final Key _metricsURLs = const Key('metricsURLs');
-  final Key _metricsReferrers = const Key('metricsReferrers');
-  final Key _metricsOS = const Key('metricsOS');
-  final Key _metricsDevices = const Key('metricsDevices');
-  final Key _metricsCountries = const Key('metricsCountries');
+  final Filter _filter = Filter();
 
   @override
   Widget build(BuildContext context) {
@@ -76,13 +72,14 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
                     Storage.instance.accessToken!,
                     widget.website.uuid,
                     dateTimeRange,
+                    _filter,
                   ).doRequest(),
                   builder: (
                     BuildContext context,
                     AsyncSnapshot<StatsResponse> snapshot,
                   ) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const ProgressIndicatorCard();
+                      return const Center(child: ProgressIndicatorCard());
                     }
                     if (snapshot.hasError) {
                       return ErrorCard(
@@ -166,8 +163,10 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
                     widget.website.uuid,
                     _makePageViewsRequest(),
                   ).doRequest(),
-                  builder: (BuildContext context,
-                      AsyncSnapshot<PageViewsResponse> snapshot) {
+                  builder: (
+                    BuildContext context,
+                    AsyncSnapshot<PageViewsResponse> snapshot,
+                  ) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return const ProgressIndicatorCard();
                     }
@@ -177,35 +176,27 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
                       );
                     }
                     if (snapshot.hasData) {
-                      if (snapshot.data!.pageViews.length == 1) {
-                        return Container();
+                      if (snapshot.data!.pageViews.length <= 1) {
+                        return const SizedBox();
                       }
                       return Column(
                         children: <Widget>[
                           _makePageViewsCardTitle(),
-                          Row(
-                            children: <Widget>[
-                              Expanded(
-                                child: Card(
-                                  key: const Key('pageViews'),
-                                  elevation: 0,
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .surfaceVariant,
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(
-                                      top: 16.0,
-                                      bottom: 16.0,
-                                      right: 16.0,
-                                    ),
-                                    child: LinePlotDateTime(
-                                      snapshot.data!.pageViews,
-                                      snapshot.data!.sessions,
-                                    ),
-                                  ),
-                                ),
+                          Card(
+                            key: const Key('pageViews'),
+                            elevation: 0,
+                            color: Theme.of(context).colorScheme.surfaceVariant,
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                top: 16.0,
+                                bottom: 16.0,
+                                right: 16.0,
                               ),
-                            ],
+                              child: LinePlotDateTime(
+                                snapshot.data!.pageViews,
+                                snapshot.data!.sessions,
+                              ),
+                            ),
                           ),
                         ],
                       );
@@ -214,53 +205,61 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
                     }
                   },
                 ),
-                _makeCardTitle(AppLocalizations.of(context)!.urls),
-                _makeMetricsFutureBuilder(
-                  type: MetricType.url,
-                  cardKey: _metricsURLs,
-                ),
-                _makeCardTitle(AppLocalizations.of(context)!.referrers),
-                _makeMetricsFutureBuilder(
-                  type: MetricType.referrer,
-                  cardKey: _metricsReferrers,
-                ),
-                _makeCardTitle(AppLocalizations.of(context)!.os),
-                _makeMetricsFutureBuilder(
-                  type: MetricType.os,
-                  cardKey: _metricsOS,
-                ),
-                _makeCardTitle(AppLocalizations.of(context)!.devices),
-                _makeMetricsFutureBuilder(
-                  type: MetricType.device,
-                  cardKey: _metricsDevices,
-                ),
-                _makeCardTitle(AppLocalizations.of(context)!.countries),
-                _makeMetricsFutureBuilder(
-                  type: MetricType.country,
-                  cardKey: _metricsCountries,
-                ),
+                _makeCard(MetricType.url),
+                _makeCard(MetricType.referrer),
+                _makeCard(MetricType.browser),
+                _makeCard(MetricType.os),
+                _makeCard(MetricType.device),
+                _makeCard(MetricType.country),
               ],
             ),
           ),
         ],
       ),
+      bottomNavigationBar: BottomAppBar(
+        child: Padding(
+          padding: const EdgeInsets.only(left: 4, right: 4),
+          child: Wrap(
+            spacing: 4,
+            runSpacing: 0,
+            children: <Widget>[
+              ..._filter.toMap().entries.map(
+                    (MapEntry<String, String> e) => InputChip(
+                      visualDensity: VisualDensity.compact,
+                      label: Text('${e.key}: ${e.value}'),
+                      labelStyle: TextStyle(
+                        fontSize: Theme.of(context).textTheme.caption!.fontSize,
+                      ),
+                      labelPadding: const EdgeInsets.only(right: 2),
+                      onDeleted: () {
+                        setState(() {
+                          MetricType metricType = MetricType.values
+                              .firstWhere((MetricType m) => m.value == e.key);
+                          _filter.remove(metricType);
+                        });
+                      },
+                    ),
+                  )
+            ],
+          ),
+        ),
+      ),
     );
   }
 
-  FutureBuilder<MetricsResponse> _makeMetricsFutureBuilder({
-    required MetricType type,
-    required Key cardKey,
-  }) {
+  FutureBuilder<MetricsResponse> _makeMetricsFutureBuilder(
+    MetricType metricType,
+  ) {
     return FutureBuilder<MetricsResponse>(
       future: MetricsController(
         Storage.instance.domain!,
         Storage.instance.accessToken!,
         widget.website.uuid,
-        _makeMetricsRequest(type),
+        _makeMetricsRequest(metricType),
       ).doRequest(),
       builder: (BuildContext context, AsyncSnapshot<MetricsResponse> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const ProgressIndicatorCard();
+          return const Center(child: ProgressIndicatorCard());
         }
         if (snapshot.hasError) {
           return ErrorCard(
@@ -269,7 +268,6 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
         }
         if (snapshot.hasData) {
           return Card(
-            key: cardKey,
             elevation: 0,
             color: Theme.of(context).colorScheme.surfaceVariant,
             child: Padding(
@@ -282,13 +280,16 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
                       ...snapshot.data!.metrics.map(
                         (Metric e) => ListTile(
                           title: Text(
-                            _processListTileData(e.object, cardKey),
+                            _processListTileData(e.object, metricType),
                             style: Theme.of(context).textTheme.bodyMedium,
                           ),
                           trailing: Text(e.number.toString()),
                           contentPadding: const EdgeInsets.symmetric(
                             horizontal: 1,
                           ),
+                          onTap: () => setState(() {
+                            _filter.add(metricType, e.object);
+                          }),
                         ),
                       ),
                     ],
@@ -304,11 +305,50 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
     );
   }
 
-  String _processListTileData(String data, Key key) {
-    if (key == _metricsCountries) {
+  String _processListTileData(String data, MetricType metricType) {
+    if (metricType == MetricType.country) {
       return _countryCodes.getCountry(data);
     }
     return data;
+  }
+
+  Widget _makeCard(MetricType metricType) {
+    String title = '';
+
+    switch (metricType) {
+      case MetricType.url:
+        title = AppLocalizations.of(context)!.urls;
+        break;
+      case MetricType.referrer:
+        title = AppLocalizations.of(context)!.referrers;
+        break;
+      case MetricType.browser:
+        title = AppLocalizations.of(context)!.browsers;
+        break;
+      case MetricType.device:
+        title = AppLocalizations.of(context)!.devices;
+        break;
+      case MetricType.os:
+        title = AppLocalizations.of(context)!.os;
+        break;
+      case MetricType.country:
+        title = AppLocalizations.of(context)!.countries;
+        break;
+      case MetricType.event:
+        title = AppLocalizations.of(context)!.events;
+        break;
+    }
+
+    return Visibility(
+      visible: !_filter.isActive(metricType),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          _makeCardTitle(title),
+          _makeMetricsFutureBuilder(metricType),
+        ],
+      ),
+    );
   }
 
   Padding _makeCardTitle(String title) {
@@ -378,10 +418,17 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
   }
 
   PageViewsRequest _makePageViewsRequest() {
-    return PageViewsRequest(period: dateTimeRange);
+    return PageViewsRequest(
+      period: dateTimeRange,
+      filter: _filter,
+    );
   }
 
   MetricsRequest _makeMetricsRequest(MetricType type) {
-    return MetricsRequest(dateTimeRange, type);
+    return MetricsRequest(
+      period: dateTimeRange,
+      metricType: type,
+      filter: _filter,
+    );
   }
 }

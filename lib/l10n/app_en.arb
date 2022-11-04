@@ -35,6 +35,7 @@
     "@referrers": {
       "description": "Referrers card title"
     },
+    "browsers": "Browsers",
     "os": "OS",
     "@os": {
       "description": "OS card title"
@@ -47,6 +48,7 @@
     "@countries": {
       "description": "Countries card title"
     },
+    "events": "Events",
     "loginScreenTitle": "Login",
     "@loginScreenTitle": {
       "description": "Login screen title"

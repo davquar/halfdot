@@ -1,20 +1,31 @@
 import 'package:umami/controllers/api_common.dart';
 import 'package:umami/models/api/common.dart';
+import 'package:umami/models/api/filter.dart';
 
 class MetricsRequest {
-  MetricsRequest(DateTimeInterval period, this.type) {
+  MetricsRequest({
+    required DateTimeInterval period,
+    required this.metricType,
+    this.filter,
+  }) {
     startAt = period.startAt.millisecondsSinceEpoch;
     endAt = period.endAt.millisecondsSinceEpoch;
   }
   late int startAt;
   late int endAt;
-  final MetricType type;
+  final MetricType metricType;
+  late Filter? filter;
 
-  Map<String, String> toMap() => <String, String>{
-        'start_at': startAt.toString(),
-        'end_at': endAt.toString(),
-        'type': type.value,
-      };
+  Map<String, String> toMap() {
+    Map<String, String> map = <String, String>{
+      'start_at': startAt.toString(),
+      'end_at': endAt.toString(),
+      'type': metricType.value,
+    };
+
+    if (filter != null) map.addAll(filter!.toMap());
+    return map;
+  }
 }
 
 class MetricsResponse implements ApiModel {
