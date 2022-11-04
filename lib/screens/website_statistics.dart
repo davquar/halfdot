@@ -79,7 +79,7 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
                     AsyncSnapshot<StatsResponse> snapshot,
                   ) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const ProgressIndicatorCard();
+                      return const Center(child: ProgressIndicatorCard());
                     }
                     if (snapshot.hasError) {
                       return ErrorCard(
@@ -216,7 +216,32 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
         ],
       ),
       bottomNavigationBar: BottomAppBar(
-        child: Text(_filter.toMap().toString()),
+        child: Padding(
+          padding: const EdgeInsets.only(left: 4, right: 4),
+          child: Wrap(
+            spacing: 4,
+            runSpacing: 0,
+            children: <Widget>[
+              ..._filter.toMap().entries.map(
+                    (MapEntry<String, String> e) => InputChip(
+                      visualDensity: VisualDensity.compact,
+                      label: Text('${e.key}: ${e.value}'),
+                      labelStyle: TextStyle(
+                        fontSize: Theme.of(context).textTheme.caption!.fontSize,
+                      ),
+                      labelPadding: const EdgeInsets.only(right: 2),
+                      onDeleted: () {
+                        setState(() {
+                          MetricType metricType = MetricType.values
+                              .firstWhere((MetricType m) => m.value == e.key);
+                          _filter.remove(metricType);
+                        });
+                      },
+                    ),
+                  )
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -233,7 +258,7 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
       ).doRequest(),
       builder: (BuildContext context, AsyncSnapshot<MetricsResponse> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const ProgressIndicatorCard();
+          return const Center(child: ProgressIndicatorCard());
         }
         if (snapshot.hasError) {
           return ErrorCard(

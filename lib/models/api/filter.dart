@@ -45,6 +45,32 @@ class Filter {
     }
   }
 
+  void remove(MetricType metricType) {
+    switch (metricType) {
+      case MetricType.url:
+        url = null;
+        break;
+      case MetricType.referrer:
+        referrer = null;
+        break;
+      case MetricType.browser:
+        browser = null;
+        break;
+      case MetricType.os:
+        os = null;
+        break;
+      case MetricType.device:
+        device = null;
+        break;
+      case MetricType.country:
+        countryCode = null;
+        break;
+      case MetricType.event:
+        event = null;
+        break;
+    }
+  }
+
   bool isActive(MetricType metricType) {
     switch (metricType) {
       case MetricType.url:
