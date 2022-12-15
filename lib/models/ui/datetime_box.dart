@@ -16,7 +16,7 @@ class DateTimeBox extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           border: Border.all(
-            color: Theme.of(context).colorScheme.inversePrimary,
+            color: Theme.of(context).colorScheme.primary,
           ),
           borderRadius: BorderRadius.circular(10),
           color: Theme.of(context).dialogBackgroundColor,
@@ -28,7 +28,7 @@ class DateTimeBox extends StatelessWidget {
           onPressed: onPressed,
           icon: Icon(
             Icons.calendar_month,
-            color: Theme.of(context).colorScheme.inversePrimary,
+            color: Theme.of(context).colorScheme.inverseSurface,
           ),
           label: Text(
             text,
@@ -36,7 +36,7 @@ class DateTimeBox extends StatelessWidget {
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 16,
-              color: Theme.of(context).colorScheme.inversePrimary,
+              color: Theme.of(context).colorScheme.inverseSurface,
             ),
           ),
         ),
