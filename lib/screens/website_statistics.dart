@@ -284,7 +284,13 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
                             _processListTileData(e.object, metricType),
                             style: Theme.of(context).textTheme.bodyMedium,
                           ),
-                          trailing: Text(e.number.toString()),
+                          trailing: Wrap(
+                            crossAxisAlignment: WrapCrossAlignment.center,
+                            children: <Widget>[
+                              Text(e.number.toString()),
+                              const Icon(Icons.chevron_right),
+                            ],
+                          ),
                           contentPadding: const EdgeInsets.symmetric(
                             horizontal: 1,
                           ),
