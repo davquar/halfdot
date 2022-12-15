@@ -1,4 +1,4 @@
-package it.davquar.umami
+package it.davquar.halfdot
 
 import io.flutter.embedding.android.FlutterActivity
 

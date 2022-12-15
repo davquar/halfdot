@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/widgets.dart';
 import 'package:http/http.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:umami/models/api/common.dart';
+import 'package:halfdot/models/api/common.dart';
 
 abstract class ApiRequest {
   Uri getRequestUrl();

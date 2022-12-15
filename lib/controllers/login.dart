@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
-import 'package:umami/controllers/api_common.dart';
-import 'package:umami/models/api/login.dart';
+import 'package:halfdot/controllers/api_common.dart';
+import 'package:halfdot/models/api/login.dart';
 
 class LoginController implements ApiRequest {
   LoginController(this.domain, this.loginRequest) {

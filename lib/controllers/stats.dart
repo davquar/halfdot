@@ -1,10 +1,10 @@
 import 'dart:convert';
 
 import 'package:http/http.dart';
-import 'package:umami/controllers/api_common.dart';
-import 'package:umami/controllers/http_service.dart';
-import 'package:umami/models/api/filter.dart';
-import 'package:umami/models/api/stats.dart';
+import 'package:halfdot/controllers/api_common.dart';
+import 'package:halfdot/controllers/http_service.dart';
+import 'package:halfdot/models/api/filter.dart';
+import 'package:halfdot/models/api/stats.dart';
 
 class StatsController implements ApiRequest {
   StatsController(

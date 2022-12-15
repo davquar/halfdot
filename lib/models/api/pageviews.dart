@@ -1,6 +1,6 @@
-import 'package:umami/controllers/api_common.dart';
-import 'package:umami/models/api/common.dart';
-import 'package:umami/models/api/filter.dart';
+import 'package:halfdot/controllers/api_common.dart';
+import 'package:halfdot/models/api/common.dart';
+import 'package:halfdot/models/api/filter.dart';
 
 class PageViewsRequest {
   PageViewsRequest({

@@ -2,7 +2,7 @@ import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:umami/screens/login.dart';
+import 'package:halfdot/screens/login.dart';
 
 void main() {
   runApp(const MyApp());
@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
         ColorScheme? darkDynamic,
       ) =>
           MaterialApp(
-        title: 'Umami',
+        title: 'HalfDot',
         theme: ThemeData(
           useMaterial3: true,
           colorScheme: _defaultLightColorScheme,

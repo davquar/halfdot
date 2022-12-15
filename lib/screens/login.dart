@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:umami/controllers/api_common.dart';
-import 'package:umami/controllers/login.dart';
-import 'package:umami/controllers/storage.dart';
+import 'package:halfdot/controllers/api_common.dart';
+import 'package:halfdot/controllers/login.dart';
+import 'package:halfdot/controllers/storage.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:umami/models/api/login.dart';
-import 'package:umami/screens/websites.dart';
+import 'package:halfdot/models/api/login.dart';
+import 'package:halfdot/screens/websites.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -57,7 +57,7 @@ class _LoginPageState extends State<LoginPage> {
                       ),
               ),
               const SizedBox(height: 10),
-              Text('Umami', style: Theme.of(context).textTheme.headline6),
+              Text('HalfDot', style: Theme.of(context).textTheme.headline6),
               Text(AppLocalizations.of(context)!.loginSubtitle),
               const SizedBox(height: 20),
               TextField(

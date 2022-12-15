@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:umami/controllers/storage.dart';
-import 'package:umami/screens/login.dart';
+import 'package:halfdot/controllers/storage.dart';
+import 'package:halfdot/screens/login.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({
@@ -15,6 +16,15 @@ class SettingsPage extends StatefulWidget {
 class _SettingsPageState extends State<SettingsPage> {
   Storage storage = Storage.instance;
 
+  static const String _appVersion = '1.0';
+  static const String _apiVersion = '1.39';
+  static const String _repoUrl = 'https://github.com/davquar/halfdot';
+  static const String _license = 'MIT';
+  static const String _licenseUrl =
+      'https://github.com/davquar/halfdot/LICENSE';
+  static const String _privacyUrl =
+      'https://github.com/davquar/halfdot/PRIVACY.md';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,6 +35,15 @@ class _SettingsPageState extends State<SettingsPage> {
           child: Column(
             children: <Widget>[
               ListTile(
+                title: Text(
+                  AppLocalizations.of(context)!.userSettings,
+                  style: Theme.of(context)
+                      .textTheme
+                      .titleSmall
+                      ?.copyWith(color: Theme.of(context).colorScheme.primary),
+                ),
+              ),
+              ListTile(
                 leading: const Icon(Icons.person),
                 title: Text(AppLocalizations.of(context)!.userProfile),
                 subtitle: Text('${storage.username}\n${storage.domain}'),
@@ -32,6 +51,54 @@ class _SettingsPageState extends State<SettingsPage> {
                   onPressed: _logout,
                   child: const Icon(Icons.logout),
                 ),
+              ),
+              ListTile(
+                title: Text(
+                  AppLocalizations.of(context)!.about,
+                  style: Theme.of(context)
+                      .textTheme
+                      .titleSmall
+                      ?.copyWith(color: Theme.of(context).colorScheme.primary),
+                ),
+              ),
+              ListTile(
+                title: Text(AppLocalizations.of(context)!.appVersion),
+                subtitle: const Text(_appVersion),
+              ),
+              ListTile(
+                title: Text(AppLocalizations.of(context)!.apiVersion),
+                subtitle: const Text(_apiVersion),
+              ),
+              ListTile(
+                title: Text(AppLocalizations.of(context)!.license),
+                subtitle: const Text(_license),
+                onTap: () => launchUrlString(
+                  _licenseUrl,
+                  mode: LaunchMode.externalApplication,
+                ),
+                trailing: const Icon(Icons.link),
+              ),
+              ListTile(
+                title: Text(AppLocalizations.of(context)!.privacyPolicy),
+                subtitle: const Text(_privacyUrl),
+                onTap: () => launchUrlString(
+                  _privacyUrl,
+                  mode: LaunchMode.externalApplication,
+                ),
+                trailing: const Icon(Icons.link),
+              ),
+              ListTile(
+                title: Text(AppLocalizations.of(context)!.sourceCode),
+                subtitle: const Text(_repoUrl),
+                onTap: () => launchUrlString(
+                  _repoUrl,
+                  mode: LaunchMode.externalApplication,
+                ),
+                trailing: const Icon(Icons.link),
+              ),
+              ListTile(
+                title: Text(AppLocalizations.of(context)!.licenses),
+                onTap: () => showLicensePage(context: context),
               ),
             ],
           ),

@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:umami/controllers/api_common.dart';
-import 'package:umami/controllers/country_codes.dart';
-import 'package:umami/controllers/metrics.dart';
-import 'package:umami/controllers/pageviews.dart';
-import 'package:umami/controllers/stats.dart';
-import 'package:umami/controllers/storage.dart';
-import 'package:umami/models/api/filter.dart';
-import 'package:umami/models/api/metrics.dart';
-import 'package:umami/models/api/pageviews.dart';
-import 'package:umami/models/api/stats.dart';
-import 'package:umami/models/api/website.dart';
-import 'package:umami/models/ui/datetime_box.dart';
-import 'package:umami/models/ui/error_card.dart';
-import 'package:umami/models/ui/line_plot_date_time.dart';
-import 'package:umami/models/ui/progress_indicator_card.dart';
+import 'package:halfdot/controllers/api_common.dart';
+import 'package:halfdot/controllers/country_codes.dart';
+import 'package:halfdot/controllers/metrics.dart';
+import 'package:halfdot/controllers/pageviews.dart';
+import 'package:halfdot/controllers/stats.dart';
+import 'package:halfdot/controllers/storage.dart';
+import 'package:halfdot/models/api/filter.dart';
+import 'package:halfdot/models/api/metrics.dart';
+import 'package:halfdot/models/api/pageviews.dart';
+import 'package:halfdot/models/api/stats.dart';
+import 'package:halfdot/models/api/website.dart';
+import 'package:halfdot/models/ui/datetime_box.dart';
+import 'package:halfdot/models/ui/error_card.dart';
+import 'package:halfdot/models/ui/line_plot_date_time.dart';
+import 'package:halfdot/models/ui/progress_indicator_card.dart';
 
 class WebsiteStatisticsPage extends StatefulWidget {
   const WebsiteStatisticsPage({required this.website, super.key});
