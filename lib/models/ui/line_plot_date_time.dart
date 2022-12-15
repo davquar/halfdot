@@ -2,7 +2,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:umami/controllers/api_common.dart';
+import 'package:halfdot/controllers/api_common.dart';
 
 class LinePlotDateTime extends StatelessWidget {
   const LinePlotDateTime(this.pageViews, this.sessions, {Key? key})

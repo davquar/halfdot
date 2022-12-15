@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:umami/controllers/storage.dart';
-import 'package:umami/screens/login.dart';
+import 'package:halfdot/controllers/storage.dart';
+import 'package:halfdot/screens/login.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({

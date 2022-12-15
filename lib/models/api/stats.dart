@@ -1,4 +1,4 @@
-import 'package:umami/models/api/common.dart';
+import 'package:halfdot/models/api/common.dart';
 
 class StatsResponse implements ApiModel {
   StatsResponse(this.pageViews, this.uniques, this.bounces, this.totalTime);

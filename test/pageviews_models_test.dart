@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:umami/models/api/pageviews.dart';
+import 'package:halfdot/models/api/pageviews.dart';
 
 void main() {
   test('Test deserializing', () {

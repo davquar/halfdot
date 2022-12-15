@@ -1,4 +1,4 @@
-import 'package:umami/models/api/metrics.dart';
+import 'package:halfdot/models/api/metrics.dart';
 
 class Filter {
   Filter({

@@ -1,9 +1,9 @@
 import 'dart:convert';
 
 import 'package:http/http.dart';
-import 'package:umami/controllers/api_common.dart';
-import 'package:umami/controllers/http_service.dart';
-import 'package:umami/models/api/metrics.dart';
+import 'package:halfdot/controllers/api_common.dart';
+import 'package:halfdot/controllers/http_service.dart';
+import 'package:halfdot/models/api/metrics.dart';
 
 class MetricsController implements ApiRequest {
   MetricsController(

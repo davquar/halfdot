@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:umami/controllers/api_common.dart';
-import 'package:umami/controllers/storage.dart';
-import 'package:umami/controllers/websites.dart';
-import 'package:umami/models/api/website.dart';
-import 'package:umami/screens/settings.dart';
-import 'package:umami/screens/website_statistics.dart';
+import 'package:halfdot/controllers/api_common.dart';
+import 'package:halfdot/controllers/storage.dart';
+import 'package:halfdot/controllers/websites.dart';
+import 'package:halfdot/models/api/website.dart';
+import 'package:halfdot/screens/settings.dart';
+import 'package:halfdot/screens/website_statistics.dart';
 
 class WebsitesPage extends StatefulWidget {
   const WebsitesPage({super.key});
