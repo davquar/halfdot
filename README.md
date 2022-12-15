@@ -1,16 +1,12 @@
-# umami
+# HalfDot for Umami
 
-A new Flutter project.
+HalfDot is a minimalistic FOSS Android client for Umami: an open-source and privacy-focused web analytics platform.
 
-## Getting Started
+## Characteristics
 
-This project is a starting point for a Flutter application.
+* Free
+* Open source
+* No tracking
+* No ads
+* Material Design 3
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
