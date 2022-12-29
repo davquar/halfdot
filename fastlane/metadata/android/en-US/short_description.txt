@@ -1,2 +1,1 @@
-HalfDot is a minimalistic client for Umami: an open-source and privacy-focused web analytics platform.
-HalfDot does not have any tracking, ads, and it follows the Material Design 3 guidelines.
+HalfDot is a minimalistic client for Umami Analytics
