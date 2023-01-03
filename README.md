@@ -1,5 +1,11 @@
 # HalfDot for Umami
 
+<a href="https://f-droid.org/packages/it.davquar.halfdot/">
+    <img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
+    alt="Get it on F-Droid"
+    height="80">
+</a>
+
 HalfDot is a minimalistic **FOSS Android client for [Umami](https://github.com/umami-software/umami)**: an open-source and privacy-focused web analytics platform.
 
 HalfDot is:
