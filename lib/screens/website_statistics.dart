@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:halfdot/controllers/api_common.dart';
@@ -26,6 +27,7 @@ class WebsiteStatisticsPage extends StatefulWidget {
 }
 
 class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
+  final String locale = Platform.localeName;
   DateTimeInterval dateTimeRange = DateTimeInterval.getLast7Days();
   late CountryCodes _countryCodes;
   final Filter _filter = Filter();
@@ -53,7 +55,7 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
                 DateTimeBox(
                   key: const Key('dateRange'),
                   text:
-                      '${dateTimeRange.getPretty()} (${dateTimeRange.getNumDays()}d)',
+                      '${dateTimeRange.getPretty(locale)} (${dateTimeRange.getNumDays()}d)',
                   onPressed: _showDateTimeRangeBottomSheet,
                 ),
               ],
