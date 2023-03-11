@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:halfdot/controllers/storage.dart';
 import 'package:halfdot/screens/login.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 class SettingsPage extends StatefulWidget {
@@ -16,7 +17,8 @@ class SettingsPage extends StatefulWidget {
 class _SettingsPageState extends State<SettingsPage> {
   Storage storage = Storage.instance;
 
-  static const String _appVersion = '1.0';
+  static String _appVersion = '?';
+  static String _build = '?';
   static const String _apiVersion = '1.39';
   static const String _repoUrl = 'https://github.com/davquar/halfdot';
   static const String _license = 'MIT';
@@ -27,6 +29,11 @@ class _SettingsPageState extends State<SettingsPage> {
 
   @override
   Widget build(BuildContext context) {
+    PackageInfo.fromPlatform().then((PackageInfo info) {
+      _appVersion = info.version;
+      _build = info.buildNumber;
+    });
+
     return Scaffold(
         appBar: AppBar(
           title: Text(AppLocalizations.of(context)!.settingsTitle),
@@ -63,7 +70,7 @@ class _SettingsPageState extends State<SettingsPage> {
               ),
               ListTile(
                 title: Text(AppLocalizations.of(context)!.appVersion),
-                subtitle: const Text(_appVersion),
+                subtitle: Text('$_appVersion (build $_build)'),
               ),
               ListTile(
                 title: Text(AppLocalizations.of(context)!.apiVersion),
