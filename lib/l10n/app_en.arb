@@ -102,5 +102,16 @@
     "sourceCode": "Source code",
     "license": "License",
     "privacyPolicy": "Privacy policy",
-    "licenses": "Licenses"
+    "licenses": "Licenses",
+    "today": "Today",
+    "last24h": "Last 24h",
+    "yesterday": "Yesterday",
+    "thisWeek": "This week",
+    "last7d": "Last 7d",
+    "lastMonth": "Last month",
+    "last30d": "Last 30d",
+    "last90d": "Last 90d",
+    "thisYear": "This year",
+    "allTime": "All time",
+    "customDateRange": "Custom date range"
 }

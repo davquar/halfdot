@@ -20,6 +20,8 @@ enum GroupingUnit {
   final String value;
 }
 
+DateTime initialDateTime = DateTime(2010, 01, 01);
+
 class DateTimeInterval {
   DateTimeInterval(this.startAt, this.endAt);
 

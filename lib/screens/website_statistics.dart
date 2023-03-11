@@ -54,7 +54,7 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
                   key: const Key('dateRange'),
                   text:
                       '${dateTimeRange.getPretty()} (${dateTimeRange.getNumDays()}d)',
-                  onPressed: _showDateRangePicker,
+                  onPressed: _showDateTimeRangeBottomSheet,
                 ),
               ],
             ),
@@ -406,7 +406,7 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
   void _showDateRangePicker() {
     showDateRangePicker(
       context: context,
-      firstDate: DateTime(2010, 01, 01),
+      firstDate: initialDateTime,
       lastDate: DateTime.now(),
       currentDate: dateTimeRange.startAt,
     ).then((DateTimeRange? value) {
@@ -436,6 +436,119 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
       period: dateTimeRange,
       metricType: type,
       filter: _filter,
+    );
+  }
+
+  void _showDateTimeRangeBottomSheet() {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return ListView(
+          children: <ListTile>[
+            ListTile(
+              leading: Text(AppLocalizations.of(context)!.today),
+              onTap: () => setState(() {
+                DateTime now = DateTime.now();
+                dateTimeRange.startAt =
+                    DateTime(now.year, now.month, now.day, 0, 0);
+                dateTimeRange.endAt =
+                    DateTime(now.year, now.month, now.day, 23, 59);
+                Navigator.pop(context);
+              }),
+            ),
+            ListTile(
+              leading: Text(AppLocalizations.of(context)!.last24h),
+              onTap: () => setState(() {
+                DateTime now = DateTime.now();
+                dateTimeRange.startAt = now.subtract(const Duration(hours: 24));
+                dateTimeRange.endAt = now;
+                Navigator.pop(context);
+              }),
+            ),
+            ListTile(
+              leading: Text(AppLocalizations.of(context)!.yesterday),
+              onTap: () => setState(() {
+                DateTime now = DateTime.now();
+                dateTimeRange.startAt =
+                    DateTime(now.year, now.month, now.day - 1);
+                dateTimeRange.endAt =
+                    DateTime(now.year, now.month, now.day - 1, 23, 59);
+                Navigator.pop(context);
+              }),
+            ),
+            ListTile(
+              leading: Text(AppLocalizations.of(context)!.thisWeek),
+              onTap: () => setState(() {
+                DateTime now = DateTime.now();
+                dateTimeRange.startAt =
+                    now.subtract(Duration(days: now.weekday - 1));
+                dateTimeRange.endAt = now;
+                Navigator.pop(context);
+              }),
+            ),
+            ListTile(
+              leading: Text(AppLocalizations.of(context)!.last7d),
+              onTap: () => setState(() {
+                DateTime now = DateTime.now();
+                dateTimeRange.startAt = now.subtract(const Duration(days: 6));
+                dateTimeRange.endAt = now;
+                Navigator.pop(context);
+              }),
+            ),
+            ListTile(
+              leading: Text(AppLocalizations.of(context)!.lastMonth),
+              onTap: () => setState(() {
+                DateTime now = DateTime.now();
+                dateTimeRange.startAt = DateTime(now.year, now.month);
+                dateTimeRange.endAt = now;
+                Navigator.pop(context);
+              }),
+            ),
+            ListTile(
+              leading: Text(AppLocalizations.of(context)!.last30d),
+              onTap: () => setState(() {
+                DateTime now = DateTime.now();
+                dateTimeRange.startAt = now.subtract(const Duration(days: 29));
+                dateTimeRange.endAt = now;
+                Navigator.pop(context);
+              }),
+            ),
+            ListTile(
+              leading: Text(AppLocalizations.of(context)!.last90d),
+              onTap: () => setState(() {
+                DateTime now = DateTime.now();
+                dateTimeRange.startAt = now.subtract(const Duration(days: 89));
+                dateTimeRange.endAt = now;
+                Navigator.pop(context);
+              }),
+            ),
+            ListTile(
+              leading: Text(AppLocalizations.of(context)!.thisYear),
+              onTap: () => setState(() {
+                DateTime now = DateTime.now();
+                dateTimeRange.startAt = DateTime(now.year);
+                dateTimeRange.endAt = now;
+                Navigator.pop(context);
+              }),
+            ),
+            ListTile(
+              leading: Text(AppLocalizations.of(context)!.allTime),
+              onTap: () => setState(() {
+                dateTimeRange.startAt = initialDateTime;
+                dateTimeRange.endAt = DateTime.now();
+                Navigator.pop(context);
+              }),
+            ),
+            ListTile(
+              leading: Text(AppLocalizations.of(context)!.customDateRange),
+              onTap: () => setState(() {
+                Navigator.pop(context);
+                _showDateRangePicker();
+              }),
+            ),
+          ],
+        );
+      },
     );
   }
 }
