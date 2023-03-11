@@ -3,7 +3,7 @@ description: A minimalistic Umami client for Android.
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
-publish_to: "none" # Remove this line if you wish to publish to pub.dev
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
 # The following defines the version and build number for your application.
 # A version number is three numbers separated by dots, like 1.2.43
@@ -17,10 +17,10 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 # In Windows, build-name is used as the major, minor, and patch parts
 # of the product and file versions while build-number is used as the build suffix.
-version: 1.0.1+1
+version: 1.0.2+2
 
 environment:
-  sdk: ">=2.18.0 <3.0.0"
+  sdk: '>=2.18.0 <3.0.0'
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -34,13 +34,14 @@ dependencies:
   fl_chart: ^0.55.2
   flutter:
     sdk: flutter
-  flutter_launcher_icons: "^0.10.0"
+  flutter_launcher_icons: '^0.10.0'
   flutter_localizations:
     sdk: flutter
   flutter_secure_storage: ^6.0.0
 
   http: ^0.13.5
   intl: ^0.17.0
+  package_info_plus: ^3.0.3
   url_launcher: ^6.1.6
 
 dev_dependencies:
@@ -95,6 +96,6 @@ flutter:
   # see https://flutter.dev/custom-fonts/#from-packages
 
 flutter_icons:
-  android: "launcher_icon"
-  image_path: "assets/app_icon.png"
+  android: 'launcher_icon'
+  image_path: 'assets/app_icon.png'
   min_sdk_android: 21

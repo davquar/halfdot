@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:http/http.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:halfdot/models/api/common.dart';
+import 'package:intl/intl.dart';
 
 abstract class ApiRequest {
   Uri getRequestUrl();
@@ -20,6 +21,8 @@ enum GroupingUnit {
   final String value;
 }
 
+DateTime initialDateTime = DateTime(2010, 01, 01);
+
 class DateTimeInterval {
   DateTimeInterval(this.startAt, this.endAt);
 
@@ -31,16 +34,24 @@ class DateTimeInterval {
     return 'start_at=${startAt.millisecondsSinceEpoch}&end_at=${endAt.millisecondsSinceEpoch}';
   }
 
-  String getPretty() {
-    return '${getPrettyStart()} — ${getPrettyEnd()}';
+  String getPretty(String? locale) {
+    return '${getPrettyStart(locale)} — ${getPrettyEnd(locale)}';
   }
 
-  String getPrettyStart() {
-    return '${startAt.year}/${startAt.month}/${startAt.day}';
+  String getPrettyStart(String? locale) {
+    if (locale == null) {
+      return '${startAt.year}/${startAt.month}/${startAt.day}';
+    }
+    DateTime dateTime = DateTime(startAt.year, startAt.month, startAt.day);
+    return DateFormat.yMd(locale).format(dateTime);
   }
 
-  String getPrettyEnd() {
-    return '${endAt.year}/${endAt.month}/${endAt.day}';
+  String getPrettyEnd(String? locale) {
+    if (locale == null) {
+      return '${endAt.year}/${endAt.month}/${endAt.day}';
+    }
+    DateTime dateTime = DateTime(endAt.year, endAt.month, endAt.day);
+    return DateFormat.yMd(locale).format(dateTime);
   }
 
   int getNumDays() {
