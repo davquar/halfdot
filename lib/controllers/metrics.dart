@@ -9,7 +9,7 @@ class MetricsController implements ApiRequest {
   MetricsController(
     this.domain,
     this.accessToken,
-    this.uuid,
+    this.id,
     this.metricsRequest,
   ) {
     url = getRequestUrl();
@@ -17,7 +17,7 @@ class MetricsController implements ApiRequest {
 
   final String domain;
   final String accessToken;
-  final String uuid;
+  final String id;
   late Uri url;
 
   late MetricsRequest metricsRequest;
@@ -26,7 +26,7 @@ class MetricsController implements ApiRequest {
   Uri getRequestUrl() {
     return Uri.https(
       domain,
-      'api/websites/$uuid/metrics',
+      'api/websites/$id/metrics',
       metricsRequest.toMap(),
     );
   }

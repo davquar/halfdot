@@ -19,7 +19,7 @@ class _SettingsPageState extends State<SettingsPage> {
 
   static String _appVersion = '?';
   static String _build = '?';
-  static const String _apiVersion = '1.39';
+  static const String _apiVersion = '2.0.2';
   static const String _repoUrl = 'https://github.com/davquar/halfdot';
   static const String _license = 'MIT';
   static const String _licenseUrl =
