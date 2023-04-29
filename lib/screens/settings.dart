@@ -23,9 +23,9 @@ class _SettingsPageState extends State<SettingsPage> {
   static const String _repoUrl = 'https://github.com/davquar/halfdot';
   static const String _license = 'MIT';
   static const String _licenseUrl =
-      'https://github.com/davquar/halfdot/LICENSE';
+      'https://github.com/davquar/halfdot/blob/main/LICENSE';
   static const String _privacyUrl =
-      'https://github.com/davquar/halfdot/PRIVACY.md';
+      'https://github.com/davquar/halfdot/blob/main/PRIVACY.md';
 
   @override
   Widget build(BuildContext context) {
@@ -86,19 +86,19 @@ class _SettingsPageState extends State<SettingsPage> {
                 trailing: const Icon(Icons.link),
               ),
               ListTile(
-                title: Text(AppLocalizations.of(context)!.privacyPolicy),
-                subtitle: const Text(_privacyUrl),
+                title: Text(AppLocalizations.of(context)!.sourceCode),
+                subtitle: const Text(_repoUrl),
                 onTap: () => launchUrlString(
-                  _privacyUrl,
+                  _repoUrl,
                   mode: LaunchMode.externalApplication,
                 ),
                 trailing: const Icon(Icons.link),
               ),
               ListTile(
-                title: Text(AppLocalizations.of(context)!.sourceCode),
-                subtitle: const Text(_repoUrl),
+                title: Text(AppLocalizations.of(context)!.privacyPolicy),
+                subtitle: const Text(_privacyUrl),
                 onTap: () => launchUrlString(
-                  _repoUrl,
+                  _privacyUrl,
                   mode: LaunchMode.externalApplication,
                 ),
                 trailing: const Icon(Icons.link),
