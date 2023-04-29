@@ -17,8 +17,6 @@ class SettingsPage extends StatefulWidget {
 class _SettingsPageState extends State<SettingsPage> {
   Storage storage = Storage.instance;
 
-  static String _appVersion = '?';
-  static String _build = '?';
   static const String _apiVersion = '2.0.2';
   static const String _repoUrl = 'https://github.com/davquar/halfdot';
   static const String _license = 'MIT';
@@ -29,11 +27,6 @@ class _SettingsPageState extends State<SettingsPage> {
 
   @override
   Widget build(BuildContext context) {
-    PackageInfo.fromPlatform().then((PackageInfo info) {
-      _appVersion = info.version;
-      _build = info.buildNumber;
-    });
-
     return Scaffold(
         appBar: AppBar(
           title: Text(AppLocalizations.of(context)!.settingsTitle),
@@ -70,7 +63,22 @@ class _SettingsPageState extends State<SettingsPage> {
               ),
               ListTile(
                 title: Text(AppLocalizations.of(context)!.appVersion),
-                subtitle: Text('$_appVersion (build $_build)'),
+                subtitle: FutureBuilder<PackageInfo>(
+                  future: PackageInfo.fromPlatform(),
+                  builder: (
+                    BuildContext context,
+                    AsyncSnapshot<PackageInfo> snapshot,
+                  ) {
+                    if (snapshot.hasError) {
+                      return Text('Unknown: ${snapshot.error}');
+                    } else if (snapshot.hasData) {
+                      return Text(
+                        '${snapshot.data!.version} (build ${snapshot.data!.buildNumber})',
+                      );
+                    }
+                    return const Text('Unknown');
+                  },
+                ),
               ),
               ListTile(
                 title: Text(AppLocalizations.of(context)!.apiVersion),
