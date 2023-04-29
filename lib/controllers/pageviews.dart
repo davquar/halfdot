@@ -9,7 +9,7 @@ class PageViewsController implements ApiRequest {
   PageViewsController(
     this.domain,
     this.accessToken,
-    this.uuid,
+    this.id,
     this.pageViewsRequest,
   ) {
     url = getRequestUrl();
@@ -17,7 +17,7 @@ class PageViewsController implements ApiRequest {
 
   final String domain;
   final String accessToken;
-  final String uuid;
+  final String id;
   late Uri url;
 
   late PageViewsRequest pageViewsRequest;
@@ -26,7 +26,7 @@ class PageViewsController implements ApiRequest {
   Uri getRequestUrl() {
     return Uri.https(
       domain,
-      'api/websites/$uuid/pageviews',
+      'api/websites/$id/pageviews',
       pageViewsRequest.toMap(),
     );
   }

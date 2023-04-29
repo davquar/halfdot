@@ -20,10 +20,10 @@ class PageViewsRequest {
 
   Map<String, String> toMap() {
     Map<String, String> map = <String, String>{
-      'start_at': startAt.toString(),
-      'end_at': endAt.toString(),
+      'startAt': startAt.toString(),
+      'endAt': endAt.toString(),
       'unit': groupingUnit.value,
-      'tz': tz,
+      'timezone': tz,
     };
 
     if (filter != null) map.addAll(filter!.toMap());

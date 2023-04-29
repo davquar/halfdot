@@ -13,7 +13,6 @@ class WebsitesResponse implements ApiModel {
 class Website {
   Website(
     this.id,
-    this.uuid,
     this.userId,
     this.name,
     this.domain,
@@ -23,16 +22,14 @@ class Website {
 
   Website.fromJson(Map<String, dynamic> json)
       : id = json['id'],
-        uuid = json['websiteUuid'],
         userId = json['userId'],
         name = json['name'],
         domain = json['domain'],
         createdAt = DateTime.parse(json['createdAt']),
         shareId = json['shareId'];
 
-  final int id;
-  final String uuid;
-  final int userId;
+  final String id;
+  final String userId;
   final String name;
   final String domain;
   final DateTime createdAt;

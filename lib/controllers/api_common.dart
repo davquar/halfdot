@@ -60,8 +60,8 @@ class DateTimeInterval {
 
   Map<String, String> toMap() {
     return <String, String>{
-      'start_at': startAt.millisecondsSinceEpoch.toString(),
-      'end_at': endAt.millisecondsSinceEpoch.toString(),
+      'startAt': startAt.millisecondsSinceEpoch.toString(),
+      'endAt': endAt.millisecondsSinceEpoch.toString(),
     };
   }
 
@@ -88,14 +88,14 @@ class TimestampedEntry {
   TimestampedEntry(this.dateTime, this.number);
 
   TimestampedEntry.fromJson(Map<String, dynamic> json)
-      : dateTime = DateTime.parse(json['t']),
+      : dateTime = DateTime.parse(json['x']),
         number = json['y'];
 
   final DateTime dateTime;
   final int number;
 
   toMap() {
-    return <String, dynamic>{'t': dateTime.toString(), 'y': number};
+    return <String, dynamic>{'x': dateTime.toString(), 'y': number};
   }
 
   @override
@@ -202,5 +202,5 @@ String handleSnapshotError(BuildContext context, Object? error) {
     case TimeoutException:
       return AppLocalizations.of(context)!.errTimeout;
   }
-  return 'Error';
+  return 'Error: $error';
 }

@@ -18,8 +18,8 @@ class MetricsRequest {
 
   Map<String, String> toMap() {
     Map<String, String> map = <String, String>{
-      'start_at': startAt.toString(),
-      'end_at': endAt.toString(),
+      'startAt': startAt.toString(),
+      'endAt': endAt.toString(),
       'type': metricType.value,
     };
 
