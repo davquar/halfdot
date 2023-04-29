@@ -16,14 +16,13 @@ class PageViewsRequest {
   late int endAt;
   late Filter? filter;
   late GroupingUnit groupingUnit;
-  final String tz = 'Europe/Rome';
 
   Map<String, String> toMap() {
     Map<String, String> map = <String, String>{
       'startAt': startAt.toString(),
       'endAt': endAt.toString(),
       'unit': groupingUnit.value,
-      'timezone': tz,
+      'timezone': 'UTC',
     };
 
     if (filter != null) map.addAll(filter!.toMap());
