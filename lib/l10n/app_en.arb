@@ -1,117 +1,119 @@
 {
-    "websites": "Websites",
-    "@websites": {
-      "description": "Websites screen title"
-    },
-    "summary": "Summary",
-    "@summary": {
-      "description": "Summary card title"
-    },
-    "pageViews": "Page views",
-    "@pageViews": {
-      "description": "Page views card title and label"
-    },
-    "uniques": "Uniques",
-    "@uniques": {
-      "description": "Uniques"
-    },
-    "bounces": "Bounces",
-    "@bounces": {
-      "description": "Bounces"
-    },
-    "totalTime": "Total time",
-    "@totalTime": {
-      "description": "Total time"
-    },
-    "sessions": "Sessions",
-    "@sessions": {
-      "description": "Sessions card title"
-    },
-    "urls": "URLs",
-    "@urls": {
-      "description": "URLs card title"
-    },
-    "referrers": "Referrers",
-    "@referrers": {
-      "description": "Referrers card title"
-    },
-    "browsers": "Browsers",
-    "os": "OS",
-    "@os": {
-      "description": "OS card title"
-    },
-    "devices": "Devices",
-    "@devices": {
-      "description": "Devices card title"
-    },
-    "countries": "Countries",
-    "@countries": {
-      "description": "Countries card title"
-    },
-    "events": "Events",
-    "loginScreenTitle": "Login",
-    "@loginScreenTitle": {
-      "description": "Login screen title"
-    },
-    "loginUrlLabel": "Umami instance URL",
-    "@loginUrlLabel": {
-      "description": "Label text for the URL field"
-    },
-    "loginUrlHint": "https://myumami.mysite.tld",
-    "@loginUrlHint": {
-      "description": "Hint text for the URL field"
-    },
-    "usernameLabel": "Username",
-    "@usernameLabel": {
-      "description": "Username field label"
-    },
-    "usernameHint": "Enter the username of your Umami profile",
-    "@usernameHint": {
-      "description": "Username field hint"
-    },
-    "passwordLabel": "Password",
-    "@passwordLabel": {
-      "description": "Password field label"
-    },
-    "passwordHint": "Enter the password of your Umami profile",
-    "@passwordHint": {
-      "description": "Password field hint"
-    },
-    "loginButton": "Sign in",
-    "@loginButton": {
-      "description": "Login button text"
-    },
-    "errNotFound": "Nothing found",
-    "errNotFoundWhileLogin": "That does not look like an Umami instance. Check that the URL is correct.",
-    "errForbidden": "You don't have permission to access this data.",
-    "errUnauthorized": "It looks like your credentials are wrong or have been changed.",
-    "errBadRequest": "The request is not well formed and the server cannot accept it. Maybe the Umami server version is not supported by the app.",
-    "errInternalServerError": "There was an internal problem on the server. Try again later or logout and log back in.",
-    "errTimeout": "The network (or the server) is too slow. Retry later.",
-    "settingsTitle": "Settings",
-    "userSettings": "User settings",
-    "userProfile": "User profile",
-    "loginSubtitle": "Unofficial Umami client for Android",
-    "errGenericHttp": "There was a problem connecting to the URL: check that the address is correct, that it is alive and that listens on the HTTPS protocol. Check also that the TLS certificate is valid and trusted.",
-    "umamiError": "Umami error",
-    "connectionError": "Connection error",
-    "loginUrlErrorLabel": "The URL must be full and start with https://",
-    "about": "About",
-    "appVersion": "App version",
-    "apiVersion": "Supported Umami API version",
-    "sourceCode": "Source code",
-    "license": "License",
-    "privacyPolicy": "Privacy policy",
-    "licenses": "Licenses",
-    "today": "Today",
-    "last24h": "Last 24h",
-    "yesterday": "Yesterday",
-    "thisWeek": "This week",
-    "last7d": "Last 7d",
-    "lastMonth": "Last month",
-    "last30d": "Last 30d",
-    "last90d": "Last 90d",
-    "thisYear": "This year",
-    "allTime": "All time",
-    "customDateRange": "Custom date range"
+  "websites": "Websites",
+  "@websites": {
+    "description": "Websites screen title"
+  },
+  "summary": "Summary",
+  "@summary": {
+    "description": "Summary card title"
+  },
+  "pageViews": "Page views",
+  "@pageViews": {
+    "description": "Page views card title and label"
+  },
+  "uniques": "Uniques",
+  "@uniques": {
+    "description": "Uniques"
+  },
+  "bounces": "Bounces",
+  "@bounces": {
+    "description": "Bounces"
+  },
+  "totalTime": "Total time",
+  "@totalTime": {
+    "description": "Total time"
+  },
+  "sessions": "Sessions",
+  "@sessions": {
+    "description": "Sessions card title"
+  },
+  "urls": "URLs",
+  "@urls": {
+    "description": "URLs card title"
+  },
+  "referrers": "Referrers",
+  "@referrers": {
+    "description": "Referrers card title"
+  },
+  "browsers": "Browsers",
+  "os": "OS",
+  "@os": {
+    "description": "OS card title"
+  },
+  "devices": "Devices",
+  "@devices": {
+    "description": "Devices card title"
+  },
+  "countries": "Countries",
+  "@countries": {
+    "description": "Countries card title"
+  },
+  "events": "Events",
+  "loginScreenTitle": "Login",
+  "@loginScreenTitle": {
+    "description": "Login screen title"
+  },
+  "loginUrlLabel": "Umami instance URL",
+  "@loginUrlLabel": {
+    "description": "Label text for the URL field"
+  },
+  "loginUrlHint": "https://myumami.mysite.tld",
+  "@loginUrlHint": {
+    "description": "Hint text for the URL field"
+  },
+  "usernameLabel": "Username",
+  "@usernameLabel": {
+    "description": "Username field label"
+  },
+  "usernameHint": "Enter the username of your Umami profile",
+  "@usernameHint": {
+    "description": "Username field hint"
+  },
+  "passwordLabel": "Password",
+  "@passwordLabel": {
+    "description": "Password field label"
+  },
+  "passwordHint": "Enter the password of your Umami profile",
+  "@passwordHint": {
+    "description": "Password field hint"
+  },
+  "loginButton": "Sign in",
+  "@loginButton": {
+    "description": "Login button text"
+  },
+  "errNotFound": "Nothing found",
+  "errNotFoundWhileLogin": "That does not look like an Umami instance. Check that the URL is correct.",
+  "errForbidden": "You don't have permission to access this data.",
+  "errUnauthorized": "It looks like your credentials are wrong or have been changed.",
+  "errBadRequest": "The request is not well formed and the server cannot accept it. Maybe the Umami server version is not supported by the app.",
+  "errInternalServerError": "There was an internal problem on the server. Try again later or logout and log back in.",
+  "errTimeout": "The network (or the server) is too slow. Retry later.",
+  "settingsTitle": "Settings",
+  "userSettings": "User settings",
+  "userProfile": "User profile",
+  "loginSubtitle": "Unofficial Umami client for Android",
+  "errGenericHttp": "There was a problem connecting to the URL: check that the address is correct, that it is alive and that listens on the HTTPS protocol. Check also that the TLS certificate is valid and trusted.",
+  "umamiError": "Umami error",
+  "connectionError": "Connection error",
+  "formatError": "Format error",
+  "errInvalidURL": "There are some bad characters in the URL",
+  "loginUrlErrorLabel": "The URL must be full and start with https://",
+  "about": "About",
+  "appVersion": "App version",
+  "apiVersion": "Supported Umami API version",
+  "sourceCode": "Source code",
+  "license": "License",
+  "privacyPolicy": "Privacy policy",
+  "licenses": "Licenses",
+  "today": "Today",
+  "last24h": "Last 24h",
+  "yesterday": "Yesterday",
+  "thisWeek": "This week",
+  "last7d": "Last 7d",
+  "lastMonth": "Last month",
+  "last30d": "Last 30d",
+  "last90d": "Last 90d",
+  "thisYear": "This year",
+  "allTime": "All time",
+  "customDateRange": "Custom date range"
 }
