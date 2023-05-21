@@ -30,6 +30,8 @@ class _LoginPageState extends State<LoginPage> {
       }
     });
 
+    urlController.text = 'https://cloud.umami.is';
+
     urlController.addListener(_validateForm);
     usernameController.addListener(_validateForm);
     passwordController.addListener(_validateForm);
@@ -67,11 +69,6 @@ class _LoginPageState extends State<LoginPage> {
                 enabled: !isLoading,
                 keyboardType: TextInputType.url,
                 autofillHints: const <String>[AutofillHints.url],
-                onTap: () {
-                  if (urlController.text.isEmpty) {
-                    urlController.text = 'https://';
-                  }
-                },
                 decoration: InputDecoration(
                   labelText: AppLocalizations.of(context)!.loginUrlLabel,
                   hintText: AppLocalizations.of(context)!.loginUrlHint,
@@ -140,16 +137,13 @@ class _LoginPageState extends State<LoginPage> {
     if (!url.startsWith('https') && !url.contains(':/')) {
       url = 'https://$url';
     }
-    if (!url.endsWith('/')) {
-      url += '/';
-    }
 
     Uri? parsed = Uri.tryParse(url);
     if (parsed == null) {
       return false;
     }
 
-    return parsed.isScheme('HTTPS') && parsed.hasAbsolutePath;
+    return parsed.isScheme('HTTPS');
   }
 
   _validateForm() {
@@ -179,10 +173,16 @@ class _LoginPageState extends State<LoginPage> {
       passwordController.text,
     );
 
-    LoginController loginController = LoginController(
-      urlController.text.replaceFirst('https://', ''),
-      loginRequest,
-    );
+    LoginController loginController;
+    try {
+      loginController = LoginController(
+        _sanitizeUrl(urlController.text),
+        loginRequest,
+      );
+    } on FormatException catch (e) {
+      _handleRequestError(e);
+      return;
+    }
 
     loginController.doRequest().then(
       (LoginResponse value) {
@@ -197,40 +197,53 @@ class _LoginPageState extends State<LoginPage> {
             );
       },
     ).onError(
-      (Object? error, _) {
-        setState(() {
-          isLoading = false;
-        });
-
-        AppLocalizations loc = AppLocalizations.of(context)!;
-        late String title;
-        late String content;
-
-        if (error is NotFoundException) {
-          title = loc.connectionError;
-          content = loc.errNotFoundWhileLogin;
-        } else if (error is ApiException) {
-          title = loc.umamiError;
-          content = error.getFriendlyErrorString(loc);
-        } else {
-          title = loc.connectionError;
-          content = '${loc.errGenericHttp} [${error.toString()}]';
-        }
-
-        showDialog(
-          context: context,
-          builder: (BuildContext context) => AlertDialog(
-            title: Text(title),
-            content: Text(content),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () => Navigator.pop(context, 'OK'),
-                child: const Text('OK'),
-              ),
-            ],
-          ),
-        );
-      },
+      (Object? error, _) => _handleRequestError(error),
     );
   }
+
+  _handleRequestError(Object? error) {
+    setState(() {
+      isLoading = false;
+    });
+
+    AppLocalizations loc = AppLocalizations.of(context)!;
+    late String title;
+    late String content;
+
+    if (error is NotFoundException) {
+      title = loc.connectionError;
+      content = loc.errNotFoundWhileLogin;
+    } else if (error is ApiException) {
+      title = loc.umamiError;
+      content = error.getFriendlyErrorString(loc);
+    } else if (error is FormatException) {
+      title = loc.formatError;
+      content = loc.errInvalidURL;
+    } else {
+      title = loc.connectionError;
+      content = '${loc.errGenericHttp} [${error.toString()}]';
+    }
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: Text(title),
+        content: Text(content),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => Navigator.pop(context, 'OK'),
+            child: const Text('OK'),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+String _sanitizeUrl(String userInput) {
+  String url = userInput.replaceFirst('https://', '');
+  while (url.endsWith('/')) {
+    url = url.substring(0, url.length - 1);
+  }
+  return url;
 }
