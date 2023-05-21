@@ -1,14 +1,18 @@
 import 'package:halfdot/models/api/common.dart';
 
 class LoginRequest {
-  LoginRequest(this.username, this.password);
+  LoginRequest(this.username, this.password, this.isManaged);
   final String username;
   final String password;
+  final bool isManaged;
 
-  Map<String, dynamic> toJson() => <String, dynamic>{
-        'username': username,
-        'password': password,
-      };
+  Map<String, dynamic> toJson() {
+    String userKey = isManaged ? 'email' : 'username';
+    return <String, dynamic>{
+      userKey: username,
+      'password': password,
+    };
+  }
 }
 
 class LoginResponse implements ApiModel {
