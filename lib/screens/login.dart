@@ -6,6 +6,9 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:halfdot/models/api/login.dart';
 import 'package:halfdot/screens/websites.dart';
 
+const String managedUmamiDomain = 'cloud.umami.is';
+const String managedUmamiURL = 'https://$managedUmamiDomain';
+
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
@@ -30,7 +33,7 @@ class _LoginPageState extends State<LoginPage> {
       }
     });
 
-    urlController.text = 'https://cloud.umami.is';
+    urlController.text = managedUmamiURL;
 
     urlController.addListener(_validateForm);
     usernameController.addListener(_validateForm);
@@ -171,6 +174,7 @@ class _LoginPageState extends State<LoginPage> {
     LoginRequest loginRequest = LoginRequest(
       usernameController.text,
       passwordController.text,
+      urlController.text.contains(managedUmamiDomain) ? true : false,
     );
 
     LoginController loginController;
