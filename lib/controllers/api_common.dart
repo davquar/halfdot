@@ -6,6 +6,10 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:halfdot/models/api/common.dart';
 import 'package:intl/intl.dart';
 
+const String managedUmamiDomain = 'cloud.umami.is';
+const String managedUmamiStatsDomain = 'analytics.umami.is';
+const String managedUmamiURL = 'https://$managedUmamiDomain';
+
 abstract class ApiRequest {
   Uri getRequestUrl();
   Future<ApiModel> doRequest();
@@ -22,6 +26,12 @@ enum GroupingUnit {
 }
 
 DateTime initialDateTime = DateTime(2010, 01, 01);
+
+String getCompatUmamiUrlOrNot(String storedUrl) {
+  return storedUrl.contains(managedUmamiDomain)
+      ? managedUmamiStatsDomain
+      : storedUrl;
+}
 
 class DateTimeInterval {
   DateTimeInterval(this.startAt, this.endAt);
@@ -122,6 +132,8 @@ Exception getApiException(int statusCode, String msg) {
       return ForbiddenException(msg);
     case 404:
       return NotFoundException(msg);
+    case 405:
+      return MethodNotAllowedException(msg);
     case 500:
       return InternalServerErrorException(msg);
     default:
@@ -140,6 +152,16 @@ class NotFoundException implements ApiException {
   @override
   String getFriendlyErrorString(AppLocalizations loc) {
     return loc.errNotFound;
+  }
+}
+
+class MethodNotAllowedException implements ApiException {
+  MethodNotAllowedException(this.msg);
+  String msg;
+
+  @override
+  String getFriendlyErrorString(AppLocalizations loc) {
+    return loc.errMethodNotAllowed;
   }
 }
 
@@ -194,13 +216,12 @@ class GenericApiException implements ApiException {
 }
 
 String handleSnapshotError(BuildContext context, Object? error) {
-  switch (error.runtimeType) {
-    case ApiException:
-      return (error as ApiException).getFriendlyErrorString(
-        AppLocalizations.of(context)!,
-      );
-    case TimeoutException:
-      return AppLocalizations.of(context)!.errTimeout;
+  if (error is ApiException) {
+    return error.getFriendlyErrorString(
+      AppLocalizations.of(context)!,
+    );
+  } else if (error is TimeoutException) {
+    return AppLocalizations.of(context)!.errTimeout;
   }
   return 'Error: $error';
 }

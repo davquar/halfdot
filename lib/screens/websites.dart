@@ -29,7 +29,7 @@ class _WebsitesPageState extends State<WebsitesPage> {
       ),
       body: FutureBuilder<WebsitesResponse>(
         future: WebsitesController(
-          Storage.instance.domain!,
+          getCompatUmamiUrlOrNot(Storage.instance.domain!),
           Storage.instance.accessToken!,
         ).doRequest(),
         builder: (BuildContext context, dynamic snapshot) {

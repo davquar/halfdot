@@ -6,9 +6,6 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:halfdot/models/api/login.dart';
 import 'package:halfdot/screens/websites.dart';
 
-const String managedUmamiDomain = 'cloud.umami.is';
-const String managedUmamiURL = 'https://$managedUmamiDomain';
-
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
