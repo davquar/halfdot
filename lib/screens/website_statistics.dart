@@ -71,7 +71,7 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
                 _makeCardTitle(AppLocalizations.of(context)!.summary),
                 FutureBuilder<StatsResponse>(
                   future: StatsController(
-                    Storage.instance.domain!,
+                    getCompatUmamiUrlOrNot(Storage.instance.domain!),
                     Storage.instance.accessToken!,
                     widget.website.id,
                     dateTimeRange,
@@ -161,7 +161,7 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
                 ),
                 FutureBuilder<PageViewsResponse>(
                   future: PageViewsController(
-                    Storage.instance.domain!,
+                    getCompatUmamiUrlOrNot(Storage.instance.domain!),
                     Storage.instance.accessToken!,
                     widget.website.id,
                     _makePageViewsRequest(),
@@ -255,7 +255,7 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
   ) {
     return FutureBuilder<MetricsResponse>(
       future: MetricsController(
-        Storage.instance.domain!,
+        getCompatUmamiUrlOrNot(Storage.instance.domain!),
         Storage.instance.accessToken!,
         widget.website.id,
         _makeMetricsRequest(metricType),

@@ -6,6 +6,10 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:halfdot/models/api/common.dart';
 import 'package:intl/intl.dart';
 
+const String managedUmamiDomain = 'cloud.umami.is';
+const String managedUmamiStatsDomain = 'analytics.umami.is';
+const String managedUmamiURL = 'https://$managedUmamiDomain';
+
 abstract class ApiRequest {
   Uri getRequestUrl();
   Future<ApiModel> doRequest();
@@ -22,6 +26,12 @@ enum GroupingUnit {
 }
 
 DateTime initialDateTime = DateTime(2010, 01, 01);
+
+String getCompatUmamiUrlOrNot(String storedUrl) {
+  return storedUrl.contains(managedUmamiDomain)
+      ? managedUmamiStatsDomain
+      : storedUrl;
+}
 
 class DateTimeInterval {
   DateTimeInterval(this.startAt, this.endAt);
