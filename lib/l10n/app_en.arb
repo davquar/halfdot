@@ -85,6 +85,7 @@
   "errNotFoundWhileLogin": "That does not look like an Umami instance. Check that the URL is correct.",
   "errForbidden": "You don't have permission to access this data.",
   "errUnauthorized": "It looks like your credentials are wrong or have been changed.",
+  "errMethodNotAllowed": "The request method is not accepted by the server. Maybe the Umami server version is not supported by the app.",
   "errBadRequest": "The request is not well formed and the server cannot accept it. Maybe the Umami server version is not supported by the app.",
   "errInternalServerError": "There was an internal problem on the server. Try again later or logout and log back in.",
   "errTimeout": "The network (or the server) is too slow. Retry later.",

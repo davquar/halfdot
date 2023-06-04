@@ -122,6 +122,8 @@ Exception getApiException(int statusCode, String msg) {
       return ForbiddenException(msg);
     case 404:
       return NotFoundException(msg);
+    case 405:
+      return MethodNotAllowedException(msg);
     case 500:
       return InternalServerErrorException(msg);
     default:
@@ -140,6 +142,16 @@ class NotFoundException implements ApiException {
   @override
   String getFriendlyErrorString(AppLocalizations loc) {
     return loc.errNotFound;
+  }
+}
+
+class MethodNotAllowedException implements ApiException {
+  MethodNotAllowedException(this.msg);
+  String msg;
+
+  @override
+  String getFriendlyErrorString(AppLocalizations loc) {
+    return loc.errMethodNotAllowed;
   }
 }
 
@@ -194,13 +206,12 @@ class GenericApiException implements ApiException {
 }
 
 String handleSnapshotError(BuildContext context, Object? error) {
-  switch (error.runtimeType) {
-    case ApiException:
-      return (error as ApiException).getFriendlyErrorString(
-        AppLocalizations.of(context)!,
-      );
-    case TimeoutException:
-      return AppLocalizations.of(context)!.errTimeout;
+  if (error is ApiException) {
+    return error.getFriendlyErrorString(
+      AppLocalizations.of(context)!,
+    );
+  } else if (error is TimeoutException) {
+    return AppLocalizations.of(context)!.errTimeout;
   }
   return 'Error: $error';
 }
