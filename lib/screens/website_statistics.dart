@@ -179,7 +179,8 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
                       );
                     }
                     if (snapshot.hasData) {
-                      if (snapshot.data!.pageViews.length <= 1) {
+                      if (snapshot.data!.pageViews.length <= 1 ||
+                          dateTimeRange.getNumDays() == 1) {
                         return const SizedBox();
                       }
                       return Column(

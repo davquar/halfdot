@@ -22,8 +22,7 @@ class LinePlotDateTime extends StatelessWidget {
       child: LineChart(
         LineChartData(
           gridData: FlGridData(
-            show: true,
-            verticalInterval: _xAxisInterval,
+            show: false,
           ),
           borderData: FlBorderData(show: false),
           lineBarsData: <LineChartBarData>[
@@ -69,7 +68,7 @@ class LinePlotDateTime extends StatelessWidget {
             touchTooltipData: LineTouchTooltipData(
               tooltipBgColor: Theme.of(context).cardColor,
               tooltipRoundedRadius: 15.0,
-              showOnTopOfTheChartBoxArea: true,
+              showOnTopOfTheChartBoxArea: false,
               fitInsideHorizontally: true,
               tooltipPadding: const EdgeInsets.all(8.0),
               tooltipMargin: 0,
@@ -117,7 +116,6 @@ class LinePlotDateTime extends StatelessWidget {
   SideTitles _makeBottomTitles(BuildContext context) {
     return SideTitles(
       showTitles: true,
-      interval: _xAxisInterval,
       getTitlesWidget: (double value, TitleMeta meta) {
         String text = DateFormat('d/MM').format(
           DateTime.fromMillisecondsSinceEpoch(value.toInt()),
@@ -139,15 +137,10 @@ class LinePlotDateTime extends StatelessWidget {
     );
   }
 
-  double get _xAxisInterval {
-    int coeff = pageViews.length > 6 ? pageViews.length ~/ 6 : 1;
-    return coeff * Duration.millisecondsPerDay.toDouble();
-  }
-
   SideTitles _makeLeftTitles(BuildContext context) {
     return SideTitles(
       showTitles: true,
-      reservedSize: 40,
+      reservedSize: 50,
       getTitlesWidget: (double value, TitleMeta meta) {
         return Padding(
           padding: const EdgeInsets.only(right: 8.0),
