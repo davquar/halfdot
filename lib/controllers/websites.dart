@@ -34,7 +34,7 @@ class WebsitesController implements ApiRequest {
     return WebsitesResponse.fromJson(
       jsonDecode(
         utf8.decode(response.bodyBytes),
-      ) as List<dynamic>,
+      ) as Map<String, dynamic>,
     );
   }
 }

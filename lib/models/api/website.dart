@@ -2,8 +2,8 @@ import 'package:halfdot/models/api/common.dart';
 
 class WebsitesResponse implements ApiModel {
   WebsitesResponse(this.websites);
-  WebsitesResponse.fromJson(List<dynamic> json) {
-    for (final dynamic website in json) {
+  WebsitesResponse.fromJson(Map<String, dynamic> json) {
+    for (final dynamic website in json['data']) {
       websites.add(Website.fromJson(website));
     }
   }
