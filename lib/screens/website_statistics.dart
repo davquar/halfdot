@@ -220,9 +220,9 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
           ),
         ],
       ),
-      bottomNavigationBar: BottomAppBar(
-        child: Padding(
-          padding: const EdgeInsets.only(left: 4, right: 4),
+      bottomNavigationBar: Visibility(
+        visible: _filter.isFiltering(),
+        child: BottomAppBar(
           child: Wrap(
             spacing: 4,
             runSpacing: 0,
@@ -232,7 +232,8 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
                       visualDensity: VisualDensity.compact,
                       label: Text('${e.key}: ${e.value}'),
                       labelStyle: TextStyle(
-                        fontSize: Theme.of(context).textTheme.caption!.fontSize,
+                        fontSize:
+                            Theme.of(context).textTheme.labelSmall!.fontSize,
                       ),
                       labelPadding: const EdgeInsets.only(right: 2),
                       onDeleted: () {
@@ -280,6 +281,7 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
                 children: <Widget>[
                   ...ListTile.divideTiles(
                     context: context,
+                    color: Theme.of(context).colorScheme.background,
                     tiles: <Widget>[
                       ...snapshot.data!.metrics.map(
                         (Metric e) => ListTile(
@@ -379,7 +381,7 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
           children: <Widget>[
             Icon(
               Icons.circle,
-              color: Theme.of(context).colorScheme.background,
+              color: Theme.of(context).colorScheme.primary,
               size: 10,
             ),
             const VerticalDivider(width: 5),
@@ -392,7 +394,7 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
             const VerticalDivider(width: 15),
             Icon(
               Icons.circle,
-              color: Theme.of(context).colorScheme.primary,
+              color: Theme.of(context).colorScheme.inversePrimary,
               size: 10,
             ),
             const VerticalDivider(width: 5),
@@ -449,7 +451,10 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
         return ListView(
           children: <ListTile>[
             ListTile(
-              leading: Text(AppLocalizations.of(context)!.today),
+              leading: Text(
+                AppLocalizations.of(context)!.today,
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
               onTap: () => setState(() {
                 DateTime now = DateTime.now();
                 dateTimeRange.startAt =
@@ -460,7 +465,10 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
               }),
             ),
             ListTile(
-              leading: Text(AppLocalizations.of(context)!.last24h),
+              leading: Text(
+                AppLocalizations.of(context)!.last24h,
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
               onTap: () => setState(() {
                 DateTime now = DateTime.now();
                 dateTimeRange.startAt = now.subtract(const Duration(hours: 24));
@@ -469,7 +477,10 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
               }),
             ),
             ListTile(
-              leading: Text(AppLocalizations.of(context)!.yesterday),
+              leading: Text(
+                AppLocalizations.of(context)!.yesterday,
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
               onTap: () => setState(() {
                 DateTime now = DateTime.now();
                 dateTimeRange.startAt =
@@ -480,7 +491,10 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
               }),
             ),
             ListTile(
-              leading: Text(AppLocalizations.of(context)!.thisWeek),
+              leading: Text(
+                AppLocalizations.of(context)!.thisWeek,
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
               onTap: () => setState(() {
                 DateTime now = DateTime.now();
                 dateTimeRange.startAt =
@@ -490,7 +504,10 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
               }),
             ),
             ListTile(
-              leading: Text(AppLocalizations.of(context)!.last7d),
+              leading: Text(
+                AppLocalizations.of(context)!.last7d,
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
               onTap: () => setState(() {
                 DateTime now = DateTime.now();
                 dateTimeRange.startAt = now.subtract(const Duration(days: 6));
@@ -499,7 +516,10 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
               }),
             ),
             ListTile(
-              leading: Text(AppLocalizations.of(context)!.lastMonth),
+              leading: Text(
+                AppLocalizations.of(context)!.lastMonth,
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
               onTap: () => setState(() {
                 DateTime now = DateTime.now();
                 dateTimeRange.startAt = DateTime(now.year, now.month);
@@ -508,7 +528,10 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
               }),
             ),
             ListTile(
-              leading: Text(AppLocalizations.of(context)!.last30d),
+              leading: Text(
+                AppLocalizations.of(context)!.last30d,
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
               onTap: () => setState(() {
                 DateTime now = DateTime.now();
                 dateTimeRange.startAt = now.subtract(const Duration(days: 29));
@@ -517,7 +540,10 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
               }),
             ),
             ListTile(
-              leading: Text(AppLocalizations.of(context)!.last90d),
+              leading: Text(
+                AppLocalizations.of(context)!.last90d,
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
               onTap: () => setState(() {
                 DateTime now = DateTime.now();
                 dateTimeRange.startAt = now.subtract(const Duration(days: 89));
@@ -526,7 +552,10 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
               }),
             ),
             ListTile(
-              leading: Text(AppLocalizations.of(context)!.thisYear),
+              leading: Text(
+                AppLocalizations.of(context)!.thisYear,
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
               onTap: () => setState(() {
                 DateTime now = DateTime.now();
                 dateTimeRange.startAt = DateTime(now.year);
@@ -535,7 +564,10 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
               }),
             ),
             ListTile(
-              leading: Text(AppLocalizations.of(context)!.allTime),
+              leading: Text(
+                AppLocalizations.of(context)!.allTime,
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
               onTap: () => setState(() {
                 dateTimeRange.startAt = initialDateTime;
                 dateTimeRange.endAt = DateTime.now();
@@ -543,7 +575,10 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
               }),
             ),
             ListTile(
-              leading: Text(AppLocalizations.of(context)!.customDateRange),
+              leading: Text(
+                AppLocalizations.of(context)!.customDateRange,
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
               onTap: () => setState(() {
                 Navigator.pop(context);
                 _showDateRangePicker();

@@ -20,7 +20,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 2.0.2+5
 
 environment:
-  sdk: '>=2.18.0 <3.0.0'
+  sdk: '>=3.0.0 <=3.1.1'
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -31,17 +31,17 @@ environment:
 dependencies:
   dynamic_color: ^1.5.4
 
-  fl_chart: ^0.55.2
+  fl_chart: ^0.63.0
   flutter:
     sdk: flutter
-  flutter_launcher_icons: '^0.10.0'
+  flutter_launcher_icons: '^0.13.1'
   flutter_localizations:
     sdk: flutter
-  flutter_secure_storage: ^8.0.0
+  flutter_secure_storage: ^9.0.0
 
-  http: ^0.13.5
-  intl: ^0.17.0
-  package_info_plus: ^3.0.3
+  http: ^1.1.0
+  intl: ^0.18.1
+  package_info_plus: ^4.1.0
   url_launcher: ^6.1.6
 
 dev_dependencies:

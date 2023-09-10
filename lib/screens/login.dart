@@ -59,7 +59,7 @@ class _LoginPageState extends State<LoginPage> {
                       ),
               ),
               const SizedBox(height: 10),
-              Text('HalfDot', style: Theme.of(context).textTheme.headline6),
+              Text('HalfDot', style: Theme.of(context).textTheme.titleLarge),
               Text(AppLocalizations.of(context)!.loginSubtitle),
               const SizedBox(height: 20),
               TextField(

@@ -21,7 +21,7 @@ class LinePlotDateTime extends StatelessWidget {
       aspectRatio: 2,
       child: LineChart(
         LineChartData(
-          gridData: FlGridData(
+          gridData: const FlGridData(
             show: false,
           ),
           borderData: FlBorderData(show: false),
@@ -35,9 +35,9 @@ class LinePlotDateTime extends StatelessWidget {
                     ),
                   )
                   .toList(),
-              color: Theme.of(context).colorScheme.background,
+              color: Theme.of(context).colorScheme.primary,
               isCurved: true,
-              dotData: FlDotData(
+              dotData: const FlDotData(
                 show: false,
               ),
             ),
@@ -50,17 +50,18 @@ class LinePlotDateTime extends StatelessWidget {
                     ),
                   )
                   .toList(),
-              color: Theme.of(context).colorScheme.primary,
+              color: Theme.of(context).colorScheme.inversePrimary,
               isCurved: true,
-              dotData: FlDotData(
+              dotData: const FlDotData(
                 show: false,
               ),
             ),
           ],
           titlesData: FlTitlesData(
-              topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+              topTitles:
+                  const AxisTitles(sideTitles: SideTitles(showTitles: false)),
               rightTitles:
-                  AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                  const AxisTitles(sideTitles: SideTitles(showTitles: false)),
               bottomTitles: AxisTitles(sideTitles: _makeBottomTitles(context)),
               leftTitles: AxisTitles(sideTitles: _makeLeftTitles(context))),
           lineTouchData: LineTouchData(

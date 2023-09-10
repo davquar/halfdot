@@ -71,6 +71,17 @@ class Filter {
     }
   }
 
+  bool isFiltering() {
+    if (isActive(MetricType.browser)) return true;
+    if (isActive(MetricType.country)) return true;
+    if (isActive(MetricType.device)) return true;
+    if (isActive(MetricType.event)) return true;
+    if (isActive(MetricType.os)) return true;
+    if (isActive(MetricType.referrer)) return true;
+    if (isActive(MetricType.url)) return true;
+    return false;
+  }
+
   bool isActive(MetricType metricType) {
     switch (metricType) {
       case MetricType.url:

@@ -15,8 +15,8 @@ class ProgressIndicatorCard extends StatelessWidget {
     return Card(
       elevation: 0,
       color: Theme.of(context).colorScheme.surfaceVariant,
-      child: Column(
-        children: const <Widget>[
+      child: const Column(
+        children: <Widget>[
           Padding(
             padding: EdgeInsets.all(8.0),
             child: SizedBox(
