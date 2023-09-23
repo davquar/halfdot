@@ -7,7 +7,7 @@ import 'package:halfdot/models/api/common.dart';
 import 'package:intl/intl.dart';
 
 const String managedUmamiDomain = 'cloud.umami.is';
-const String managedUmamiStatsDomain = 'analytics.umami.is';
+const String managedUmamiStatsDomain = 'cloud.umami.is';
 const String managedUmamiURL = 'https://$managedUmamiDomain';
 
 abstract class ApiRequest {
