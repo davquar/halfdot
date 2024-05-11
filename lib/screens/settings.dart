@@ -17,7 +17,7 @@ class SettingsPage extends StatefulWidget {
 class _SettingsPageState extends State<SettingsPage> {
   Storage storage = Storage.instance;
 
-  static const String _apiVersion = '2.7.0';
+  static const String _apiVersion = '2.11.3';
   static const String _repoUrl = 'https://github.com/davquar/halfdot';
   static const String _license = 'MIT';
   static const String _licenseUrl =

@@ -117,12 +117,22 @@ class _WebsiteStatisticsPageState extends State<WebsiteStatisticsPage> {
                                   ),
                                   Column(children: <Widget>[
                                     Text(
-                                      snapshot.data!.uniques.toString(),
+                                      snapshot.data!.visits.toString(),
                                       style: Theme.of(context)
                                           .textTheme
                                           .titleLarge,
                                     ),
-                                    Text(AppLocalizations.of(context)!.uniques),
+                                    Text(AppLocalizations.of(context)!.visits),
+                                  ]),
+                                  Column(children: <Widget>[
+                                    Text(
+                                      snapshot.data!.visitors.toString(),
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .titleLarge,
+                                    ),
+                                    Text(
+                                        AppLocalizations.of(context)!.visitors),
                                   ]),
                                   Column(
                                     children: <Widget>[

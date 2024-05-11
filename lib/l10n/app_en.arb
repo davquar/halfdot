@@ -11,9 +11,13 @@
   "@pageViews": {
     "description": "Page views card title and label"
   },
-  "uniques": "Uniques",
-  "@uniques": {
-    "description": "Uniques"
+  "visitors": "Visitors",
+  "@visitors": {
+    "description": "Unique visitors"
+  },
+  "visits": "Visits",
+  "@visitors": {
+    "description": "Unique sessions"
   },
   "bounces": "Bounces",
   "@bounces": {
