@@ -15,6 +15,10 @@
   "@visitors": {
     "description": "Unique visitors"
   },
+  "visits": "Visits",
+  "@visitors": {
+    "description": "Unique sessions"
+  },
   "bounces": "Bounces",
   "@bounces": {
     "description": "Bounces"
